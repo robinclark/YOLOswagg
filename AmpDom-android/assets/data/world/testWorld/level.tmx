@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="16" height="11" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" spacing="2">
+  <image source="packfile.png" width="256" height="64"/>
+ </tileset>
+ <layer name="layer1" width="16" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYWBgYCEDs0IxOXqpoR8XZqKBmQOJ2aCYkDwuzATFhOSHKgYAyy0Cfw==
+  </data>
+ </layer>
+ <objectgroup name="physics" width="16" height="11">
+  <properties>
+   <property name="material" value="rock"/>
+  </properties>
+  <object x="127" y="96" width="34" height="32">
+   <properties>
+    <property name="material" value="rock"/>
+   </properties>
+  </object>
+  <object x="-1" y="224" width="256" height="8"/>
+  <object x="256" y="192" width="64" height="43">
+   <properties>
+    <property name="material" value="rock"/>
+   </properties>
+  </object>
+  <object x="322" y="223" width="190" height="11"/>
+ </objectgroup>
+</map>
