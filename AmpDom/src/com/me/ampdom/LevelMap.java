@@ -52,7 +52,7 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
@@ -129,7 +129,7 @@ public class LevelMap {
 		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
 			
 			endlevelpt1 = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
-		    test.play();
+		    //test.play();
 		
 			break;
 		case 1:

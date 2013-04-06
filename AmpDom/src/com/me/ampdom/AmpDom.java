@@ -46,8 +46,7 @@ public class AmpDom implements ApplicationListener {
 	Texture shellText;
 	SpriteBatch batch;
 	
-	MyInputProcessor input = new MyInputProcessor();
-	
+	MyInputProcessor input = new MyInputProcessor();	
 
 	public AmpDom() {
 		super();
@@ -140,16 +139,38 @@ public class AmpDom implements ApplicationListener {
 			tiledMapHelper.getCamera().position.x = PIXELS_PER_METER
 					* frog.entity.getPosition().x;
 			
-			if(detect.enemyDmg && detect.isHit){
-				if(frog.shell){
-			  System.out.println("SHELLMODE ACTIVATE");
+			if(frog.powerLegs)
+			{
+				//System.out.println("doublej: " + frog.doubleCount);
+				if(detect.grounded && frog.doubleCount == 0)
+				{
+					frog.resetJumps();
+				}
+				if(detect.grounded && frog.doubleCount == 1)
+				{
 					
-				}else{
-			//frog.takeDamage(10);	
-			detect.isHit = false;
-			damage.play();
-			System.out.println("youve been hit by an enemy!"+ frog.getHealth());
+				}
 			}
+			else
+			{
+				if(detect.grounded && frog.singleCount == 0)
+				{
+					frog.resetJumps();
+				}
+			}
+			
+			if(detect.enemyDmg && detect.isHit)
+			{
+					if(frog.shell)
+					{
+						System.out.println("SHELLMODE ACTIVATE");						
+					}else
+					{
+						//frog.takeDamage(10);	
+						detect.isHit = false;
+						damage.play();
+						System.out.println("youve been hit by an enemy!"+ frog.getHealth());
+					}
 			}
 			
 			//System.out.println(frog.entity.getLinearVelocity().y);
