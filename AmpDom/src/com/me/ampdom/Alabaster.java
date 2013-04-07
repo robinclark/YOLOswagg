@@ -285,20 +285,21 @@ public void move(MyInputProcessor input)
 
 		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP])
 	    {
+			
 			if(powerLegs)
 			{
-				/*if(count > 0)
-				{
+				
+				//if(count > 0)
+				//{
 					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
-					count--;
-				}*/
+					//count--;
+				//}
 			}
 			else
 			{
 				//if on ground apply linear impulse
 			}
-		}
-
+		}	
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
