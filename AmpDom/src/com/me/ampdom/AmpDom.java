@@ -5,13 +5,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -45,8 +45,17 @@ public class AmpDom implements ApplicationListener {
 	Sprite shellSprite;
 	Texture shellText;
 	SpriteBatch batch;
+
+	// HUD
+	float shellElapsedTime;
+	long shellBeginTime;
+	long shoutBeginTime; 
+
 	
-	MyInputProcessor input = new MyInputProcessor();	
+	// detect keyboard
+	MyInputProcessor input = new MyInputProcessor();
+	
+
 
 	public AmpDom() {
 		super();
@@ -110,12 +119,14 @@ public class AmpDom implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {		
+	public void render() 
+	{		
 		
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	
-		if(state >= 0 && state%2 == 0 && level.currentLevel%2 == 0){
+		if(state >= 0 && state%2 == 0 && level.currentLevel%2 == 0)
+		{ //?what is this checking
 
 			//if(level.test.isPlaying() == false)
 			//level.test.play();
@@ -161,7 +172,8 @@ public class AmpDom implements ApplicationListener {
 					if(frog.shell)
 					{
 						System.out.println("SHELLMODE ACTIVATE");						
-					}else
+					}
+					else
 					{
 						//frog.takeDamage(10);	
 						detect.isHit = false;
@@ -169,16 +181,44 @@ public class AmpDom implements ApplicationListener {
 						System.out.println("youve been hit by an enemy!"+ frog.getHealth());
 					}
 			}
+					
+
+			if(detect.enemyDmg && detect.isHit)
+			{
+				if(frog.shell)
+				{
+					if(frog.shellCharge-1 >= 0)
+					{
+						frog.shellCharge -= 1;
+						System.out.println("SHELL HEALTH: " + frog.shellCharge);
+						
+						// initiate timer
+						if(frog.shellCharge == 0)
+							shellBeginTime = System.nanoTime();
+					}
+				} 
+				else 
+				{
+					frog.takeDamage(10);
+					frog.sprite.setColor(Color.RED);
+					frog.icon.setColor(Color.RED);
+					detect.isHit = false;
+					damage.play();
+				}
+
+			}
 			
 			//System.out.println(frog.entity.getLinearVelocity().y);
-			if(detect.obstacleDmg && detect.isHit){
-				//frog.takeDamage(50);	
+			if(detect.obstacleDmg && detect.isHit)
+			{
+				frog.takeDamage(50);	
 				detect.isHit = false;
 				damage.play();
 				System.out.println("youve been hit by spikes!"+ frog.getHealth());
-				}
+			}
 			
-			if(detect.collectJar){
+			if(detect.collectJar)
+			{
 				 System.out.println("jar----"+LevelMap.jar.sprite.toString());
 				frog.incHealth(20);
 				flyjar.play();
@@ -189,33 +229,49 @@ public class AmpDom implements ApplicationListener {
 			}
 
 			
-			if(frog.getHealth()<=0){
-				frog.setHealth(0);
-				System.out.println("youre dead! NEW LIFE");
-			  world.destroyBody(frog.entity);
-			  frog = new Alabaster(world, 1.0f, 2.0f);
-				
+			if(frog.getHealth()<=0)
+			{
+				frog.die();
+				world.destroyBody(frog.entity);
+				frog = new Alabaster(world, 1.0f, 5.0f);
+				frog.shell = false;
+				frog.shout = false;
 			}
 			
-			
+			if(!frog.shell)
+			{
+				//if(frog.shellHealth == 0) {
+					shellElapsedTime = (System.nanoTime() - shellBeginTime)/1000000000.0f;
+					if(shellElapsedTime > 2 && shellElapsedTime < 5 && frog.shellCharge <100)
+					{
+						frog.shellCharge += 1;
+					}
+					//if(frog.shellHealth == 100)
+						//frog.shell = true;
+			}
+
 			
 			/**
 			 * Ensure that the camera is only showing the map, nothing outside.
 			 */
-			if (tiledMapHelper.getCamera().position.x < Gdx.graphics.getWidth() / 2) {
+			if (tiledMapHelper.getCamera().position.x < Gdx.graphics.getWidth() / 2)
+			{
 				tiledMapHelper.getCamera().position.x = Gdx.graphics.getWidth() / 2;
 			}
 			if (tiledMapHelper.getCamera().position.x >= tiledMapHelper.getWidth()
-					- Gdx.graphics.getWidth() / 2) {
+					- Gdx.graphics.getWidth() / 2) 
+			{
 				tiledMapHelper.getCamera().position.x = tiledMapHelper.getWidth()
 						- Gdx.graphics.getWidth() / 2;
 			}
-
-			if (tiledMapHelper.getCamera().position.y < Gdx.graphics.getHeight() / 2) {
+			
+			if (tiledMapHelper.getCamera().position.y < Gdx.graphics.getHeight() / 2)
+			{
 				tiledMapHelper.getCamera().position.y = Gdx.graphics.getHeight() / 2;
 			}
 			if (tiledMapHelper.getCamera().position.y >= tiledMapHelper.getHeight()
-					- Gdx.graphics.getHeight() / 2) {
+					- Gdx.graphics.getHeight() / 2)
+			{
 				tiledMapHelper.getCamera().position.y = tiledMapHelper.getHeight()
 						- Gdx.graphics.getHeight() / 2;
 			}
@@ -225,10 +281,12 @@ public class AmpDom implements ApplicationListener {
 			tiledMapHelper.render();
 
 
-			for(FlyingEnemy f : LevelMap.flyers){
+			for(FlyingEnemy f : LevelMap.flyers)
+			{
 
-				if(detect.enemPos == f.entity.getPosition()){
-					f.speak();
+				if(detect.enemPos == f.entity.getPosition())
+				{
+					f.die();
 				
 					
 				  detect.enemPos = new Vector2(0,0);
@@ -236,13 +294,15 @@ public class AmpDom implements ApplicationListener {
 
 				f.directPos = frog.entity;
 				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - f.entity.getPosition().x , 2 )
-						+ Math.pow(frog.entity.getPosition().y - f.entity.getPosition().y , 2 ) ) <= 4) {
+						+ Math.pow(frog.entity.getPosition().y - f.entity.getPosition().y , 2 ) ) <= 4) 
+				{
 					f.directMove = true;
 					f.spawnX = frog.entity.getPosition().x;
 					f.spawnY = frog.entity.getPosition().y;
 					
 				}
-				else {
+				else 
+				{
 					f.directMove = false;
 					f.spawnX = f.spawnX0;
 					f.spawnY = f.spawnY0;
@@ -253,16 +313,19 @@ public class AmpDom implements ApplicationListener {
 				f = null;
 			}
 			
-			for(Enemy e : LevelMap.enemies){
+			for(Enemy e : LevelMap.enemies)
+			{
 				if(detect.enemPos == e.entity.getPosition())
-					e.speak();
+					e.die();
 				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - e.entity.getPosition().x , 2 )
-						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) {
+						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) 
+				{
 					e.spawnX = frog.entity.getPosition().x;
 					e.spawnY = frog.entity.getPosition().y;
 					
 				}
-				else {
+				else 
+				{
 					//f.directMove = false;
 					//f.entity.setLinearVelocity(2.0f, 1.0f);
 					e.spawnX = e.spawnX0;
@@ -273,31 +336,38 @@ public class AmpDom implements ApplicationListener {
 				e=null;
 			}
 			
-			for(Obstacle s : LevelMap.spikes){
+			for(Obstacle s : LevelMap.spikes)
+			{
 				s.move();
 				s.batchRender(tiledMapHelper);
 				s=null;
 			}
 			
-			for(MovingPlat m : LevelMap.plats){
+			for(MovingPlat m : LevelMap.plats)
+			{
 				m.move();
-				m.batchRender(tiledMapHelper);
-		
+				m.batchRender(tiledMapHelper);		
 			}
 			
 			frog.batchRender(tiledMapHelper);
 
-			if(level.currentLevel==0){//?
-			LevelMap.endlevelpt1.batchRender(tiledMapHelper);
-			
-			LevelMap.jar.batchRender(tiledMapHelper);
+			if(level.currentLevel==0)
+			{//?
+				LevelMap.endlevelpt1.batchRender(tiledMapHelper);
+				
+				LevelMap.jar.batchRender(tiledMapHelper);
 			}
-			if(detect.endLevel){
-				  System.out.println("iio");
-				  detect.endLevel = false;
-				  try {
+			
+			if(detect.endLevel)
+			{
+				System.out.println("iio");
+				detect.endLevel = false;
+				try 
+				{
 					  Thread.sleep(1000);
-				} catch (InterruptedException e1) {
+				} 
+				catch (InterruptedException e1)
+				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -307,21 +377,41 @@ public class AmpDom implements ApplicationListener {
 			}
 			
 			now = System.nanoTime();
-			if (now - lastRender < 30000000) { // 30 ms, ~33FPS
-				try {
+			if (now - lastRender < 30000000) 
+			{ // 30 ms, ~33FPS
+				try
+				{
 					Thread.sleep(30 - (now - lastRender) / 1000000);
-				} catch (InterruptedException ie) {
+				} 
+				catch (InterruptedException ie) 
+				{
+					
 				}
 			}
+			else
+			{
+				frog.sprite.setColor(Color.WHITE);
+				frog.icon.setColor(Color.WHITE);
+				
+			}
+
 			//debugger
 		     debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
 		    		 AmpDom.PIXELS_PER_METER,
 		    		 AmpDom.PIXELS_PER_METER,
 		    		 AmpDom.PIXELS_PER_METER));
+		     
 			lastRender = now;
+		}
+			
+			if(level.currentLevel%2 == 0) 
+			{
+				frog.displayHUD();
 			}
-		 m.display();
+	
+			 m.display();
 	}
+		
 
 	@Override
 	public void resize(int width, int height) {

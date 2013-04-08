@@ -65,7 +65,7 @@ public class FlyingEnemy extends Character {
 		spawnY0 = spawnY;
 		entity.setUserData("ENEMY");
 		shape.dispose();
-		facingRight = true;
+		facingRight = false;
 	}
 	
 	public FlyingEnemy getFlyingEnemy() {
@@ -78,10 +78,12 @@ public class FlyingEnemy extends Character {
 		if(directMove == false) {
 			if(entity.getPosition().x<(spawnX-3.0f)) {
 				speedX = 2.0f;
+				//facingRight = true;
 				
 			}
 			else if (entity.getPosition().x>(spawnX+3.0f)) {
 				speedX = -2.0f;
+				//facingRight = false;
 				
 			}
 
@@ -93,14 +95,14 @@ public class FlyingEnemy extends Character {
 		
 		entity.setLinearVelocity(speedX, speedY);
 		
-		if (facingRight == false) {
+		//if (facingRight) {
 			//sprite.flip(true, false);
 			//facingRight = true;
-		}
-		else {//(facingRight == true) {
+		//}
+		//else {//(facingRight == true) {
 			//sprite.flip(true, false);
 			//facingRight = false;
-		}
+		//}
 	}
 
 	else {	
@@ -118,7 +120,7 @@ public class FlyingEnemy extends Character {
 		if(entity.getPosition().y>(spawnY))
 			speedY = -1.0f;
 
-	entity.setLinearVelocity(2*speedX, 1.3f*speedY);
+	entity.setLinearVelocity(1.6f*speedX, 1.8f*speedY);
 	}
 }
 	@Override
@@ -130,8 +132,11 @@ public class FlyingEnemy extends Character {
 	@Override
 	public void speak() {
 		// TODO Auto-generated method stub
+	}
+	
+	public void die() {
 		sprite.setScale(0, 0);
-		   entity.setActive(false);
+		entity.setActive(false);
 	}
 
 	public void batchRender(TiledMapHelper tiledMapHelper) {

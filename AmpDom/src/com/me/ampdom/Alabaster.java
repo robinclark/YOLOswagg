@@ -8,7 +8,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -41,6 +45,7 @@ public class Alabaster extends Character {
 	//shell stuff
 	Sprite shellSprite;
 	Texture shellText;
+	Sound shellSound;
 	
 	//tongue stuff
 	Sprite tongueSprite;
@@ -72,19 +77,35 @@ public class Alabaster extends Character {
 	ArrayList<Body> spits = new ArrayList<Body>();
 	
 	//sounds
-	Sound jump;	
+	Sound jumpSound;	
 	
 	//doublejump sensor
 	FixtureDef doubleJumpFixtureDef;
 	Body doubleJumpBody;
 	BodyDef doubleJumpBodyDef;
 	
+
 	//foot block body
 	FixtureDef wallFixDef;
 	Body wallBody;
 	BodyDef wallBodyDef;
 	
-	final float spitVel = 5.0f;
+	// HUD
+	private float k;
+	protected Sprite icon;
+	private SpriteBatch healthText;
+	private BitmapFont font;
+	private ShapeRenderer ShapeRenderer;
+	private boolean shoutAvailable = true;
+	//private long actionBeginTime;
+	private float shoutElapsedTime;
+	protected int shellCharge = 100;
+	protected int spitCharge = 100;
+	protected int shockwaveCharge = 100;
+
+	
+	final float spitVel = 10.0f;
+
 	
 	long now, last;
 	
@@ -94,7 +115,7 @@ public class Alabaster extends Character {
 		//--alabaster
 		texture = new Texture(Gdx.files.internal("data/Alabaster/alabasterS.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		sprite = new Sprite(texture, 0, 0, 64, 51);//21, 37);
+		sprite = new Sprite(texture, 0, 0, 64, 51);
 		
 		entityDef.position.set(x, y);
 		entity = world.createBody(entityDef);
@@ -237,11 +258,11 @@ public class Alabaster extends Character {
 		 
 	   	 shoutBody = world.createBody(shoutBodyDef);
 	   	 
-	   	 shoutSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jump.wav", FileType.Internal));
+	   	 shoutSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/RandomSound.wav", FileType.Internal));
 	   	 
 	   	 PolygonShape shoutShape = new PolygonShape();
-		    shoutShape.setAsBox(shoutSprite.getWidth() / ( 1.5f*PIXELS_PER_METER)-.4f,
-					sprite.getHeight() / (PIXELS_PER_METER/2));			
+		    shoutShape.setAsBox(shoutSprite.getWidth() / ( 2f*PIXELS_PER_METER),
+					sprite.getHeight() / PIXELS_PER_METER);			
 			
 		shoutFixtureDef = new FixtureDef();
 		shoutFixtureDef.shape = shoutShape;
@@ -255,8 +276,8 @@ public class Alabaster extends Character {
 		shoutBody.setUserData("SHOUT");
 		
 		//--tongue
-	   	tongueText = new Texture(Gdx.files.internal("data/shockwave.png"));
-	    tongueSprite = new Sprite(shoutText, 0, 0, 64, 128);
+	   	tongueText = new Texture(Gdx.files.internal("data/alabaster/tongue.png"));
+	    tongueSprite = new Sprite(tongueText, 0, 0, 64, 64);
 	   	 
 	   	tongueBodyDef = new BodyDef();
 	   	tongueBodyDef.type = BodyDef.BodyType.StaticBody;
@@ -267,8 +288,8 @@ public class Alabaster extends Character {
 		tongueSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jump.wav", FileType.Internal));
 		
 		PolygonShape tongueShape = new PolygonShape();
-		tongueShape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
-					sprite.getHeight() / (2 * PIXELS_PER_METER));
+		tongueShape.setAsBox(tongueSprite.getWidth() / (2 * PIXELS_PER_METER),
+					tongueSprite.getHeight() / (5 * PIXELS_PER_METER));
 		
 		tongueBody.setFixedRotation(true);
 		    
@@ -284,8 +305,8 @@ public class Alabaster extends Character {
 		
 		    
 		//--spit			
-		spitTexture = new Texture(Gdx.files.internal("data/spit1.png"));
-	    spitSprite = new Sprite(spitTexture, 0, 0, 32, 32);
+		spitTexture = new Texture(Gdx.files.internal("data/spit.png"));
+	    spitSprite = new Sprite(spitTexture, 0, 0, 64, 64);
 	   	 
 	   	spitBodyDef = new BodyDef();
 	   	spitBodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -293,10 +314,10 @@ public class Alabaster extends Character {
 	   	
 		spitBody = world.createBody(spitBodyDef);
 		
-		spitSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jump.wav", FileType.Internal));
+		spitSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/spitSound.wav", FileType.Internal));
 		
 		PolygonShape spitShape = new PolygonShape();
-		spitShape.setAsBox(spitSprite.getWidth() / (2 * PIXELS_PER_METER),
+		spitShape.setAsBox(spitSprite.getWidth() / (5 * PIXELS_PER_METER),
 					spitSprite.getHeight() / (2 * PIXELS_PER_METER));
 		
 		spitBody.setFixedRotation(true);
@@ -318,13 +339,160 @@ public class Alabaster extends Character {
 		//--shell			     
 		shellText = new Texture(Gdx.files.internal("data/flyJar.png"));
 	    shellSprite = new Sprite(shellText, 0, 0, 32, 32);
+	    shellSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/shellSound.wav", FileType.Internal));
 	    
 	    /*sounds*/
-	    //--jump	    
-		jump = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jump.wav", FileType.Internal));		
+	    //--jump
+	    jumpSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jump.wav", FileType.Internal));
+		
+		// HUD
+		healthText = new SpriteBatch();
+		font = new BitmapFont();
+	    font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+		ShapeRenderer = new ShapeRenderer();
+		
+		// alabaster head
+		icon = new Sprite(texture, 0, 0, 32, 32);
+		icon.flip(true, false);
+
+
 	}
 
+public void displayHUD() {   
+	// display health
+	k = (100f - health) / 100f;
 	
+	ShapeRenderer.begin(ShapeType.FilledRectangle);
+	
+	// health
+	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	ShapeRenderer.identity();
+	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 200, 20f);
+	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
+	ShapeRenderer.identity();
+	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 2*health, 20f);
+	
+	// shell
+	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+10+40, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+10+40, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
+	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+10+40, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+10+40, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, shellCharge, 15f);
+	
+	// spit
+	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
+	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, spitCharge, 15f);
+	
+	// shock-wave
+	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
+	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, shockwaveCharge, 15f);
+	
+	// Icon Background
+	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	ShapeRenderer.identity();
+	ShapeRenderer.translate(0f, (680-40), 0.f);
+	ShapeRenderer.filledRect(0f, 0f, 40f, 40f);
+	ShapeRenderer.end();
+	
+	// BORDER
+	ShapeRenderer.begin(ShapeType.Rectangle);
+	
+	// health
+	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
+	ShapeRenderer.identity();
+	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	if(health > 100)
+		ShapeRenderer.rect(0f, 0f, 2*health, 20f);
+	else
+		ShapeRenderer.rect(0f, 0f, 2*100, 20f);
+	
+	// shell 
+	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+	ShapeRenderer.rect(0f, 0f, 100, 15f);
+	
+	// spit
+	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+	ShapeRenderer.rect(0f, 0f, 100, 15f);
+	
+	// shock-wave
+	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
+	ShapeRenderer.identity();
+	if(health > 100)
+		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+	else
+		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+	ShapeRenderer.rect(0f, 0f, 100, 15f);
+	ShapeRenderer.end();
+	
+	// Print TEXT
+	healthText.begin();
+	font.draw(healthText, "HEALTH" , 40.0f, 680);
+	if(health > 100)
+		font.draw(healthText, "SHELL" , 2*health+10+40, 680);
+	else
+		font.draw(healthText, "SHELL" , 2*100+10+40, 680);
+	if(health > 100)
+		font.draw(healthText, "SPIT" , 2*health+40+120, 680);
+	else
+		font.draw(healthText, "SPIT" , 2*100+40+120, 680);
+	if(health > 100)
+		font.draw(healthText, "SHOCKWAVE" , 2*health+40+230, 680);
+	else
+		font.draw(healthText, "SHOCKWAVE" , 2*100+40+230, 680);
+	healthText.end();
+	
+	// draw Alabaster Icon
+	batch.begin();
+	icon.setPosition(0,650f);
+	icon.draw(batch);
+	batch.end();
+}
+
 	
 public void move(MyInputProcessor input) 
 {	  				
@@ -345,9 +513,9 @@ public void move(MyInputProcessor input)
 		
 		//jumping
 
-		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP])
+		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP] && !shell)
 	    {
-<<<<<<< HEAD
+
 			//entity.applyLinearImpulse(new Vector2(0.0f,6.0f),entity.getWorldCenter());
 			//doubleJump
 			if(powerLegs)
@@ -360,17 +528,9 @@ public void move(MyInputProcessor input)
 					doubleCount--;
 					System.out.println("doublecount: " + doubleCount);
 				}				
-=======
-			
-			if(powerLegs)
-			{
-				
-				//if(count > 0)
-				//{
-					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
-					//count--;
-				//}
->>>>>>> origin/master
+
+				jumpSound.setLooping(1, false);
+				jumpSound.play();
 			}
 			//single jump
 			else 
@@ -383,11 +543,8 @@ public void move(MyInputProcessor input)
 					System.out.println("doublecount: " + doubleCount);
 				}
 			}
-<<<<<<< HEAD
+
 	    }
-=======
-		}	
->>>>>>> origin/master
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
@@ -398,10 +555,25 @@ public void move(MyInputProcessor input)
   			moveRight = true;	
   		
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			moveRight = false;
-		   moveLeft=false;
-		   doJump=false;
-		   shell = true;
+  			if(shellCharge > 0) {
+				moveRight = false;
+				moveLeft=false;
+				doJump=false;
+		// prevent tongue or shout usage
+				tongueAct = false;
+				tongueOut = false;
+				tongueBody.setActive(false);
+				shout = false;
+				shoutBody.setActive(false);
+				shell = true;
+				entity.applyLinearImpulse(new Vector2(0, -3.4f), entity.getPosition());
+				shellSound.setLooping(1,false);
+				shellSound.play();
+			}
+			else {
+				
+			}
+
 		}
   		
   		if (moveRight) 
@@ -415,6 +587,7 @@ public void move(MyInputProcessor input)
   			if (facingRight == false)
   			{
   				sprite.flip(true, false);
+  				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
   				spitSprite.flip(true, false);
   			}
@@ -432,6 +605,7 @@ public void move(MyInputProcessor input)
   			if (facingRight == true)
   			{
   				sprite.flip(true, false);
+  				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
   				spitSprite.flip(true, false);
   			}
@@ -441,8 +615,9 @@ public void move(MyInputProcessor input)
   		/****************************************************************
   		 * SPIT INPUT  		 											* 
   		 ***************************************************************/
-	    if(!input.buttons[input.SPIT] && input.oldButtons[input.SPIT])
+	    if(!input.buttons[input.SPIT] && input.oldButtons[input.SPIT] && !shell)
 	    {
+	    	spitSound.play();
 	    	//System.out.print("spit");
 	    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
 			Body b = world.createBody(spitBodyDef);
@@ -467,31 +642,32 @@ public void move(MyInputProcessor input)
   		 * TONGUE INPUT  		 											* 
   		 ***************************************************************/
 	    //--hold out tongue .25 secs
-	    if(!input.buttons[input.TONGUE] && input.oldButtons[input.TONGUE] && !tongueOut)
+	    if(!input.buttons[input.TONGUE] && input.oldButtons[input.TONGUE] && !tongueOut &&!shell)
 	    {
 	    	tongueOut = true;
 	    	now = System.nanoTime();
 	    	System.out.println("tongue");
 	    	tongueBody.setActive(true);
 	    	if(facingRight)
-  				tongueBody.setTransform(entity.getPosition().x+.64f,entity.getPosition().y,0);	
+  				tongueBody.setTransform(entity.getPosition().x+1f,entity.getPosition().y,0);	
   			else
-  				tongueBody.setTransform(entity.getPosition().x-.64f,entity.getPosition().y,0);    	
+  				tongueBody.setTransform(entity.getPosition().x-1f,entity.getPosition().y,0);    	
 	    }
 	    
 	    /****************************************************************
   		 * SHOUT INPUT  		 											* 
   		 ***************************************************************/
-	    if(input.buttons[input.SHOUT] && !input.oldButtons[input.SHOUT])
+	    if(input.buttons[input.SHOUT] && !input.oldButtons[input.SHOUT] && !shell)
 	    	
 	    { 
 	    	shout = true;
 	    	shoutBody.setActive(true);
+	    	//shellSound.setLooping(3,false);
 	        shoutSound.play();
 			if(facingRight)
-			shoutBody.setTransform(entity.getPosition().x+.64f,entity.getPosition().y,0);	
+				shoutBody.setTransform(entity.getPosition().x+1.1f,entity.getPosition().y,0);	
 			else
-		    shoutBody.setTransform(entity.getPosition().x-.64f,entity.getPosition().y,0);
+				shoutBody.setTransform(entity.getPosition().x-1.1f,entity.getPosition().y,0);
 		
 	     }
 	    		    	
@@ -551,6 +727,7 @@ public void move(MyInputProcessor input)
         {
         	spitBody.setLinearVelocity(2.0f, 0.0f);
         }
+        
 	}
 	
 	@Override
@@ -563,6 +740,15 @@ public void move(MyInputProcessor input)
 	public void speak() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void die() {
+		setHealth(0);
+		spitSound.dispose();
+		shoutSound.dispose();
+		shellSound.dispose();
+		jumpSound.dispose();
+		System.out.println("youre dead! NEW LIFE");
 	}
 
 public void batchRender(TiledMapHelper tiledMapHelper) {	
@@ -587,21 +773,21 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 		}
 		if(tongueOut){			
 			if(facingRight){		
-				sprite.setPosition(
-						PIXELS_PER_METER * entity.getPosition().x+30
+				tongueSprite.setPosition(
+						PIXELS_PER_METER * entity.getPosition().x+60
 								- sprite.getWidth() / 2,
-						PIXELS_PER_METER * entity.getPosition().y
+						PIXELS_PER_METER * entity.getPosition().y-22
 								- sprite.getHeight() / 2);			
-				sprite.draw(batch);
+				tongueSprite.draw(batch);
 			}
 			else{
 				
-		    	sprite.setPosition(
-						PIXELS_PER_METER * entity.getPosition().x-30
+		    	tongueSprite.setPosition(
+						PIXELS_PER_METER * entity.getPosition().x-58
 								- sprite.getWidth() /2,
-						PIXELS_PER_METER * entity.getPosition().y
+						PIXELS_PER_METER * entity.getPosition().y-22
 								- sprite.getHeight() / 2);
-		    	 sprite.draw(batch);
+		    	 tongueSprite.draw(batch);
 				}			   
 		}
 			if(shout){
@@ -669,13 +855,12 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 		System.out.println(x+"+"+y);
 	}
 
+
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	@Override
 	public void move() {

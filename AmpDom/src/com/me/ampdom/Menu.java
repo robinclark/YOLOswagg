@@ -3,6 +3,8 @@ package com.me.ampdom;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,6 +18,7 @@ public class Menu {
 	public Texture play_main, son, soff, shell, spit, startb, next;
 	public Sprite icon;
 	public SpriteBatch sb;
+	public Music test;
 	
 	//creates a menu with a specified number of buttons
 	public Menu(OrthographicCamera cam){
@@ -45,6 +48,9 @@ public class Menu {
 		//spit = new Texture(Gdx.files.internal("data/Menu/spi copy.png"));
 		addBackground();
 		initializeButtons();
+		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+		test.setLooping(true);
+		test.play();
 	}
 	
 	public void initializeButtons(){
@@ -95,7 +101,7 @@ public class Menu {
 			//menu states: (-4) - start (-3) - main (-2) - how to play (-1) - credits 0 - play screen
 				case -4:
 					if(b.name.equals("start")){
-						b.draw();	
+						b.draw();
 					}
 					if(b.clicked() && b.name.equals("start")) {
 						b.draw();	
@@ -106,7 +112,7 @@ public class Menu {
 					break;
 				case -3:
 					if(( b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits"))){
-						b.draw();	
+						b.draw();
 					}					
 					if(b.clicked() && b.name.equals("htp")){
 						b.draw();	
@@ -126,7 +132,7 @@ public class Menu {
 					break;
 				case -2:
 					if(b.name.equals("sound") || b.name.equals("back")){
-						b.draw();	
+						b.draw();
 					}
 					if(b.clicked() && b.name.equals("back")){
 						b.draw();	
@@ -150,7 +156,13 @@ public class Menu {
 					
 					if(b.name.equals("sound")){						
 						b.draw();
-						b.clicked();						
+						b.clicked();
+						if(b.toggle == -1) {
+							test.setVolume(100);
+						}
+						else {
+							test.setVolume(0);
+						}
 					}
 					break;
 				case 1:

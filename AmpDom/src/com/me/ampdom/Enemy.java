@@ -54,9 +54,9 @@ public class Enemy extends Character {
 	
 		FixtureDef FixtureDef = new FixtureDef();
 		FixtureDef.shape = shape;
-		FixtureDef.density = 0.0f;
+		FixtureDef.density = 1.0f;
 		FixtureDef.isSensor = false;
-		FixtureDef.friction = .5f;
+		FixtureDef.friction = 0.0f;
 		FixtureDef.restitution = 0.0f;
 		entity = world.createBody(entityDef);
 		entity.createFixture(FixtureDef);
@@ -93,24 +93,24 @@ public class Enemy extends Character {
 			
 			entity.setLinearVelocity(speed, -2.0f);
 		}		
-		else {
-			if(entity.getPosition().x<(spawnX)) {
-				speed = 2.0f;
-				if (facingRight == false) {
-					sprite.flip(true, false);
-				}
-				facingRight = true;
-			}
-			if (entity.getPosition().x>(spawnX)) {
-				speed = -2.0f;
-				if (facingRight == true) {
-					sprite.flip(true, false);
-				}
-				facingRight = false;
-			}
-			
-			entity.setLinearVelocity(speed, -10.0f);
-		}
+//		else {
+//			if(entity.getPosition().x<(spawnX)) {
+//				speed = 2.0f;
+//				if (facingRight == false) {
+//					sprite.flip(true, false);
+//				}
+//				facingRight = true;
+//			}
+//			if (entity.getPosition().x>(spawnX)) {
+//				speed = -2.0f;
+//				if (facingRight == true) {
+//					sprite.flip(true, false);
+//				}
+//				facingRight = false;
+//			}
+//			
+//			entity.setLinearVelocity(speed, -10.0f);
+//		}
   
 	
 	}
@@ -127,10 +127,13 @@ public class Enemy extends Character {
 	@Override
 	public void speak() {
 		// TODO Auto-generated method stub
-        sprite.setScale(0, 0);
-        entity.setActive(false);
 	}
 
+	public void die() {
+		sprite.setScale(0, 0);
+        entity.setActive(false);
+	}
+	
 	public void batchRender(TiledMapHelper tiledMapHelper) {
 		batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 		batch.begin();

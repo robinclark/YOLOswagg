@@ -79,12 +79,12 @@ public class LevelMap {
 			
 			jar = new FlyJar(world, "data/Objects/flyjar.png", 78.96f, 7.65f);
 			
-	     	/*flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 36.0f, 6.5f,64,64));
+	     	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 36.0f, 6.5f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 51.3f, 6.5f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 67.17f, 9.0f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 98.25f, 7.0f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 111.0f, 8.5f,64,64));
-	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));*/
+	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));
 			
 			/*****************************************************************************************/
 			//--!!!add flyers from object layer!!!
@@ -184,7 +184,7 @@ public class LevelMap {
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();
-		test.dispose();
+		//test.dispose();
 		System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();
         tiledMapHelper=null;	
