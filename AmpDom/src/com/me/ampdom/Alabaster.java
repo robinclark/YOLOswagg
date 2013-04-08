@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -78,6 +79,11 @@ public class Alabaster extends Character {
 	Body doubleJumpBody;
 	BodyDef doubleJumpBodyDef;
 	
+	//foot block body
+	FixtureDef wallFixDef;
+	Body wallBody;
+	BodyDef wallBodyDef;
+	
 	final float spitVel = 5.0f;
 	
 	long now, last;
@@ -94,8 +100,24 @@ public class Alabaster extends Character {
 		entity = world.createBody(entityDef);
 		
 		PolygonShape shape = new PolygonShape();
+		
+		//some triangle verts
+		Vector2 verts1[] = new Vector2[4];
+		for(int i = 0; i <4; i++)
+		{
+			verts1[i] = new Vector2();
+			//shape.getVertex(i, verts1[i]);
+		}
+		verts1[0] = new Vector2(x - sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f - 0.1f, y - sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
+		verts1[1] = new Vector2(x + sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f + 0.1f, y - sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
+		verts1[2] = new Vector2(x + sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f + 0.1f, y + sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);		
+		verts1[3] = new Vector2(x - sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f - 0.1f, y + sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
+				
+		
 	    shape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
 				sprite.getHeight() / (2 * PIXELS_PER_METER));
+	    
+		//shape.set(verts1);
 	    
 	    entity.setFixedRotation(true);		
 		
@@ -148,45 +170,62 @@ public class Alabaster extends Character {
 			//--foot
 			 footDef = new BodyDef();
 			 footDef.type = BodyDef.BodyType.DynamicBody;
-			 footDef.position.set(entity.getPosition().x,entity.getPosition().y-sprite.getHeight()-1/PIXELS_PER_METER);
-		   	 //foot = world.createBody(footDef);
+			 footDef.position.set(entity.getPosition().x,entity.getPosition().y);
+		   	 foot = world.createBody(footDef);
 		   	
-			    /*footShape.setAsBox(sprite.getWidth() / (3 * PIXELS_PER_METER),
-						sprite.getHeight() / (5 * PIXELS_PER_METER));*/
-			    //foot.setFixedRotation(true);
-			 Vector2 verts[] = new Vector2[3];// = new Vector2();
-			 for(int i =0; i < 3; i++)
-			 {
-				 verts[i] = new Vector2();
-				 shape.getVertex(i, verts[i]);
-			 }				 
+		   	 PolygonShape footShape = new PolygonShape();
+			/* footShape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
+						sprite.getHeight() / (2* PIXELS_PER_METER));*/
+			 foot.setFixedRotation(true);
 			 
-			 verts[0].y -= 0.4f;
-			 verts[1].y -= 0.4f;
-			 
-			 verts[0].x += 0.2f;
-			 verts[1].x -= 0.2f;
-			 verts[2].x -= 0.2f;
-			 //verts[3].x += 0.2f;			 
-			 
-			 PolygonShape footShape = new PolygonShape();
-			 footShape.set(verts);
+			footShape.set(verts1);
 				 
 			footFix = new FixtureDef();
 		    footFix.shape= footShape;
-		    footFix.isSensor=true;
-		    footFix.density = 0.0f;
-			footFix.friction = 0.0f;
+		    //footFix.isSensor=true;
+		    footFix.density = 1.0f;
+			footFix.friction = 1.0f;
 			
-			System.out.println("count: " + footShape.getVertexCount());
-			
-			//foot.createFixture(footFix);
-			entity.createFixture(footFix);
+			foot.createFixture(footFix);
 			footShape.dispose();
 			//foot.setActive(false);
 			
-			//foot.setUserData("FOOT");
-			/******************************************************/
+			foot.setUserData("FOOT");
+			
+			MassData md = entity.getMassData();
+			
+			foot.setMassData(md);
+			
+			//--detect if wall touching
+			/*wallBodyDef= new BodyDef();
+			wallBodyDef.type = BodyDef.BodyType.DynamicBody;
+			wallBodyDef.position.set(entity.getPosition().x,entity.getPosition().y);
+		   	wallBody = world.createBody(wallBodyDef);
+		   	
+		   	 PolygonShape wallShape = new PolygonShape();
+			/* footShape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
+						sprite.getHeight() / (2* PIXELS_PER_METER));*/
+			/* wallBody.setFixedRotation(true);
+			 
+			 wallShape.set(verts1);
+				 
+			wallFixDef = new FixtureDef();
+			wallFixDef.shape= footShape;
+		    //footFix.isSensor=true;
+			wallFixDef.density = 1.0f;
+			wallFixDef.friction = 1.0f;
+			
+			wallBody.createFixture(wallFixDef);
+			wallShape.dispose();
+			//foot.setActive(false);
+			
+			wallBody.setUserData("WALL");
+			
+			MassData md1 = entity.getMassData();
+			
+			wallBody.setMassData(md1);*/
+			
+		/******************************************************/
 		//--shout
 		 shoutText = new Texture(Gdx.files.internal("data/shockwave.png"));
 		 shoutText.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -315,6 +354,8 @@ public void move(MyInputProcessor input)
 				if(doubleCount > 0)
 				{
 					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					foot.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					
 					doubleCount--;
 					System.out.println("doublecount: " + doubleCount);
 				}				
@@ -352,6 +393,9 @@ public void move(MyInputProcessor input)
   			entity.applyLinearImpulse(new Vector2(.15f, 0.0f),
   			entity.getWorldCenter());
   			
+			foot.applyLinearImpulse(new Vector2(.15f, 0.0f),
+	  			foot.getWorldCenter());
+  			
   			if (facingRight == false)
   			{
   				sprite.flip(true, false);
@@ -365,6 +409,10 @@ public void move(MyInputProcessor input)
   		{
   			entity.applyLinearImpulse(new Vector2(-.15f, 0.0f),
   			entity.getWorldCenter());
+  			
+  			foot.applyLinearImpulse(new Vector2(-.15f, 0.0f),
+  		  			foot.getWorldCenter());
+  			
   			if (facingRight == true)
   			{
   				sprite.flip(true, false);
@@ -431,7 +479,8 @@ public void move(MyInputProcessor input)
 		
 	     }
 	    		    	
-	    //foot.setTransform(entity.getPosition().x,entity.getPosition().y-0.36f,0);
+	    //foot.setTransform(entity.getPosition().x, entity.getPosition().y,0);
+	    //foot.setLinearVelocity(new Vector2(2.0f, 0.0f));
 	    //foot.applyForce(new Vector2(0.0f, 9.0f), new Vector2(foot.getPosition().x, foot.getPosition().y));
 	    
 	    if(tongueOut)

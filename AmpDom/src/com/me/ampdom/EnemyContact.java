@@ -6,7 +6,10 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+
+//import com.badlogic.gdx.physics.box2d.Shape;
 
 public class EnemyContact implements ContactListener  {
 
@@ -38,21 +41,10 @@ public void beginContact(Contact contact) {
 			//destroy spit
 		}
 		
-		//--floor contact
-		if(a.getType() == Shape.Type.Polygon || b.getType() == Shape.Type.Polygon)
+		//--floor contact		
+		if(a.getBody().getUserData()=="FOOT" || b.getBody().getUserData()=="FOOT")
 		{
-			System.out.println("true");
 			
-			if(a.getBody().getUserData()=="PLAYER")
-				System.out.println("a");
-			if(b.getBody().getUserData()=="PLAYER") 
-			{
-					//System.out.println("b");
-					grounded=true;
-			}
-				//if(b.getType() == Shape.Type.Polygon)
-					//System.out.println("b");
-			//System.exit(0);			
 		}
 		
 		/**********************************************************/
@@ -85,16 +77,23 @@ public void beginContact(Contact contact) {
 		}*/
 		
 		/*********************************************************************************/
-		/*if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
+		//FOOT
+		if(a.getBody().getUserData()=="BODY" && b.getBody().getUserData()=="GROUND")
 		{
+			/*if(!wall)
+			{
 			   grounded=true;
 			   System.out.println("Foot a");
+			}*/
 		}
-		if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
+		if(a.getBody().getUserData()=="GROUND" || b.getBody().getUserData()=="BODY")
 		{
+			/*if(!wall)
+			{
 			   grounded=true;
 			   System.out.println("Foot b");
-		}*/
+			}*/
+		}
 		/*********************************************************************************/
 		
 		
@@ -198,26 +197,21 @@ public void beginContact(Contact contact) {
 				
 				
 			/*********************************************************************************/
-				/*if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
-					   grounded=false;
+				if(a.getBody().getUserData()=="FOOT" || b.getBody().getUserData()=="FOOT")
+				{
+					System.out.println("grounded");
+				    grounded=false;
+				}
 				if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
-					   grounded=false;*/
+				{
+					System.out.println("grounded");
+					grounded=false;
+				}
 			/*********************************************************************************/
 			
 			if(a.getType() == Shape.Type.Polygon || b.getType() == Shape.Type.Polygon)
 			{
-//				if(a.ge
-				System.out.println("false");
-				if(a.getBody().getUserData()=="PLAYER")
-					System.out.println("a");
-				if(b.getBody().getUserData()=="PLAYER") 
-				{
-						//System.out.println("b");
-						grounded=false;
-				}
-					//if(b.getType() == Shape.Type.Polygon)
-						//System.out.println("b");
-				//System.exit(0);			
+		
 			}
 				
 				
@@ -318,10 +312,10 @@ public void beginContact(Contact contact) {
 			    contact.setEnabled(false);
 		    
 		    /*********************************************************************************/
-		    /*if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
+		    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
 		    	contact.setEnabled(false);
 			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FOOT")
-				contact.setEnabled(false);*/
+				contact.setEnabled(false);
 			/*********************************************************************************/
 		    
 		    
