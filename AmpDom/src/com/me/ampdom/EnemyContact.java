@@ -100,25 +100,41 @@ public void beginContact(Contact contact) {
 		{
 		    System.out.println("TONGUE");
 		    enemPos=a.getBody().getPosition();
+		    attackEnem = true;
 		}
 		
 		if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="ENEMY")
 		{
 		    System.out.println("TONGUE");
 		    enemPos=b.getBody().getPosition();
+		    attackEnem = true;
 		}
 
-		/*why is this duplicated here*/
-		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="TONGUE")
+		
+		
+		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")
 		{
+			enemPos=a.getBody().getPosition();
 				  attackEnem = true;
 		}
-		if(a.getBody().getUserData()=="TONUGE" && b.getBody().getUserData()=="ENEMY")
+		if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
 		{
+			enemPos=b.getBody().getPosition();
+			
 			  attackEnem = true;
 		}
-		/*why is this duplicated here*/
-		
+
+		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
+		{
+			enemPos=a.getBody().getPosition();
+				  attackEnem = true;
+		}
+		if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="ENEMY")
+		{
+			enemPos=b.getBody().getPosition();
+			  attackEnem = true;
+		}
+
 		
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="OBSTACLE")
 		{
@@ -137,7 +153,8 @@ public void beginContact(Contact contact) {
 //			   b.getBody().applyLinearImpulse(new Vector2(0.0f,.95f),//0.8f),
 //					   b.getBody().getWorldCenter());
 		}
-			
+		
+		
 			
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
 		{
@@ -194,16 +211,11 @@ public void beginContact(Contact contact) {
 						  attackEnem = true;
 						  enemPos=a.getBody().getPosition();
 				}
-				if(a.getBody().getUserData()=="TONUGE" && b.getBody().getUserData()=="ENEMY"){
+				if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="ENEMY"){
 					  attackEnem = true;
 					  enemPos=a.getBody().getPosition();
 				}
-			
-			if(a.getBody().getUserData()=="TONUGE" && b.getBody().getUserData()=="ENEMY"){
-				  attackEnem = true;
-				  enemPos=b.getBody().getPosition();
-			}
-				
+						
 			if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="PLAYER"){
 			    System.out.println("TONGUE");
 			  
@@ -212,7 +224,30 @@ public void beginContact(Contact contact) {
 			    System.out.println("TONGUE");
 			  
 			}
-				
+			
+			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")
+			{
+					  attackEnem = true;
+					  enemPos=a.getBody().getPosition();
+			}
+			
+			if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
+			{
+				  attackEnem = true;
+				  enemPos=a.getBody().getPosition();
+			}
+
+			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
+			{
+					  attackEnem = true;
+					  enemPos=a.getBody().getPosition();
+			}
+			if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="ENEMY")
+			{
+				  attackEnem = true;
+				  enemPos=a.getBody().getPosition();
+			}
+			
 			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="OBSTACLE"){
 			//    System.out.println("spike contact 1");
 			   obstacleDmg =false;
@@ -262,6 +297,13 @@ public void beginContact(Contact contact) {
 
 	    if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
+	    
+	    if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SPIT")
+			contact.setEnabled(false);
+
+	    if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="PLAYER")
+	    	contact.setEnabled(false);
+	    
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
@@ -275,16 +317,20 @@ public void beginContact(Contact contact) {
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
-	    
+	    if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="OBSTACLE")
+			contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="TONGUE")
+		    contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="OBSTACLE")
+			contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="SHOUT")
+		    contact.setEnabled(false);
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
 			contact.setEnabled(false);
 
 		    if(a.getBody().getUserData()=="MOVINGPLAT" && b.getBody().getUserData()=="ENEMY")
 			    contact.setEnabled(false);
 		    
-
-		    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="PLAYER")
-			    contact.setEnabled(false);
 		    
 		    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
 		    	contact.setEnabled(false);
@@ -328,7 +374,10 @@ public void beginContact(Contact contact) {
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
-	    
+	    if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
+			contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")
+		    contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
 	    	contact.setEnabled(false);
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FOOT")
@@ -343,7 +392,14 @@ public void beginContact(Contact contact) {
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
-	    
+	    if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="OBSTACLE")
+			contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="TONGUE")
+		    contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="OBSTACLE")
+			contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="SHOUT")
+		    contact.setEnabled(false);
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
 			contact.setEnabled(false);
 		if(a.getBody().getUserData()=="ENDLEVELTRIGGER" && b.getBody().getUserData()=="PLAYER")

@@ -52,7 +52,7 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
@@ -79,12 +79,12 @@ public class LevelMap {
 			
 			jar = new FlyJar(world, "data/Objects/flyjar.png", 78.96f, 7.65f);
 			
-	     	/*flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 36.0f, 6.5f,64,64));
+	     	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 36.0f, 6.5f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 51.3f, 6.5f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 67.17f, 9.0f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 98.25f, 7.0f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 111.0f, 8.5f,64,64));
-	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));*/
+	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));
 			
 			/*****************************************************************************************/
 			//--!!!add flyers from object layer!!!
@@ -128,7 +128,7 @@ public class LevelMap {
 		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
 			
 			endlevelpt1 = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
-		    test.play();
+		    //test.play();
 		
 			break;
 		case 2:
@@ -184,7 +184,7 @@ public class LevelMap {
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();
-		test.dispose();
+		//test.dispose();
 		System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();
         tiledMapHelper=null;	

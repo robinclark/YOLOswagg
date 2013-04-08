@@ -89,8 +89,11 @@ public abstract class Character  {
     public void incHealth(int hp){
 		health+=hp;
 	}
-	public void reset(float x, float y) {
-		
+    
+    public void die() {
+    }
+    
+	public void reset(float x, float y) {	
 		
 	}
     
