@@ -347,6 +347,7 @@ public void move(MyInputProcessor input)
 
 		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP])
 	    {
+<<<<<<< HEAD
 			//entity.applyLinearImpulse(new Vector2(0.0f,6.0f),entity.getWorldCenter());
 			//doubleJump
 			if(powerLegs)
@@ -359,6 +360,17 @@ public void move(MyInputProcessor input)
 					doubleCount--;
 					System.out.println("doublecount: " + doubleCount);
 				}				
+=======
+			
+			if(powerLegs)
+			{
+				
+				//if(count > 0)
+				//{
+					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					//count--;
+				//}
+>>>>>>> origin/master
 			}
 			//single jump
 			else 
@@ -371,7 +383,11 @@ public void move(MyInputProcessor input)
 					System.out.println("doublecount: " + doubleCount);
 				}
 			}
+<<<<<<< HEAD
 	    }
+=======
+		}	
+>>>>>>> origin/master
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 

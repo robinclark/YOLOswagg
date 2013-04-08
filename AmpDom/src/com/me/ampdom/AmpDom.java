@@ -111,14 +111,11 @@ public class AmpDom implements ApplicationListener {
 
 	@Override
 	public void render() {		
-		level.currentLevel = 0;/*CurrentLevel.DINAMI_MOUNTAIN;*/
-		m.display();
-
 		
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	
-		if(state >= 0 ){
+		if(state >= 0 && state%2 == 0 && level.currentLevel%2 == 0){
 
 			//if(level.test.isPlaying() == false)
 			//level.test.play();
@@ -339,7 +336,7 @@ public class AmpDom implements ApplicationListener {
 		m.dispose();
 	}
 	public void reset(){		
-		level.currentLevel = state;/*CurrentLevel.DINAMI_MOUNTAIN;*/
+		level.currentLevel = state;
 		
 		level.deleteLevel();
 		
@@ -348,9 +345,9 @@ public class AmpDom implements ApplicationListener {
 	    world.destroyBody(LevelMap.jar.entity);
 	    world.destroyBody(LevelMap.endlevelpt1.entity);
 	  // world.destroyBody(LevelMap.plat.entity);
-	    if(state >= 0 ){    	
+	    if(state >= 0 && state%2 == 1 && level.currentLevel%2 == 1){    	
 		    level = new LevelMap();
-		    //level.currentLevel = state + 1; //what is going on here
+		    level.currentLevel = state + 1;
 		    world = new World(new Vector2(0.0f, -10.0f), true);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		

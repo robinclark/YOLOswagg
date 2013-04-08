@@ -60,7 +60,6 @@ public class LevelMap {
 			
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/");
-			//tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			
 			tiledMapHelper.loadCollisions("data/collisions.txt", world,
@@ -132,7 +131,7 @@ public class LevelMap {
 		    //test.play();
 		
 			break;
-		case 1:
+		case 2:
 	
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
