@@ -1,0 +1,36 @@
+package com.me.ampdom;
+
+import com.badlogic.gdx.Gdx;
+
+public class World {
+	
+	TiledMapHelper tiledMapHelper;
+	int screenWidth;
+	int screenHeight;
+	World world;
+	
+	
+	public void create() {
+		/**
+		 * If the viewport's size is not yet known, determine it here.
+		 */
+		if (screenWidth == -1) {
+			screenWidth = Gdx.graphics.getWidth();
+			screenHeight = Gdx.graphics.getHeight();
+		}
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper.setPackerDirectory("data/packer");
+
+		tiledMapHelper.loadMap("data/world/level1/level.tmx");
+
+		tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+		
+	
+	
+	}
+
+}

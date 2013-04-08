@@ -1,0 +1,112 @@
+package com.me.ampdom;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class LevelMap {
+	
+	TiledMapHelper tiledMapHelper;
+	int screenWidth;
+	int screenHeight;
+	int state = 0;
+    World world;
+    public static final float PIXELS_PER_METER = 60.0f;
+    
+	
+	
+	public LevelMap(int state){
+	this.state= state;
+	}
+	
+	public void create() {
+		if (screenWidth == -1) {
+			screenWidth = Gdx.graphics.getWidth();
+			screenHeight = Gdx.graphics.getHeight();
+		}
+		world = new World(new Vector2(0.0f, -10.0f), true);
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper.setPackerDirectory("data/packer");
+
+		tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+		
+		//dungeon
+		if(state == 0){
+			tiledMapHelper.loadMap("data/world/level1/level.tmx");
+			tiledMapHelper.loadCollisions("data/collisions.txt", world,
+					PIXELS_PER_METER);
+			
+		}
+		//forest 
+        if(state == 1){
+        	
+			
+		}
+        //forest part 2
+        if(state == 2){
+	 
+        }
+        //forest boss
+        if(state == 3){
+	
+        }
+        //mountain 
+        if(state == 4){
+	
+        }
+        //mountain part 2
+        if(state == 5){
+	
+        }
+        //mountain boss
+        if(state == 6){
+	
+        }
+        //desert 
+        if(state == 7){
+	
+        }
+        //desert part 2
+        if(state == 8){
+	
+        }
+        //desert boss
+        if(state == 9){
+	
+        }
+        //jungle
+        if(state == 10){
+	
+        }
+      //jungle part 2
+        if(state == 11){
+	
+        }
+      //jungle boss
+        if(state == 12){
+	
+        }
+      //castle
+        if(state == 13){
+	
+        }
+      //castle boss
+        if(state == 14){
+	
+        }
+      //Zeus
+        if(state == 105){
+	
+        }
+        
+
+		
+	
+	
+	}
+
+}

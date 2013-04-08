@@ -1,0 +1,309 @@
+package com.me.ampdom;
+
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class AmpDom implements ApplicationListener {
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	private Texture texture;
+	private Sprite sprite;
+	private int screenWidth;
+	private int screenHeight;
+	TiledMapHelper tiledMapHelper;
+	Texture overallTexture;
+	Sprite alabaster;
+	Sprite alabSprite;
+	SpriteBatch spriteBatch;
+	World world;
+	Body entity;
+	public static final float PIXELS_PER_METER = 60.0f;
+	Box2DDebugRenderer debugRenderer;
+	
+	
+	public AmpDom() {
+		super();
+
+		// Defer until create() when Gdx is initialized.
+		screenWidth = -1;
+		screenHeight = -1;
+	}
+	@Override
+	public void create() {	
+		/**
+		 * If the viewport's size is not yet known, determine it here.
+		 */
+		if (screenWidth == -1) {
+			screenWidth = Gdx.graphics.getWidth();
+			screenHeight = Gdx.graphics.getHeight();
+		}
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper = new TiledMapHelper();
+
+		tiledMapHelper.setPackerDirectory("data/packer");
+
+		tiledMapHelper.loadMap("data/world/level1/level.tmx");
+
+		tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+
+		/**
+		 * Load up the overall texture and chop it in to pieces. In this case,
+		 * piece.
+		 */
+		overallTexture = new Texture(Gdx.files.internal("data/sprite.png"));
+		overallTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		alabaster = new Sprite(overallTexture, 0, 0, 21, 37);
+
+		spriteBatch = new SpriteBatch();
+
+		/**
+		 * You can set the world's gravity in its constructor. Here, the gravity
+		 * is negative in the y direction (as in, pulling things down).
+		 */
+		world = new World(new Vector2(0.0f, -10.0f), true);
+
+		BodyDef entityBodyDef = new BodyDef();
+		entityBodyDef.type = BodyDef.BodyType.DynamicBody;
+		entityBodyDef.position.set(1.0f, 3.0f);
+
+		entity = world.createBody(entityBodyDef);
+
+		/**
+		 * Boxes are defined by their "half width" and "half height", hence the
+		 * 2 multiplier.
+		 */
+		PolygonShape entityShape = new PolygonShape();
+		entityShape.setAsBox(alabaster.getWidth() / (2 * PIXELS_PER_METER),
+				alabaster.getHeight() / (2 * PIXELS_PER_METER));
+
+		/**
+		 * The character should not ever spin around on impact.
+		 */
+		entity.setFixedRotation(true);
+
+		/**
+		 * The density and friction of the entity were found experimentally.
+		 * Play with the numbers and watch how the character moves faster or
+		 * slower.
+		 */
+		FixtureDef entityFixtureDef = new FixtureDef();
+		entityFixtureDef.shape = entityShape;
+		entityFixtureDef.density = 1.0f;
+		entityFixtureDef.friction = 5.0f;
+
+		entity.createFixture(entityFixtureDef);
+		entityShape.dispose();
+
+		tiledMapHelper.loadCollisions("data/collisions.txt", world,
+				PIXELS_PER_METER);
+
+		debugRenderer = new Box2DDebugRenderer();
+
+		long lastRender = System.nanoTime();
+	}
+
+	@Override
+	public void resume() {
+	}
+
+	@Override
+	public void render() {
+		long now = System.nanoTime();
+
+		/**
+		 * Detect requested motion.
+		 */
+		boolean moveLeft = false;
+		boolean moveRight = false;
+		boolean doJump = false;
+
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+			moveRight = true;
+		} else {
+			for (int i = 0; i < 2; i++) {
+				if (Gdx.input.isTouched(i)
+						&& Gdx.input.getX() > Gdx.graphics.getWidth() * 0.80f) {
+					moveRight = true;
+				}
+			}
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+			moveLeft = true;
+		} else {
+			for (int i = 0; i < 2; i++) {
+				if (Gdx.input.isTouched(i)
+						&& Gdx.input.getX() < Gdx.graphics.getWidth() * 0.20f) {
+					moveLeft = true;
+				}
+			}
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+			doJump = true;
+		} else {
+			for (int i = 0; i < 2; i++) {
+				if (Gdx.input.isTouched(i)
+						&& Gdx.input.getY() < Gdx.graphics.getHeight() * 0.20f) {
+					doJump = true;
+				}
+			}
+		}
+
+		boolean entityFacingRight = false;
+		/**
+		 * Act on that requested motion.
+		 * 
+		 * This code changes the entity's direction. It's handled separately
+		 * from the jumping so that the player can jump and move simultaneously.
+		 * The horizontal figure was arrived at experimentally -- try other
+		 * values to experience different speeds.
+		 * 
+		 * The impulses are applied to the center of the entity.
+		 */
+		if (moveRight) {
+			entity.applyLinearImpulse(new Vector2(0.05f, 0.0f),
+					entity.getWorldCenter());
+			if (entityFacingRight == false) {
+				alabaster.flip(true, false);
+			}
+			entityFacingRight = true;
+		} else if (moveLeft) {
+			entity.applyLinearImpulse(new Vector2(-0.05f, 0.0f),
+					entity.getWorldCenter());
+			if (entityFacingRight == true) {
+				alabaster.flip(true, false);
+			}
+			entityFacingRight = false;
+		}
+
+		/**
+		 * The entity dude can only jump while on the ground. There are better
+		 * ways to detect ground contact, but for our purposes it is sufficient
+		 * to test that the vertical velocity is zero (or close to it). As in
+		 * the above code, the vertical figure here was found through
+		 * experimentation. It's enough to get the guy off the ground.
+		 * 
+		 * As before, impulse is applied to the center of the entity.
+		 */
+		if (doJump && Math.abs(entity.getLinearVelocity().y) < 1e-9) {
+			entity.applyLinearImpulse(new Vector2(0.0f, 0.8f),
+					entity.getWorldCenter());
+		}
+
+		/**
+		 * Have box2d update the positions and velocities (and etc) of all
+		 * tracked objects. The second and third argument specify the number of
+		 * iterations of velocity and position tests to perform -- higher is
+		 * more accurate but is also slower.
+		 */
+		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
+
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		/**
+		 * A nice(?), blue backdrop.
+		 */
+		Gdx.gl.glClearColor(0, 0.5f, 0.9f, 0);
+
+		/**
+		 * The camera is now controlled primarily by the position of the main
+		 * character, and secondarily by the map boundaries.
+		 */
+
+		tiledMapHelper.getCamera().position.x = PIXELS_PER_METER
+				* entity.getPosition().x;
+
+		/**
+		 * Ensure that the camera is only showing the map, nothing outside.
+		 */
+		if (tiledMapHelper.getCamera().position.x < Gdx.graphics.getWidth() / 2) {
+			tiledMapHelper.getCamera().position.x = Gdx.graphics.getWidth() / 2;
+		}
+		if (tiledMapHelper.getCamera().position.x >= tiledMapHelper.getWidth()
+				- Gdx.graphics.getWidth() / 2) {
+			tiledMapHelper.getCamera().position.x = tiledMapHelper.getWidth()
+					- Gdx.graphics.getWidth() / 2;
+		}
+
+		if (tiledMapHelper.getCamera().position.y < Gdx.graphics.getHeight() / 2) {
+			tiledMapHelper.getCamera().position.y = Gdx.graphics.getHeight() / 2;
+		}
+		if (tiledMapHelper.getCamera().position.y >= tiledMapHelper.getHeight()
+				- Gdx.graphics.getHeight() / 2) {
+			tiledMapHelper.getCamera().position.y = tiledMapHelper.getHeight()
+					- Gdx.graphics.getHeight() / 2;
+		}
+
+		tiledMapHelper.getCamera().update();
+		tiledMapHelper.render();
+
+		/**
+		 * Prepare the SpriteBatch for drawing.
+		 */
+		spriteBatch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
+		spriteBatch.begin();
+
+		alabaster.setPosition(
+				PIXELS_PER_METER * entity.getPosition().x
+						- alabaster.getWidth() / 2,
+				PIXELS_PER_METER * entity.getPosition().y
+						- alabaster.getHeight() / 2);
+		alabaster.draw(spriteBatch);
+
+		/**
+		 * "Flush" the sprites to screen.
+		 */
+		spriteBatch.end();
+
+		
+		/**
+		 * Draw this last, so we can see the collision boundaries on top of the
+		 * sprites and map.
+		 */
+		//debugRenderer.render(world, tiledMapHelper.getCamera().combined.scale(
+			//	entityTutorial.PIXELS_PER_METER,
+				//entityTutorial.PIXELS_PER_METER,
+				//entityTutorial.PIXELS_PER_METER));
+
+		now = System.nanoTime();
+		long lastRender = 0;
+		if (now - lastRender < 30000000) { // 30 ms, ~33FPS
+			try {
+				Thread.sleep(30 - (now - lastRender) / 1000000);
+			} catch (InterruptedException e) {
+			}
+		}
+
+		lastRender = now;
+	}
+
+	@Override
+	public void resize(int width, int height) {
+	}
+
+	@Override
+	public void pause() {
+	}
+
+	@Override
+	public void dispose() {
+	}
+}
