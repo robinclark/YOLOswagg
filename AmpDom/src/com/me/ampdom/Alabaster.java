@@ -263,65 +263,65 @@ public void displayHUD() {
 	// health
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	ShapeRenderer.translate(40.0f, (680-45), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 200, 20f);
 	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
 	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	ShapeRenderer.translate(40.0f, (680-45), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 2*health, 20f);
 	
 	// shell
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+10+40, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+10+40, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+10+40, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+10+40, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
 	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+10+40, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+10+40, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+10+40, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+10+40, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, shellCharge, 15f);
 	
 	// spit
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
 	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, spitCharge, 15f);
 	
 	// shock-wave
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
 	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, shoutCharge, 15f);
 	
 	// Icon Background
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	ShapeRenderer.identity();
-	ShapeRenderer.translate(0f, (680-40), 0.f);
+	ShapeRenderer.translate(0f, (680-50), 0.f);
 	ShapeRenderer.filledRect(0f, 0f, 40f, 40f);
 	ShapeRenderer.end();
 	
@@ -331,7 +331,7 @@ public void displayHUD() {
 	// health
 	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
 	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-35), 0.f);
+	ShapeRenderer.translate(40.0f, (680-45), 0.f);
 	if(health > 100)
 		ShapeRenderer.rect(0f, 0f, 2*health, 20f);
 	else
@@ -341,51 +341,51 @@ public void displayHUD() {
 	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	ShapeRenderer.rect(0f, 0f, 100, 15f);
 	
 	// spit
 	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	ShapeRenderer.rect(0f, 0f, 100, 15f);
 	
 	// shock-wave
 	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
 	ShapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
+		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
 	ShapeRenderer.rect(0f, 0f, 100, 15f);
 	ShapeRenderer.end();
 	
 	// Print TEXT
 	healthText.begin();
-	font.draw(healthText, "HEALTH" , 40.0f, 680);
+	font.draw(healthText, "HEALTH" , 40.0f, 670);
 	if(health > 100)
-		font.draw(healthText, "SHELL" , 2*health+10+40, 680);
+		font.draw(healthText, "SHELL" , 2*health+10+40, 670);
 	else
-		font.draw(healthText, "SHELL" , 2*100+10+40, 680);
+		font.draw(healthText, "SHELL" , 2*100+10+40, 670);
 	if(health > 100)
-		font.draw(healthText, "SPIT" , 2*health+40+120, 680);
+		font.draw(healthText, "SPIT" , 2*health+40+120, 670);
 	else
-		font.draw(healthText, "SPIT" , 2*100+40+120, 680);
+		font.draw(healthText, "SPIT" , 2*100+40+120, 670);
 	if(health > 100)
-		font.draw(healthText, "SHOCKWAVE" , 2*health+40+230, 680);
+		font.draw(healthText, "SHOCKWAVE" , 2*health+40+230, 670);
 	else
-		font.draw(healthText, "SHOCKWAVE" , 2*100+40+230, 680);
+		font.draw(healthText, "SHOCKWAVE" , 2*100+40+230, 670);
 	healthText.end();
 	
 	// draw Alabaster Icon
 	icon.begin();
 	//icon.setPosition(0,650f);
-	icon.draw(iconTexture,0,680-40,40,40);
+	icon.draw(iconTexture,4,680-45,32,32);
 	icon.end();
 	
 }

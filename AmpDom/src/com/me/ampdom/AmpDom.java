@@ -395,8 +395,11 @@ public class AmpDom implements ApplicationListener {
 		    		 AmpDom.PIXELS_PER_METER,
 		    		 AmpDom.PIXELS_PER_METER));
 			lastRender = now;
-			}
-		frog.displayHUD();
+			
+			frog.displayHUD();
+			
+		}
+		
 
 		 m.display();
 	}
