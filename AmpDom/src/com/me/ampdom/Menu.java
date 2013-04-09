@@ -111,7 +111,7 @@ public class Menu {
 					
 					break;
 				case -3:
-					if(( b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits"))){
+					if(b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits")){
 						b.draw();
 					}					
 					if(b.clicked() && b.name.equals("htp")){
@@ -164,6 +164,7 @@ public class Menu {
 							test.setVolume(0);
 						}
 					}
+					
 					break;
 				case 1:
 					if(b.name.equals("next")){
@@ -180,6 +181,7 @@ public class Menu {
 						b.draw();	
 						b.clicked();
 					}
+					
 					break;
 			
 			}

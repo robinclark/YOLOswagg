@@ -39,11 +39,10 @@ public class Button{
 	
 	public void initialize(){
 		icon = new Sprite(t);
-		icon.scale(0.02f);
 		icon.setPosition(xLoc, yLoc);
 		
-		width = t.getWidth()/7;
-		height = t.getHeight()/7;
+		width = t.getWidth();
+		height = t.getHeight();
 		icon.setSize(width,height);
 		sb = new SpriteBatch();	
 	}
@@ -57,8 +56,8 @@ public class Button{
 	public void changeIcon(Texture t){
 		icon = new Sprite(t);
 		icon.setPosition(xLoc, yLoc);
-		width = t.getWidth()/7;
-		height = t.getHeight()/7;
+		width = t.getWidth();
+		height = t.getHeight();
 		icon.setSize(width,height);
 		sb = new SpriteBatch();
 	}
