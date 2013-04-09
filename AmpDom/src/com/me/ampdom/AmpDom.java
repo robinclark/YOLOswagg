@@ -45,10 +45,14 @@ public class AmpDom implements ApplicationListener {
 	
 	// HUD
 	float shellElapsedTime;
+	float shoutElapsedTime;
+	float spitElapsedTime;
 	long shellBeginTime;
 	long shoutBeginTime; 
+	long spitBeginTime; 
+	float hitElapsedTime;
+	long hitBeginTime;
 
-	
 	// detect keyboard
 	MyInputProcessor input = new MyInputProcessor();
 	
@@ -114,6 +118,21 @@ public class AmpDom implements ApplicationListener {
 	public void resume() {
 	}
 
+	// blink baster
+	public void getHit() {
+		hitBeginTime = System.nanoTime();
+		hitElapsedTime = (System.nanoTime() - hitBeginTime)/1000000000.0f;
+
+		//if(hitElapsedTime > 0 && hitElapsedTime < 3) {
+			//if((int)hitElapsedTime%2 != 0 )
+				frog.sprite.setColor(1f, 1f, 1f, 0.2f);
+			//else
+				//frog.sprite.setColor(1f, 1f, 1f, 1f);
+			hitBeginTime = System.nanoTime();
+		//}
+		
+	}
+	
 	@Override
 	public void render() {		
 		
@@ -140,6 +159,10 @@ public class AmpDom implements ApplicationListener {
 			//camera follows player
 			tiledMapHelper.getCamera().position.x = PIXELS_PER_METER
 					* frog.entity.getPosition().x;
+			if(frog.entity.getPosition().y > 680) {
+				tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
+						* frog.entity.getPosition().y;
+			}
 			
 			if(detect.enemyDmg && detect.isHit){
 				if(frog.shell) {
@@ -153,7 +176,17 @@ public class AmpDom implements ApplicationListener {
 					}
 				} else {
 					frog.takeDamage(10);
-					frog.sprite.setColor(Color.RED);
+					//frog.sprite.setColor(Color.RED);
+					
+					//frog.sprite.setColor(1f, 1f, 1f, .2f);
+					//long BeginTime = System.nanoTime();
+					//float ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+
+					//if(ElapsedTime >0 && ElapsedTime <5) {
+					//hitElapsedTime = System.nanoTime();
+					//if(hitElapsedTime > 0 && hitElapsedTime < 3)
+						getHit();//BeginTime = System.nanoTime();
+					//}
 					frog.icon.setColor(Color.RED);
 					detect.isHit = false;
 					damage.play();
@@ -172,12 +205,10 @@ public class AmpDom implements ApplicationListener {
 				 System.out.println("jar----"+LevelMap.jar.sprite.toString());
 				frog.incHealth(20);
 				flyjar.play();
-				// world.destroyBody(LevelMap.jar.entity);
 				LevelMap.jar.entity.setActive(false);
 				LevelMap.jar.sprite.setScale(0f,0f);
 				detect.collectJar= false;
 			}
-
 			
 			if(frog.getHealth()<=0){
 				frog.die();
@@ -186,16 +217,61 @@ public class AmpDom implements ApplicationListener {
 				frog.shell = false;
 				frog.shout = false;
 			}
-			System.out.println(EnemyContact.grounded);
+			
 			if(!frog.shell) {
 				//if(frog.shellHealth == 0) {
 					shellElapsedTime = (System.nanoTime() - shellBeginTime)/1000000000.0f;
+
 					if(shellElapsedTime > 2 && shellElapsedTime < 5 && frog.shellCharge <100) {
-						frog.shellCharge += 1;
+						frog.shellCharge += 10;
+						shellBeginTime = System.nanoTime();
 					}
-					//if(frog.shellHealth == 100)
-						//frog.shell = true;
+			}
+			
+			if(frog.shout) {
+				if(frog.shoutCharge-20 >= 0) {
+					frog.shoutCharge -= 20;
+					System.out.println("SHOUT HEALTH: " + frog.shoutCharge);
+
+					// initiate timer
+					if(frog.shoutCharge == 0)
+						shoutBeginTime = System.nanoTime();
 				}
+			}
+
+			if(!frog.shout) {
+					shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
+
+					if(shoutElapsedTime > 5 && frog.shoutCharge <100) {
+						frog.shoutCharge += 20;
+						shoutBeginTime = System.nanoTime();
+						//shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
+					}
+			}
+
+			if(frog.spit) {
+				if(frog.spitCharge-20 >= 0) {
+					frog.spitCharge -= 20;
+
+					System.out.println("SPIT HEALTH: " + frog.spitCharge);
+
+					// initiate timer
+					if(frog.spitCharge == 0)
+						spitBeginTime = System.nanoTime();
+				}
+			}
+
+			if(!frog.spit) {
+					spitElapsedTime = (System.nanoTime() - spitBeginTime)/1000000000.0f;
+
+					if(spitElapsedTime > 5 && frog.spitCharge <100) {
+						frog.spitCharge += 20;
+						spitBeginTime = System.nanoTime();
+						//spitElapsedTime = (System.nanoTime() - spitBeginTime)/1000000000.0f;
+					}
+			}
+
+
 
 			
 			/**
@@ -228,9 +304,6 @@ public class AmpDom implements ApplicationListener {
 
 				if(detect.enemPos == f.entity.getPosition()){
 					f.die();
-				
-					
-				  detect.enemPos = new Vector2(0,0);
 	          	}
 
 				f.directPos = frog.entity;
@@ -245,31 +318,29 @@ public class AmpDom implements ApplicationListener {
 					f.directMove = false;
 					f.spawnX = f.spawnX0;
 					f.spawnY = f.spawnY0;
-				
 				}
 				f.move();
 				f.batchRender(tiledMapHelper);
-				f = null;
 			}
 			
 			for(Enemy e : LevelMap.enemies){
-				if(detect.enemPos == e.entity.getPosition())
+				if(detect.enemPos == e.entity.getPosition()) {
 					e.die();
-				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - e.entity.getPosition().x , 2 )
-						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) {
-					e.spawnX = frog.entity.getPosition().x;
-					e.spawnY = frog.entity.getPosition().y;
-					
 				}
-				else {
-					//f.directMove = false;
-					//f.entity.setLinearVelocity(2.0f, 1.0f);
-					e.spawnX = e.spawnX0;
-					e.spawnY = e.spawnY0;
-				}
+//				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - e.entity.getPosition().x , 2 )
+//						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) {
+//					e.spawnX = frog.entity.getPosition().x;
+//					e.spawnY = frog.entity.getPosition().y;
+//					
+//				}
+//				else {
+//					//f.directMove = false;
+//					//f.entity.setLinearVelocity(2.0f, 1.0f);
+//					e.spawnX = e.spawnX0;
+//					e.spawnY = e.spawnY0;
+//				}
 				e.move();
 				e.batchRender(tiledMapHelper);
-				e=null;
 			}
 			
 			for(Obstacle s : LevelMap.spikes){
@@ -313,9 +384,9 @@ public class AmpDom implements ApplicationListener {
 				}
 			}
 			else {
-				frog.sprite.setColor(Color.WHITE);
+				frog.sprite.setColor(1f, 1f, 1f, 1f);
+				//frog.sprite.setColor(Color.WHITE);
 				frog.icon.setColor(Color.WHITE);
-				
 			}
 
 			//debugger
@@ -325,9 +396,7 @@ public class AmpDom implements ApplicationListener {
 		    		 AmpDom.PIXELS_PER_METER));
 			lastRender = now;
 			}
-		if(level.currentLevel%2 == 0) {
-			frog.displayHUD();
-		}
+		frog.displayHUD();
 
 		 m.display();
 	}

@@ -81,13 +81,13 @@ public class Alabaster extends Character {
 	
 	// HUD
 	private float k;
-	protected Sprite icon;
+	protected SpriteBatch icon;
 	private SpriteBatch healthText;
 	private BitmapFont font;
 	private ShapeRenderer ShapeRenderer;
 	protected int shellCharge = 100;
 	protected int spitCharge = 100;
-	protected int shockwaveCharge = 100;
+	protected int shoutCharge = 100;
 
 	
 	final float spitVel = 10.0f;
@@ -210,7 +210,7 @@ public class Alabaster extends Character {
 	   	
 		spitBody = world.createBody(spitBodyDef);
 		
-		spitSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/spitSound.wav", FileType.Internal));
+		spitSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/bearLaser.wav", FileType.Internal));
 		
 		PolygonShape spitShape = new PolygonShape();
 		spitShape.setAsBox(spitSprite.getWidth() / (5 * PIXELS_PER_METER),
@@ -248,10 +248,8 @@ public class Alabaster extends Character {
 		ShapeRenderer = new ShapeRenderer();
 		
 		// alabaster head
-		icon = new Sprite(texture, 0, 0, 32, 32);
-		icon.flip(true, false);
-
-
+		icon = new SpriteBatch();//texture, 0, 0, 0, 32);
+		//icon.flip(true, false);
 	}
 
 public void displayHUD() {   
@@ -316,7 +314,7 @@ public void displayHUD() {
 		ShapeRenderer.translate(2*health+40+230, (680-30), 0.f);
 	else
 		ShapeRenderer.translate(2*100+40+230, (680-30), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, shockwaveCharge, 15f);
+	ShapeRenderer.filledRect(0f, 0f, shoutCharge, 15f);
 	
 	// Icon Background
 	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
@@ -383,10 +381,10 @@ public void displayHUD() {
 	healthText.end();
 	
 	// draw Alabaster Icon
-	batch.begin();
-	icon.setPosition(0,650f);
-	icon.draw(batch);
-	batch.end();
+	icon.begin();
+	//icon.setPosition(0,650f);
+	icon.draw(texture,0,680-60,55,55);
+	icon.end();
 	
 }
 
@@ -401,7 +399,8 @@ public void move(MyInputProcessor input)
 	boolean moveRight = false;
 	shout = false;
 	shoutBody.setActive(false);
-	shell= false;
+	shell = false;
+	spit = false;
 		
 		//jumping
 
@@ -417,7 +416,7 @@ public void move(MyInputProcessor input)
 			
 					jumpSound.setLooping(1, false);
 					jumpSound.play();
-					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					entity.applyLinearImpulse(new Vector2(0.0f,4.8f),entity.getWorldCenter());
 					if(count==1)doubleJump = false;
 				    count--;
 					
@@ -430,7 +429,7 @@ public void move(MyInputProcessor input)
               {
 					jumpSound.setLooping(1, false);
 					jumpSound.play();
-					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					entity.applyLinearImpulse(new Vector2(0.0f,4.8f),entity.getWorldCenter());
 				count--;
               }	
 			}
@@ -453,13 +452,11 @@ public void move(MyInputProcessor input)
   			moveRight = true;	
   		
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-  			if(shellCharge > 0) {
+
+	  		if(shellCharge > 0) {
 				moveRight = false;
 				moveLeft=false;
-			
 		// prevent tongue or shout usage
-				EnemyContact.grounded= true;
-				count=2;
 				tongueAct = false;
 				tongueOut = false;
 				tongueBody.setActive(false);
@@ -471,10 +468,25 @@ public void move(MyInputProcessor input)
 				shellSound.play();
 			}
 			else {
-			
+				
 			}
-
-		}
+  		}
+		
+//		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+//			if(shoutCharge > 0) {
+//	// prevent tongue or shout usage
+//			tongueAct = false;
+//			tongueOut = false;
+//			tongueBody.setActive(false);
+//			shout = true;
+//			shoutBody.setActive(true);
+//			shoutSound.play();
+//		}
+//		else {
+//			
+//		}
+//
+//	}
   		
   		if (moveRight) 
   		{
@@ -510,14 +522,19 @@ public void move(MyInputProcessor input)
   		 ***************************************************************/
 	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
 	    {
-	    	spitSound.play();
+	    	if(spitCharge > 0) {
+	    		spitSound.play();
+		    	spit = true;
+		    	spitBody.setActive(true);
+		    	spitSound.play();
+	    	
 	    	//System.out.print("spit");
 	    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
 			Body b = world.createBody(spitBodyDef);
 			b.createFixture(spitFixtureDef);
-			
+	    	
 			b.setUserData("SPIT");
-			
+	    	
 			if(facingRight)
 			{
 				b.setTransform(entity.getPosition().x+bodyOffset,entity.getPosition().y,0);
@@ -529,7 +546,8 @@ public void move(MyInputProcessor input)
 				b.setTransform(entity.getPosition().x-bodyOffset,entity.getPosition().y,0);
 				b.setLinearVelocity(-spitVel, 0.0f);
 			}			
-			spits.add(b);	    	
+			spits.add(b);
+	    	}
 		}	
 	    /****************************************************************
   		 * TONGUE INPUT  		 											* 
@@ -552,11 +570,12 @@ public void move(MyInputProcessor input)
   		 ***************************************************************/
 	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
 	    	
-	    { 
-	    	shout = true;
-	    	shoutBody.setActive(true);
-	    	//shellSound.setLooping(3,false);
-	        shoutSound.play();
+	    {
+	    	if(shoutCharge > 0) {
+		    	shout = true;
+		    	shoutBody.setActive(true);
+		        shoutSound.play();
+	    	}
 			if(facingRight)
 				shoutBody.setTransform(entity.getPosition().x+1.1f,entity.getPosition().y,0);	
 			else
@@ -583,7 +602,7 @@ public void move(MyInputProcessor input)
         {
         	if(b == null) break;        	
 	        	//System.out.println(spits.size());
-	        	if(b.getPosition().x < entity.getPosition().x - 2*800/PIXELS_PER_METER || b.getPosition().x > entity.getPosition().x + 2*800/PIXELS_PER_METER)
+	        	if(b.getPosition().x < entity.getPosition().x - 2*580/PIXELS_PER_METER || b.getPosition().x > entity.getPosition().x + 2*580/PIXELS_PER_METER)
 	        	{
 	        		//System.out.println("removing");
 	        		
@@ -635,6 +654,8 @@ public void move(MyInputProcessor input)
 	
 	public void die() {
 		setHealth(0);
+		world.destroyBody(shoutBody);
+		world.destroyBody(tongueBody);
 		spitSound.dispose();
 		shoutSound.dispose();
 		shellSound.dispose();
