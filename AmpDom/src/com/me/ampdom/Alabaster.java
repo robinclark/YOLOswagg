@@ -88,7 +88,8 @@ public class Alabaster extends Character {
 	protected int shellCharge = 100;
 	protected int spitCharge = 100;
 	protected int shoutCharge = 100;
-
+	private Texture iconTexture;
+	
 	
 	final float spitVel = 10.0f;
 	
@@ -248,6 +249,7 @@ public class Alabaster extends Character {
 		ShapeRenderer = new ShapeRenderer();
 		
 		// alabaster head
+		iconTexture = new Texture(Gdx.files.internal("data/Alabaster/alabasterFace.png"));
 		icon = new SpriteBatch();//texture, 0, 0, 0, 32);
 		//icon.flip(true, false);
 	}
@@ -383,7 +385,7 @@ public void displayHUD() {
 	// draw Alabaster Icon
 	icon.begin();
 	//icon.setPosition(0,650f);
-	icon.draw(texture,0,680-60,55,55);
+	icon.draw(iconTexture,0,680-40,40,40);
 	icon.end();
 	
 }
@@ -557,7 +559,7 @@ public void move(MyInputProcessor input)
 	    {
 	    	tongueOut = true;
 	    	now = System.nanoTime();
-	    	System.out.println("tongue");
+//	    	System.out.println("tongue");
 	    	tongueBody.setActive(true);
 	    	if(facingRight)
   				tongueBody.setTransform(entity.getPosition().x+1f,entity.getPosition().y,0);	
