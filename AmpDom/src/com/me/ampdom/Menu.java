@@ -111,7 +111,7 @@ public class Menu {
 					
 					break;
 				case -3:
-					if((b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits"))){
+					if(( b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits"))){
 						b.draw();
 					}					
 					if(b.clicked() && b.name.equals("htp")){
@@ -127,61 +127,28 @@ public class Menu {
 						b.draw();	
 						AmpDom.state = 0;
 					}
-					if(b.name.equals("sound")){						
-						b.draw();
-						//b.clicked();
-						if(b.toggle == -1) {
-							test.setVolume(100);
-						}
-						else {
-							test.setVolume(0);
-						}
-					}
 					changeBackground(main);					
 					
 					break;
 				case -2:
-					if(b.name.equals("back")){
+					if(b.name.equals("sound") || b.name.equals("back")){
 						b.draw();
 					}
 					if(b.clicked() && b.name.equals("back")){
 						b.draw();	
 						AmpDom.state = -3;
 					}
-					if(b.name.equals("sound")){						
-						b.draw();
-						//b.clicked();
-						if(b.toggle == -1) {
-							test.setVolume(100);
-						}
-						else {
-							test.setVolume(0);
-						}
-					}
-					
 					changeBackground(htp);
 					
 					break;
 				case -1:
-					if(b.name.equals("back")){
+					if(b.name.equals("back") || b.name.equals("sound")){
 						b.draw();
 					}
 					if(b.clicked() && b.name.equals("back")){
 						b.draw();	
 						AmpDom.state = -3;
 					}
-					if(b.name.equals("sound")){						
-						b.draw();
-						//b.clicked();
-						if(b.toggle == -1) {
-							test.setVolume(100);
-						}
-						else {
-							test.setVolume(0);
-						}
-					}
-					
-					
 					changeBackground(cred);
 					break;
 					
@@ -210,14 +177,8 @@ public class Menu {
 					break;
 				case 2:	
 					if(b.name.equals("sound")){						
-						b.draw();
+						b.draw();	
 						b.clicked();
-						if(b.toggle == -1) {
-							test.setVolume(100);
-						}
-						else {
-							test.setVolume(0);
-						}
 					}
 					break;
 			

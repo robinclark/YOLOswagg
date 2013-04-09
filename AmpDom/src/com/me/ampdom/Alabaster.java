@@ -17,9 +17,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+
 
 public class Alabaster extends Character {
 	//position
@@ -29,19 +29,18 @@ public class Alabaster extends Character {
 	final float bodyOffset = 0.5f;
 	
 	//double jump
-	static int doubleCount=2;
-	static int singleCount=1;
+	static int count=2;
 	
 	//bools
-	boolean upKey;
+	
+	
 	boolean shell = false;
 	boolean shout = false;
 	boolean tongueAct=false;
 	boolean powerLegs=true;
 	boolean spit = false;
 	boolean tongueOut = false;
-	//boolean doubleJump;
-	
+
 	//shell stuff
 	Sprite shellSprite;
 	Texture shellText;
@@ -79,16 +78,6 @@ public class Alabaster extends Character {
 	//sounds
 	Sound jumpSound;	
 	
-	//doublejump sensor
-	FixtureDef doubleJumpFixtureDef;
-	Body doubleJumpBody;
-	BodyDef doubleJumpBodyDef;
-	
-
-	//foot block body
-	FixtureDef wallFixDef;
-	Body wallBody;
-	BodyDef wallBodyDef;
 	
 	// HUD
 	private float k;
@@ -96,16 +85,12 @@ public class Alabaster extends Character {
 	private SpriteBatch healthText;
 	private BitmapFont font;
 	private ShapeRenderer ShapeRenderer;
-	private boolean shoutAvailable = true;
-	//private long actionBeginTime;
-	private float shoutElapsedTime;
 	protected int shellCharge = 100;
 	protected int spitCharge = 100;
 	protected int shockwaveCharge = 100;
 
 	
 	final float spitVel = 10.0f;
-
 	
 	long now, last;
 	
@@ -121,24 +106,8 @@ public class Alabaster extends Character {
 		entity = world.createBody(entityDef);
 		
 		PolygonShape shape = new PolygonShape();
-		
-		//some triangle verts
-		Vector2 verts1[] = new Vector2[4];
-		for(int i = 0; i <4; i++)
-		{
-			verts1[i] = new Vector2();
-			//shape.getVertex(i, verts1[i]);
-		}
-		verts1[0] = new Vector2(x - sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f - 0.1f, y - sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
-		verts1[1] = new Vector2(x + sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f + 0.1f, y - sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
-		verts1[2] = new Vector2(x + sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f + 0.1f, y + sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);		
-		verts1[3] = new Vector2(x - sprite.getWidth()/(2*PIXELS_PER_METER)-1.0f - 0.1f, y + sprite.getHeight()/(2*PIXELS_PER_METER)-5.0f);
-				
-		
 	    shape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
 				sprite.getHeight() / (2 * PIXELS_PER_METER));
-	    
-		//shape.set(verts1);
 	    
 	    entity.setFixedRotation(true);		
 		
@@ -153,100 +122,33 @@ public class Alabaster extends Character {
 		entity.setUserData("PLAYER");
 		
 			/******************************************************/
-			//--double jump sensor			
-			/*EdgeShape doubleJumpSensorShape = new EdgeShape();
-			float xOffset = sprite.getWidth() / (2 * PIXELS_PER_METER);
-			float yOffset = sprite.getHeight() / (2 * PIXELS_PER_METER);*/
-			
-			/*doubleJumpBodyDef = new BodyDef();
-			doubleJumpBodyDef.position.set(x, y-sprite.getHeight()/(2 * PIXELS_PER_METER));
-			doubleJumpBodyDef.type = BodyDef.BodyType.KinematicBody;
-			
-			doubleJumpBody = world.createBody(doubleJumpBodyDef);
-			doubleJumpBody.setUserData("SENSOR");			*/
-			
-			//doubleJumpSensorShape.set((x-60)/PIXELS_PER_METER, (y-sprite.getHeight())/(PIXELS_PER_METER), (x+60)/PIXELS_PER_METER, (y-sprite.getHeight())/(PIXELS_PER_METER));
-			
-			/*float yVal = (y-sprite.getHeight())/PIXELS_PER_METER;			
-			
-		    doubleJumpFixtureDef = new FixtureDef();
-		   // doubleJumpFixtureDef.isSensor = true;
-		    doubleJumpFixtureDef.shape = doubleJumpSensorShape;
-		    doubleJumpFixtureDef.density = 1.0f;
-		    doubleJumpFixtureDef.friction = 1.0f;
-			
-		    doubleJumpSensorShape.set((x-60)/PIXELS_PER_METER, yVal, (x+60)/PIXELS_PER_METER, yVal);
-		    
-		    //doubleJumpSensorShape.set((x + sprite.getWidth()/32)/PIXELS_PER_METER, y/PIXELS_PER_METER, (x + sprite.getWidth()/32)/PIXELS_PER_METER, (y-sprite.getHeight())/PIXELS_PER_METER);
-		    
-		    //attach to frog body
-			entity.createFixture(doubleJumpSensorShape, 0);		
-			
-			doubleJumpSensorShape.dispose();*/
-			
-			//--line seg
-			//LineSegment lSeg;
-			
-			
-			//--foot
-			 footDef = new BodyDef();
-			 footDef.type = BodyDef.BodyType.DynamicBody;
-			 footDef.position.set(entity.getPosition().x,entity.getPosition().y);
-		   	 foot = world.createBody(footDef);
-		   	
-		   	 PolygonShape footShape = new PolygonShape();
-			/* footShape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
-						sprite.getHeight() / (2* PIXELS_PER_METER));*/
-			 foot.setFixedRotation(true);
-			 
-			footShape.set(verts1);
-				 
-			footFix = new FixtureDef();
-		    footFix.shape= footShape;
-		    //footFix.isSensor=true;
-		    footFix.density = 1.0f;
-			footFix.friction = 1.0f;
-			
-			foot.createFixture(footFix);
-			footShape.dispose();
-			//foot.setActive(false);
-			
-			foot.setUserData("FOOT");
-			
-			MassData md = entity.getMassData();
-			
-			foot.setMassData(md);
-			
-			//--detect if wall touching
-			/*wallBodyDef= new BodyDef();
-			wallBodyDef.type = BodyDef.BodyType.DynamicBody;
-			wallBodyDef.position.set(entity.getPosition().x,entity.getPosition().y);
-		   	wallBody = world.createBody(wallBodyDef);
-		   	
-		   	 PolygonShape wallShape = new PolygonShape();
-			/* footShape.setAsBox(sprite.getWidth() / (2 * PIXELS_PER_METER),
-						sprite.getHeight() / (2* PIXELS_PER_METER));*/
-			/* wallBody.setFixedRotation(true);
-			 
-			 wallShape.set(verts1);
-				 
-			wallFixDef = new FixtureDef();
-			wallFixDef.shape= footShape;
-		    //footFix.isSensor=true;
-			wallFixDef.density = 1.0f;
-			wallFixDef.friction = 1.0f;
-			
-			wallBody.createFixture(wallFixDef);
-			wallShape.dispose();
-			//foot.setActive(false);
-			
-			wallBody.setUserData("WALL");
-			
-			MassData md1 = entity.getMassData();
-			
-			wallBody.setMassData(md1);*/
-			
-		/******************************************************/
+//			//--double jump sensor			
+//			EdgeShape doubleJumpSensorShape = new EdgeShape();
+////			float xOffset = sprite.getWidth() / (2 * PIXELS_PER_METER);
+////			float yOffset = sprite.getHeight() / (2 * PIXELS_PER_METER);
+////			
+//			doubleJumpBodyDef = new BodyDef();
+//			doubleJumpBodyDef.position.set(x,y);
+//			doubleJumpBodyDef.type = BodyDef.BodyType.StaticBody;
+//			
+//			doubleJumpBody = world.createBody(doubleJumpBodyDef);
+//			doubleJumpBody.setUserData("FOOTBLOCK");		
+//			
+//			float yVal = (y-sprite.getHeight())/PIXELS_PER_METER;
+//			
+//			
+//		    doubleJumpFixtureDef = new FixtureDef();
+//		    //doubleJumpFixtureDef.isSensor = true;
+//		    doubleJumpFixtureDef.shape = doubleJumpSensorShape;
+//		    doubleJumpSensorShape.set((x-60)/PIXELS_PER_METER, yVal, (x+60)/PIXELS_PER_METER, yVal);
+//		    
+//		
+//		    
+//		    //attach to frog body
+//			entity.createFixture(doubleJumpFixtureDef);		
+//			
+//			doubleJumpSensorShape.dispose();
+			/******************************************************/
 		//--shout
 		 shoutText = new Texture(Gdx.files.internal("data/shockwave.png"));
 		 shoutText.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -267,7 +169,9 @@ public class Alabaster extends Character {
 		shoutFixtureDef = new FixtureDef();
 		shoutFixtureDef.shape = shoutShape;
 		shoutFixtureDef.density = 1.0f;
-		shoutFixtureDef.friction = 1.0f;	
+		shoutFixtureDef.friction = 1.0f;
+
+		
 		
 		shoutBody.createFixture(shoutFixtureDef);
 
@@ -302,7 +206,24 @@ public class Alabaster extends Character {
 		
 		tongueBody.setUserData("TONGUE");
 		
+		//--foot
 		
+		 footDef = new BodyDef();
+		 footDef.type = BodyDef.BodyType.DynamicBody;
+		 footDef.position.set(entity.getPosition().x,entity.getPosition().y);
+	   	 foot = world.createBody(footDef);
+	   	 PolygonShape footShape = new PolygonShape();
+		    footShape.setAsBox(sprite.getWidth() / (2.3F * PIXELS_PER_METER),
+					sprite.getHeight() / (8f * PIXELS_PER_METER));
+		    foot.setFixedRotation(true);
+			 
+		footFix = new FixtureDef();
+	    footFix.shape= footShape;
+	    footFix.isSensor=true;
+		foot.createFixture(footFix);
+		footShape.dispose();
+		
+		foot.setUserData("FOOT");
 		    
 		//--spit			
 		spitTexture = new Texture(Gdx.files.internal("data/spit.png"));
@@ -491,61 +412,57 @@ public void displayHUD() {
 	icon.setPosition(0,650f);
 	icon.draw(batch);
 	batch.end();
+	
 }
 
 	
 public void move(MyInputProcessor input) 
 {	  				
+	System.out.println(count);
+	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
+	foot.applyForceToCenter(0.0f,10f);
 		tongueBody.setActive(false);
-		boolean doJump = false;
+		
 		boolean moveLeft = false;
 		boolean moveRight = false;
 		shout = false;
 		shoutBody.setActive(false);
 		
-		 /*if(EnemyContact.grounded)
-		 {
-			  	upKey = false;
-		    	doubleJump = true;
-		 }*/
-		 
-		 shell= false;
+   	 shell= false;
 		
 		//jumping
 
-		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP] && !shell)
+		if(!input.buttons[MyInputProcessor.JUMP] && input.oldButtons[MyInputProcessor.JUMP] && !shell)
 	    {
-
-			//entity.applyLinearImpulse(new Vector2(0.0f,6.0f),entity.getWorldCenter());
-			//doubleJump
+		
+		
+			jumpSound.setLooping(1, false);
+			jumpSound.play();
 			if(powerLegs)
 			{
-				if(doubleCount > 0)
+				
+				if(count > 0&&EnemyContact.grounded)
 				{
-					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
-					foot.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
 					
-					doubleCount--;
-					System.out.println("doublecount: " + doubleCount);
-				}				
-
-				jumpSound.setLooping(1, false);
-				jumpSound.play();
-			}
-			//single jump
-			else 
-			{
-				if(singleCount > 0)
-				{
-					//if on ground apply linear impulse
 					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
-					singleCount--;
-					System.out.println("doublecount: " + doubleCount);
+				    count--;
 				}
 			}
+			else
+			{
+				if(EnemyContact.grounded){
+					EnemyContact.grounded=false;
+					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+				
+				}
+			}
+		}
 
-	    }
-		
+		if(count==0){
+			EnemyContact.grounded=false;
+			count=2;
+			
+		}
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
   			moveLeft = true;		
@@ -558,8 +475,10 @@ public void move(MyInputProcessor input)
   			if(shellCharge > 0) {
 				moveRight = false;
 				moveLeft=false;
-				doJump=false;
+			
 		// prevent tongue or shout usage
+				EnemyContact.grounded= true;
+				count=2;
 				tongueAct = false;
 				tongueOut = false;
 				tongueBody.setActive(false);
@@ -571,7 +490,7 @@ public void move(MyInputProcessor input)
 				shellSound.play();
 			}
 			else {
-				
+			
 			}
 
 		}
@@ -580,9 +499,6 @@ public void move(MyInputProcessor input)
   		{
   			entity.applyLinearImpulse(new Vector2(.15f, 0.0f),
   			entity.getWorldCenter());
-  			
-			foot.applyLinearImpulse(new Vector2(.15f, 0.0f),
-	  			foot.getWorldCenter());
   			
   			if (facingRight == false)
   			{
@@ -598,10 +514,6 @@ public void move(MyInputProcessor input)
   		{
   			entity.applyLinearImpulse(new Vector2(-.15f, 0.0f),
   			entity.getWorldCenter());
-  			
-  			foot.applyLinearImpulse(new Vector2(-.15f, 0.0f),
-  		  			foot.getWorldCenter());
-  			
   			if (facingRight == true)
   			{
   				sprite.flip(true, false);
@@ -615,7 +527,7 @@ public void move(MyInputProcessor input)
   		/****************************************************************
   		 * SPIT INPUT  		 											* 
   		 ***************************************************************/
-	    if(!input.buttons[input.SPIT] && input.oldButtons[input.SPIT] && !shell)
+	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
 	    {
 	    	spitSound.play();
 	    	//System.out.print("spit");
@@ -642,7 +554,7 @@ public void move(MyInputProcessor input)
   		 * TONGUE INPUT  		 											* 
   		 ***************************************************************/
 	    //--hold out tongue .25 secs
-	    if(!input.buttons[input.TONGUE] && input.oldButtons[input.TONGUE] && !tongueOut &&!shell)
+	    if(!input.buttons[MyInputProcessor.TONGUE] && input.oldButtons[MyInputProcessor.TONGUE] && !tongueOut &&!shell)
 	    {
 	    	tongueOut = true;
 	    	now = System.nanoTime();
@@ -657,7 +569,7 @@ public void move(MyInputProcessor input)
 	    /****************************************************************
   		 * SHOUT INPUT  		 											* 
   		 ***************************************************************/
-	    if(input.buttons[input.SHOUT] && !input.oldButtons[input.SHOUT] && !shell)
+	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
 	    	
 	    { 
 	    	shout = true;
@@ -671,9 +583,7 @@ public void move(MyInputProcessor input)
 		
 	     }
 	    		    	
-	    //foot.setTransform(entity.getPosition().x, entity.getPosition().y,0);
-	    //foot.setLinearVelocity(new Vector2(2.0f, 0.0f));
-	    //foot.applyForce(new Vector2(0.0f, 9.0f), new Vector2(foot.getPosition().x, foot.getPosition().y));
+	    
 	    
 	    if(tongueOut)
 	    {
@@ -840,21 +750,6 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 			}
 		batch.end();
 }
-
-	//reset jumps
-	public void resetJumps()
-	{
-		System.out.println("resetting");
-		doubleCount = 2;
-		singleCount = 1;
-	}
-	
-	@Override
-	public void reset(float x, float y) {
-		entityDef.position.set(x, y);
-		System.out.println(x+"+"+y);
-	}
-
 
 	@Override
 	public void reset() {
