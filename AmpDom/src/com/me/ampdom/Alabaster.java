@@ -33,11 +33,11 @@ public class Alabaster extends Character {
 	
 	//bools
 	
-	
+	boolean doubleJump;
 	boolean shell = false;
 	boolean shout = false;
 	boolean tongueAct=false;
-	boolean powerLegs=true;
+	boolean powerLegs=false;
 	boolean spit = false;
 	boolean tongueOut = false;
 
@@ -122,32 +122,7 @@ public class Alabaster extends Character {
 		entity.setUserData("PLAYER");
 		
 			/******************************************************/
-//			//--double jump sensor			
-//			EdgeShape doubleJumpSensorShape = new EdgeShape();
-////			float xOffset = sprite.getWidth() / (2 * PIXELS_PER_METER);
-////			float yOffset = sprite.getHeight() / (2 * PIXELS_PER_METER);
-////			
-//			doubleJumpBodyDef = new BodyDef();
-//			doubleJumpBodyDef.position.set(x,y);
-//			doubleJumpBodyDef.type = BodyDef.BodyType.StaticBody;
-//			
-//			doubleJumpBody = world.createBody(doubleJumpBodyDef);
-//			doubleJumpBody.setUserData("FOOTBLOCK");		
-//			
-//			float yVal = (y-sprite.getHeight())/PIXELS_PER_METER;
-//			
-//			
-//		    doubleJumpFixtureDef = new FixtureDef();
-//		    //doubleJumpFixtureDef.isSensor = true;
-//		    doubleJumpFixtureDef.shape = doubleJumpSensorShape;
-//		    doubleJumpSensorShape.set((x-60)/PIXELS_PER_METER, yVal, (x+60)/PIXELS_PER_METER, yVal);
-//		    
-//		
-//		    
-//		    //attach to frog body
-//			entity.createFixture(doubleJumpFixtureDef);		
-//			
-//			doubleJumpSensorShape.dispose();
+
 			/******************************************************/
 		//--shout
 		 shoutText = new Texture(Gdx.files.internal("data/shockwave.png"));
@@ -421,48 +396,54 @@ public void move(MyInputProcessor input)
 	System.out.println(count);
 	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
 	foot.applyForceToCenter(0.0f,10f);
-		tongueBody.setActive(false);
-		
-		boolean moveLeft = false;
-		boolean moveRight = false;
-		shout = false;
-		shoutBody.setActive(false);
-		
-   	 shell= false;
+	tongueBody.setActive(false);
+	boolean moveLeft = false;
+	boolean moveRight = false;
+	shout = false;
+	shoutBody.setActive(false);
+	shell= false;
 		
 		//jumping
 
 		if(!input.buttons[MyInputProcessor.JUMP] && input.oldButtons[MyInputProcessor.JUMP] && !shell)
 	    {
-		
-		
-			jumpSound.setLooping(1, false);
-			jumpSound.play();
+			
+			EnemyContact.grounded=false;
 			if(powerLegs)
 			{
 				
-				if(count > 0&&EnemyContact.grounded)
+				if(count > 0&&doubleJump)
 				{
-					
+			
+					jumpSound.setLooping(1, false);
+					jumpSound.play();
 					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+					if(count==1)doubleJump = false;
 				    count--;
+					
 				}
 			}
 			else
 			{
-				if(EnemyContact.grounded){
-					EnemyContact.grounded=false;
+	
+              if(count==2)
+              {
+					jumpSound.setLooping(1, false);
+					jumpSound.play();
 					entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
-				
-				}
+				count--;
+              }	
 			}
 		}
 
-		if(count==0){
-			EnemyContact.grounded=false;
-			count=2;
-			
+		if(EnemyContact.grounded)
+		{
+			count=2; 
+			doubleJump=true;
 		}
+		if(count==0)		
+			count=2;
+	
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
   			moveLeft = true;		
