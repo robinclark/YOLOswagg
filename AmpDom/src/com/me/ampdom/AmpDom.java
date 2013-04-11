@@ -307,7 +307,7 @@ public class AmpDom implements ApplicationListener {
 						- Gdx.graphics.getHeight() / 2;
 			}
 
-			// need some array to load all creatures or something
+			// need some array to load all creatures or something wrd
 			tiledMapHelper.getCamera().update();
 			tiledMapHelper.render();
 

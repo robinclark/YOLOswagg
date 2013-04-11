@@ -603,7 +603,7 @@ public void move(MyInputProcessor input)
 	    }
 	    
 	    /****************************************************************
-  		 * SHOUT INPUT  		 										* 
+  		 * SHOUT INPUT  hi		 										* 
   		 ***************************************************************/
 	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
 	    {	    	

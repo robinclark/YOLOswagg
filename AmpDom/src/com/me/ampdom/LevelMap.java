@@ -13,7 +13,7 @@ public class LevelMap {
 	int screenWidth;
 	int screenHeight;
 	//CurrentLevel currentLevel;//RC added
-	int currentLevel; //RC removed. using enums easier
+	int currentLevel; //RC removed. using enums easier 
 	EnemyContact detect;
 	Music test;
 	World world;

@@ -32,7 +32,6 @@ public class FlyingEnemy extends Character {
 		entity = world.createBody(entityDef);
 		entityDef.type = BodyDef.BodyType.DynamicBody;
 		entityDef.position.set(x, y);
-		/** * Load up the overall texture and chop it in to pieces. In this case,* piece.*/
 		
 		texture = new Texture(Gdx.files.internal(path));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
