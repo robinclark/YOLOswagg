@@ -23,6 +23,7 @@ public class LevelMap {
 	static ArrayList<Enemy> enemies;
 	static ArrayList<Obstacle> spikes;
 	static ArrayList<MovingPlat> plats;
+	//static ArrayList<Enemy> enemies;
     static FlyJar jar;
      
 	

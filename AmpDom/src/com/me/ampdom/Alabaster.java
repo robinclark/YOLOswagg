@@ -384,7 +384,6 @@ public void displayHUD() {
 	
 	// draw Alabaster Icon
 	icon.begin();
-	//icon.setPosition(0,650f);
 	icon.draw(iconTexture,4,680-45,32,32);
 	icon.end();
 	
