@@ -2,8 +2,6 @@ package com.me.ampdom;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledObject;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
@@ -59,14 +57,13 @@ public class LevelMap {
 			plats = new ArrayList<MovingPlat>();
 			
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
-			//tiledMapHelper.setPackerDirectory("data/packer/");
-			//tiledMapHelper.loadMap("data/world/level1/level.tmx");
-			tiledMapHelper.setPackerDirectory("data/packer/");
+
+			tiledMapHelper.setPackerDirectory("data/packer/level");
+
 			tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			
-			tiledMapHelper.loadCollisions("data/collisions.txt", world,
+			tiledMapHelper.loadCollisions("data/packer/level/collisions.txt", world,
 					PIXELS_PER_METER);
-	
 			
 			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 71.29f, 5.2f,0,1));
 			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 73.5f, 5.2f,0,-1));
@@ -134,14 +131,34 @@ public class LevelMap {
 		
 			break;
 		case 2:
-	
+//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
+//			for(TiledObjectGroup tG: objectGroups)
+//			{
+//				for(TiledObject tO: tG.objects)
+//				{
+//					if(tO.name.equals("flyer"))
+//					{
+//						flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER,64,64));
+//					}
+//				}
+//			}
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
-		    tiledMapHelper.setPackerDirectory("data/packer");
+		    tiledMapHelper.setPackerDirectory("data/packer/level2");
 			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
-	        tiledMapHelper.loadCollisions("data/collisions.txt", world,
+	        tiledMapHelper.loadCollisions("data/packer/level2/collisions2.txt", world,
+					PIXELS_PER_METER);
+			break;
+		case 4:
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+		    tiledMapHelper.setPackerDirectory("data/packer/level2");
+			tiledMapHelper.loadMap("data/world/level2/level2.2.tmx");
+			tiledMapHelper.loadCollisions("data/packer/level2/collisions2.txt", world,
 					PIXELS_PER_METER);
 			break;
 //		case LUCID_DESERT:
