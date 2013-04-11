@@ -117,6 +117,7 @@ public class Alabaster extends Character {
 	public Alabaster(World world, float x, float y) {
 		super(world, x, y);	
 		/*setup physics n sounds*/
+		
 		//--alabaster
 		texture = new Texture(Gdx.files.internal("data/Alabaster/alabasterS.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -416,14 +417,16 @@ public void displayHUD() {
 	
 public void move(MyInputProcessor input) 
 {	  				
-	System.out.println(count);
+	//System.out.println(count);
 	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
 	foot.applyForceToCenter(0.0f,10f);
 	tongueBody.setActive(false);
-	shoutBody.setActive(false);
+	//shoutBody.setActive(false);
 	boolean moveLeft = false;
 	boolean moveRight = false;	
 	shell = false;
+	//shout = false;
+	//spit = false;
 
 		
 		//jumping
@@ -550,41 +553,42 @@ public void move(MyInputProcessor input)
   		 ***************************************************************/
 	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
 	    {
-	    	if(spitCharge > 0) {
+	    	//if(spitCharge > 0) 
+	    	//{
 	    		spitSound.play();
 		    	spit = true;
-		    	spitBody.setActive(true);
+		    	//spitBody.setActive(true);
 		    	spitSound.play();
 	    	
-	    	//System.out.print("spit");
-	    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
-			Body b = world.createBody(spitBodyDef);
-			
-			b.createFixture(spitFixtureDef);
-			
-			//handle left or right spit
-			if(facingRight)
-				b.setUserData("RIGHT_SPIT");
-			else
-				b.setUserData("LEFT_SPIT");
-			
-
-			if(facingRight)
-			{
-				b.setTransform(entity.getPosition().x+bodyOffset,entity.getPosition().y,0);
-				b.setLinearVelocity(spitVel, 0.0f);
+		    	//System.out.print("spit");
+		    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
+				Body b = world.createBody(spitBodyDef);
 				
-			}
-			else
-			{
-				b.setTransform(entity.getPosition().x-bodyOffset,entity.getPosition().y,0);
-				b.setLinearVelocity(-spitVel, 0.0f);
-			}			
-			spits.add(b);
+				b.createFixture(spitFixtureDef);
+				
+				//handle left or right spit
+				if(facingRight)
+					b.setUserData("RIGHT_SPIT");
+				else
+					b.setUserData("LEFT_SPIT");
+				
+	
+				if(facingRight)
+				{
+					b.setTransform(entity.getPosition().x+bodyOffset,entity.getPosition().y,0);
+					b.setLinearVelocity(spitVel, 0.0f);
+				}
+				else
+				{
+					b.setTransform(entity.getPosition().x-bodyOffset,entity.getPosition().y,0);
+					b.setLinearVelocity(-spitVel, 0.0f);
+				}	
+				
+				spits.add(b);
 	    	}
-		}	
+		//}	
 	    /****************************************************************
-  		 * TONGUE INPUT  		 											* 
+  		 * TONGUE INPUT  		 										* 
   		 ***************************************************************/
 	    //--hold out tongue .25 secs
 	    if(!input.buttons[MyInputProcessor.TONGUE] && input.oldButtons[MyInputProcessor.TONGUE] && !tongueOut &&!shell)
@@ -600,21 +604,22 @@ public void move(MyInputProcessor input)
 	    }
 	    
 	    /****************************************************************
-  		 * SHOUT INPUT  		 											* 
+  		 * SHOUT INPUT  		 										* 
   		 ***************************************************************/
 	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
-	    {
-	    	
-	    	if(shoutCharge > 0) {
+	    {	    	
+	    	if(shoutCharge > 0) 
+	    	{
+	    		shoutTime = System.nanoTime();
 		    	shout = true;
 		    	shoutBody.setActive(true);
 		        shoutSound.play();
+	    	
+				if(facingRight)
+					shoutBody.setTransform(entity.getPosition().x+1.1f,entity.getPosition().y,0);	
+				else
+					shoutBody.setTransform(entity.getPosition().x-1.1f,entity.getPosition().y,0);
 	    	}
-			if(facingRight)
-				shoutBody.setTransform(entity.getPosition().x+1.1f,entity.getPosition().y,0);	
-			else
-				shoutBody.setTransform(entity.getPosition().x-1.1f,entity.getPosition().y,0);
-		
 	     }    
 	    
 	    if(tongueOut)
@@ -665,16 +670,7 @@ public void move(MyInputProcessor input)
 	        	}
 	        	else
 	        	{
-	        		/*if(b.getLinearVelocity().x > 0)
-	        			b.setLinearVelocity(spitVel, 0.0f);
-	        		else if (b.getLinearVelocity().x < 0)
-	        			b.setLinearVelocity(-spitVel, 0.0f);
-	        		
-	        		if(b.getLinearVelocity().x ==0)
-	        		{
-	        			b.setLinearVelocity(spitVel, 0.0f);
-	        			//b.applyLinearImpulse(new Vector2(1.0f,0.0f),entity.getWorldCenter());
-	        		}*/
+
 	        	}
         }
         
@@ -763,25 +759,6 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 							PIXELS_PER_METER * entity.getPosition().y+10f
 									- shoutSprite.getHeight() / 2);
 			    	 shoutSprite.draw(batch);
-					}			 
-			}
-			if(spit)
-			{
-				if(facingRight){
-					spitSprite.setPosition(
-							PIXELS_PER_METER * spitBody.getPosition().x+64f
-									- spitSprite.getWidth() / 2,
-							PIXELS_PER_METER * spitBody.getPosition().y+10f
-									- spitSprite.getHeight() / 2);				
-					spitSprite.draw(batch);
-				}
-				else{	  		
-					spitSprite.setPosition(
-							PIXELS_PER_METER * spitBody.getPosition().x-64f
-									- spitSprite.getWidth() /2,
-							PIXELS_PER_METER * spitBody.getPosition().y+10f
-									- spitSprite.getHeight() / 2);
-					spitSprite.draw(batch);
 					}			 
 			}
 			for(Body b: spits)
