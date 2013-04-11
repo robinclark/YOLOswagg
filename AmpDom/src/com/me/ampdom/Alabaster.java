@@ -40,6 +40,7 @@ public class Alabaster extends Character {
 	boolean powerLegs=true;
 	boolean spit = false;
 	boolean tongueOut = false;
+	//boolean shoutOut = false;
 	//boolean doubleJump;
 	
 	//shell stuff
@@ -68,13 +69,19 @@ public class Alabaster extends Character {
 	BodyDef footDef;
 	
 	//spit stuff
+	Sprite leftSpitSprite;
+	Texture leftSpitTexture;
+	FixtureDef leftSpitFixtureDef;
+	
 	Sprite spitSprite;
 	Texture spitTexture;
 	FixtureDef spitFixtureDef;
 	Body spitBody;
 	BodyDef spitBodyDef;
 	Sound spitSound;
+	
 	ArrayList<Body> spits = new ArrayList<Body>();
+	ArrayList<Body> spitsToDestroy = new ArrayList<Body>();
 	
 	//sounds
 	Sound jumpSound;	
@@ -83,7 +90,6 @@ public class Alabaster extends Character {
 	FixtureDef doubleJumpFixtureDef;
 	Body doubleJumpBody;
 	BodyDef doubleJumpBodyDef;
-	
 
 	//foot block body
 	FixtureDef wallFixDef;
@@ -107,7 +113,7 @@ public class Alabaster extends Character {
 	final float spitVel = 10.0f;
 
 	
-	long now, last;
+	long now, last, shoutTime;
 	
 	public Alabaster(World world, float x, float y) {
 		super(world, x, y);	
@@ -216,6 +222,7 @@ public class Alabaster extends Character {
 			MassData md = entity.getMassData();
 			
 			foot.setMassData(md);
+			foot.setActive(false);
 			
 			//--detect if wall touching
 			/*wallBodyDef= new BodyDef();
@@ -300,11 +307,16 @@ public class Alabaster extends Character {
 		
 		tongueBody.createFixture(tongueFixtureDef);
 		
+		tongueShape.dispose();
+		
 		tongueBody.setUserData("TONGUE");
 		
 		
 		    
-		//--spit			
+		//--spit		
+		leftSpitTexture = new Texture(Gdx.files.internal("data/leftSpit.png"));
+		leftSpitSprite = new Sprite(leftSpitTexture, 0, 0, 64, 64);
+		
 		spitTexture = new Texture(Gdx.files.internal("data/spit.png"));
 	    spitSprite = new Sprite(spitTexture, 0, 0, 64, 64);
 	   	 
@@ -317,8 +329,8 @@ public class Alabaster extends Character {
 		spitSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/spitSound.wav", FileType.Internal));
 		
 		PolygonShape spitShape = new PolygonShape();
-		spitShape.setAsBox(spitSprite.getWidth() / (5 * PIXELS_PER_METER),
-					spitSprite.getHeight() / (2 * PIXELS_PER_METER));
+		spitShape.setAsBox(spitSprite.getWidth() / (2*PIXELS_PER_METER),
+					spitSprite.getHeight() / (2*PIXELS_PER_METER));
 		
 		spitBody.setFixedRotation(true);
 		    
@@ -326,13 +338,13 @@ public class Alabaster extends Character {
 		
 		/*set bullet as sensor*/
 		spitFixtureDef.isSensor = true;		
-		spitFixtureDef.shape = tongueShape;
+		spitFixtureDef.shape = spitShape;
 		spitFixtureDef.density = 1.0f;
 		spitFixtureDef.friction = 1.0f;
 		
 		spitBody.createFixture(spitFixtureDef);
 		
-		spitShape.dispose();
+		//spitShape.dispose();
 		
 		spitBody.setUserData("SPIT");
 		
@@ -497,11 +509,12 @@ public void displayHUD() {
 public void move(MyInputProcessor input) 
 {	  				
 		tongueBody.setActive(false);
+		shoutBody.setActive(false);
 		boolean doJump = false;
 		boolean moveLeft = false;
 		boolean moveRight = false;
-		shout = false;
-		shoutBody.setActive(false);
+		//shout = false;
+		
 		
 		 /*if(EnemyContact.grounded)
 		 {
@@ -515,10 +528,11 @@ public void move(MyInputProcessor input)
 
 		if(!input.buttons[input.JUMP] && input.oldButtons[input.JUMP] && !shell)
 	    {
-
+			entity.applyLinearImpulse(new Vector2(0.0f,4.5f),entity.getWorldCenter());
+			
 			//entity.applyLinearImpulse(new Vector2(0.0f,6.0f),entity.getWorldCenter());
 			//doubleJump
-			if(powerLegs)
+			/*if(powerLegs)
 			{
 				if(doubleCount > 0)
 				{
@@ -542,7 +556,7 @@ public void move(MyInputProcessor input)
 					singleCount--;
 					System.out.println("doublecount: " + doubleCount);
 				}
-			}
+			}*/
 
 	    }
 		
@@ -589,7 +603,7 @@ public void move(MyInputProcessor input)
   				sprite.flip(true, false);
   				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
-  				spitSprite.flip(true, false);
+  				//spitSprite.flip(true, false);
   			}
   		
   			facingRight = true;
@@ -607,7 +621,7 @@ public void move(MyInputProcessor input)
   				sprite.flip(true, false);
   				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
-  				spitSprite.flip(true, false);
+  				//spitSprite.flip(true, false);
   			}
   			facingRight = false;
   		}
@@ -621,9 +635,14 @@ public void move(MyInputProcessor input)
 	    	//System.out.print("spit");
 	    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
 			Body b = world.createBody(spitBodyDef);
+			
 			b.createFixture(spitFixtureDef);
 			
-			b.setUserData("SPIT");
+			//handle left or right spit
+			if(facingRight)
+				b.setUserData("RIGHT_SPIT");
+			else
+				b.setUserData("LEFT_SPIT");
 			
 			if(facingRight)
 			{
@@ -661,9 +680,10 @@ public void move(MyInputProcessor input)
 	    	
 	    { 
 	    	shout = true;
+	    	shoutTime = System.nanoTime();
+	    	System.out.println("shout");
 	    	shoutBody.setActive(true);
-	    	//shellSound.setLooping(3,false);
-	        shoutSound.play();
+	       // shoutSound.play();
 			if(facingRight)
 				shoutBody.setTransform(entity.getPosition().x+1.1f,entity.getPosition().y,0);	
 			else
@@ -677,12 +697,24 @@ public void move(MyInputProcessor input)
 	    
 	    if(tongueOut)
 	    {
-	    	if((System.nanoTime() - now)/1000000 > 250)
+	    	if((System.nanoTime() - now)/1000000 > 500)
     		{
 	    		tongueOut = false;
 	    		tongueBody.setActive(false);
     		}
 	    }
+	    
+	    if(shout)
+	    {
+	    	last = System.nanoTime();
+	    	long time = (last - shoutTime)/1000000;
+	    	if((System.nanoTime() - shoutTime)/1000000 > 500)
+    		{
+	    		shout = false;
+	    		shoutBody.setActive(false);
+    		}
+	    }
+	    
 
 	    /****************************************************************
   		 * UPDATE SPITS		 											* 
@@ -690,23 +722,23 @@ public void move(MyInputProcessor input)
 	    //destroy spit if too far or collided w/something
         for(Body b: spits)
         {
-        	if(b == null) break;        	
+        	
+        	if(b == null) continue;        	
 	        	//System.out.println(spits.size());
-	        	if(b.getPosition().x < entity.getPosition().x - 2*800/PIXELS_PER_METER || b.getPosition().x > entity.getPosition().x + 2*800/PIXELS_PER_METER)
+	        	if(b.getPosition().x < entity.getPosition().x - 2*100/PIXELS_PER_METER || b.getPosition().x > entity.getPosition().x + 2*100/PIXELS_PER_METER)
 	        	{
-	        		//System.out.println("removing");
-	        		
-	        		//world.destroyBody(b);
-	        		//System.out.println(spits.remove(b));
-	        		//spits.clear();
-	        		
+	        		//System.out.println("removing");	        		
 	        		int i = spits.indexOf(b);
-	        		//spits.set(i, null);
 	        		
+	        		//spits.set(i,null);
 	        		//world.destroyBody(b);
+	        		
+	        		spitsToDestroy.add(b);
 	        		spits.set(i,null);
-	        		world.destroyBody(b);
-	        		//b.setActive(false);
+	        		
+	        		b.setActive(false);
+	        		
+	        		//spits.remove(b);
 	        	}
 	        	else
 	        	{
@@ -723,10 +755,10 @@ public void move(MyInputProcessor input)
 	        	}
         }
         
-        if(spitBody.getLinearVelocity().x < 2.0f)
+        /*if(spitBody.getLinearVelocity().x < 2.0f)
         {
         	spitBody.setLinearVelocity(2.0f, 0.0f);
-        }
+        }*/
         
 	}
 	
@@ -829,17 +861,37 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 			}
 			for(Body b: spits)
 			{
-				if(b == null) break;
+				if(b == null) continue;
 				
-					spitSprite.setPosition(
-							PIXELS_PER_METER * b.getPosition().x
-									- spitSprite.getWidth() / 2,
-							PIXELS_PER_METER * b.getPosition().y
-									- spitSprite.getHeight() / 2);				
-					spitSprite.draw(batch);
+					if(b.getUserData() == "RIGHT_SPIT")
+					{
+						spitSprite.setPosition(
+								PIXELS_PER_METER * b.getPosition().x
+										- spitSprite.getWidth() / 2,
+								PIXELS_PER_METER * b.getPosition().y
+										- spitSprite.getHeight() / 2);				
+						spitSprite.draw(batch);
+					}
+					if(b.getUserData() == "LEFT_SPIT")
+					{
+						leftSpitSprite.setPosition(
+								PIXELS_PER_METER * b.getPosition().x
+										- leftSpitSprite.getWidth() / 2,
+								PIXELS_PER_METER * b.getPosition().y
+										- leftSpitSprite.getHeight() / 2);				
+						leftSpitSprite.draw(batch);
+					}					
 			}
 		batch.end();
 }
+
+	public void dispose()
+	{
+		for(int i = 0; i < spits.size(); i++)
+		{
+			world.destroyBody(spitsToDestroy.get(i));
+		}
+	}
 
 	//reset jumps
 	public void resetJumps()

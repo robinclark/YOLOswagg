@@ -3,11 +3,6 @@
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" spacing="2">
   <image source="level.png" width="256" height="64"/>
  </tileset>
- <layer name="Tile Layer 1" width="16" height="11">
-  <data encoding="base64" compression="zlib">
-   eJxjYWBgYKEzZoXigdJPa8yGgz0YMRuFmGmAMQDibQKp
-  </data>
- </layer>
  <objectgroup name="physics" width="16" height="11">
   <object name="flyer" type="bat" x="160" y="160" width="31" height="31">
    <properties>
@@ -25,4 +20,9 @@
    </properties>
   </object>
  </objectgroup>
+ <layer name="Tile Layer 1" width="16" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFwx2wQTEhNeToZxpgDAApAABf
+  </data>
+ </layer>
 </map>

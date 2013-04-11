@@ -24,6 +24,9 @@ boolean attackEnem = false;
 boolean grounded = false;
 Vector2 enemPos;
 
+boolean spitEnem = false;
+boolean shoutEnem = false;
+
 @Override
 public void beginContact(Contact contact) {
 		final Fixture a=contact.getFixtureA();
@@ -31,7 +34,7 @@ public void beginContact(Contact contact) {
 		
 		/**********************************************************/
 		//--bullet sensor contact
-		if(a.getBody().getUserData()=="SPIT" || b.getBody().getUserData()=="SPIT")
+		if(a.getBody().getUserData()=="SPIT" || b.getBody().getUserData()=="SPIT" )
 		{
 			System.out.println("spit collision");
 			if(a.getBody().getUserData()=="ENEMY") //register damage on enemy
@@ -126,27 +129,32 @@ public void beginContact(Contact contact) {
 
 		
 		
-		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")
+		if((a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="LEFT_SPIT") || (a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="RIGHT_SPIT"))
 		{
+			System.out.println("spit");
 			enemPos=a.getBody().getPosition();
-				  attackEnem = true;
+				  //attackEnem = true;
+				  spitEnem = true;
 		}
-		if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
+		if((b.getBody().getUserData()=="ENEMY" && a.getBody().getUserData()=="LEFT_SPIT") || (b.getBody().getUserData()=="ENEMY" && a.getBody().getUserData()=="RIGHT_SPIT"))
 		{
-			enemPos=b.getBody().getPosition();
-			
-			  attackEnem = true;
+			System.out.println("spit");
+			enemPos=b.getBody().getPosition();			
+			  //attackEnem = true;
+			  spitEnem = true;
 		}
 
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
 		{
+			if(spitEnem) System.out.println("spit true");
 			enemPos=a.getBody().getPosition();
-				  attackEnem = true;
+				  shoutEnem = true;
 		}
 		if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="ENEMY")
 		{
+			if(spitEnem) System.out.println("spit true");
 			enemPos=b.getBody().getPosition();
-			  attackEnem = true;
+			shoutEnem = true;
 		}
 
 		
@@ -250,26 +258,31 @@ public void beginContact(Contact contact) {
 			  
 			}
 			
-			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")
+			if((a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="LEFT_SPIT") || (a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="RIGHT_SPIT"))
 			{
-					  attackEnem = true;
+					  System.out.println("spit false");					 
+					  spitEnem = false;
+					  //attackEnem = true;
 					  enemPos=a.getBody().getPosition();
 			}
 			
-			if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
+			if((b.getBody().getUserData()=="ENEMY" && a.getBody().getUserData()=="LEFT_SPIT") || (b.getBody().getUserData()=="ENEMY" && a.getBody().getUserData()=="RIGHT_SPIT"))
 			{
-				  attackEnem = true;
+				System.out.println("spit false");
+					spitEnem = false;
+				  //attackEnem = true;
 				  enemPos=a.getBody().getPosition();
 			}
 
 			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
 			{
-					  attackEnem = true;
+				
+				shoutEnem = true;
 					  enemPos=a.getBody().getPosition();
 			}
 			if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="ENEMY")
 			{
-				  attackEnem = true;
+				shoutEnem = true;
 				  enemPos=a.getBody().getPosition();
 			}
 			

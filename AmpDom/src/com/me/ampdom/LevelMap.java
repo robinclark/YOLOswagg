@@ -59,6 +59,8 @@ public class LevelMap {
 			plats = new ArrayList<MovingPlat>();
 			
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			//tiledMapHelper.setPackerDirectory("data/packer/");
+			//tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			tiledMapHelper.setPackerDirectory("data/packer/");
 			tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			

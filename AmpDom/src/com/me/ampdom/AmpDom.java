@@ -56,6 +56,8 @@ public class AmpDom implements ApplicationListener {
 	MyInputProcessor input = new MyInputProcessor();
 	
 
+	//background tex
+	Texture backgroundTex;
 
 	public AmpDom() {
 		super();
@@ -84,6 +86,8 @@ public class AmpDom implements ApplicationListener {
 			screenWidth = Gdx.graphics.getWidth();
 			screenHeight = Gdx.graphics.getHeight();
 		}
+		//batch
+		batch = new SpriteBatch();
 		//menu
 		camera = new OrthographicCamera(1, 600);
 		m = new Menu(camera);
@@ -102,9 +106,10 @@ public class AmpDom implements ApplicationListener {
 		damage = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/hit.wav", FileType.Internal));
 		flyjar = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jar.wav", FileType.Internal));
 		
-		tiledMapHelper = level.getMap();		
+		tiledMapHelper = level.getMap();				
 		
-		
+		//load background
+		backgroundTex = new Texture(Gdx.files.internal("data/background.png"));
 		
 		/*************************************************************/
 		//--read in enemy types and locations
@@ -130,6 +135,11 @@ public class AmpDom implements ApplicationListener {
 
 			//if(level.test.isPlaying() == false)
 			//level.test.play();
+			
+			//load background
+			batch.begin();
+			batch.draw(backgroundTex, 0, 0);
+			batch.end();
 
 			long now = System.nanoTime();			
 			
@@ -166,6 +176,7 @@ public class AmpDom implements ApplicationListener {
 					frog.resetJumps();
 				}
 			}
+			
 			
 			if(detect.enemyDmg && detect.isHit)
 			{
@@ -284,13 +295,14 @@ public class AmpDom implements ApplicationListener {
 			for(FlyingEnemy f : LevelMap.flyers)
 			{
 
-				if(detect.enemPos == f.entity.getPosition())
+				if(detect.enemPos == f.entity.getPosition() && detect.spitEnem)
 				{
 					f.die();
-				
+					detect.spitEnem = false;
 					
-				  detect.enemPos = new Vector2(0,0);
+				 // detect.enemPos = new Vector2(0,0);
 	          	}
+				
 
 				f.directPos = frog.entity;
 				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - f.entity.getPosition().x , 2 )
@@ -316,7 +328,28 @@ public class AmpDom implements ApplicationListener {
 			for(Enemy e : LevelMap.enemies)
 			{
 				if(detect.enemPos == e.entity.getPosition())
-					e.die();
+				{					
+					if(detect.spitEnem)
+					{
+						detect.spitEnem = false;
+						e.die();
+					}
+					
+					//alter enem vel
+					if(detect.shoutEnem)
+					{
+						detect.shoutEnem = false;
+						if(frog.facingRight)
+						{
+							e.entity.applyForce(new Vector2(5.0f, 0.0f), new Vector2(e.entity.getPosition().x, e.entity.getPosition().y));
+						}
+						else
+						{
+							e.entity.applyForce(new Vector2(-5.0f, 0.0f), new Vector2(e.entity.getPosition().x, e.entity.getPosition().y));
+						}
+					}
+				}
+				
 				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - e.entity.getPosition().x , 2 )
 						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) 
 				{
@@ -424,7 +457,9 @@ public class AmpDom implements ApplicationListener {
 	@Override
 	public void dispose() {
 		m.dispose();
+		frog.dispose();
 	}
+	
 	public void reset(){		
 		level.currentLevel = state;
 		

@@ -45,7 +45,7 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class TiledMapHelper {
-	private static final int[] layersList = { 0 };
+	private static final int[] layersList = { 0};
 
 	/**
 	 * Renders the part of the map that should be visible to the user.
