@@ -37,7 +37,7 @@ public class Alabaster extends Character {
 	boolean shell = false;
 	boolean shout = false;
 	boolean tongueAct=false;
-	boolean powerLegs=false;
+	boolean powerLegs=true;
 	boolean spit = false;
 	boolean tongueOut = false;
 
@@ -406,7 +406,7 @@ public void move(MyInputProcessor input)
 		
 		//jumping
 
-		if(!input.buttons[MyInputProcessor.JUMP] && input.oldButtons[MyInputProcessor.JUMP] && !shell)
+		if(!input.buttons[MyInputProcessor.JUMP] && input.oldButtons[MyInputProcessor.JUMP])
 	    {
 			
 			EnemyContact.grounded=false;
@@ -442,9 +442,10 @@ public void move(MyInputProcessor input)
 			count=2; 
 			doubleJump=true;
 		}
-		if(count==0)		
+		if(count==0){		
 			count=2;
-	
+			
+		}
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
   			moveLeft = true;		
@@ -456,6 +457,8 @@ public void move(MyInputProcessor input)
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
 	  		if(shellCharge > 0) {
+	  			EnemyContact.grounded= true;
+				count=2;
 				moveRight = false;
 				moveLeft=false;
 		// prevent tongue or shout usage
