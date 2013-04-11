@@ -22,6 +22,8 @@ public class Enemy extends Character {
 	boolean directMove = false;
     float patX;
     float patY;
+    protected float ElapsedTime;
+    protected long BeginTime;
 	
 	
 	public Enemy(World world, String path, float x, float y,float patrolX,float patrolY,int sizeW, int sizeH) {
@@ -67,6 +69,8 @@ public class Enemy extends Character {
 		facingRight = false;
 		spawnX0 = spawnX;
 		spawnY0 = spawnY;
+		BeginTime = System.nanoTime();
+		ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
 	}
 	
 	public Enemy getEnemy() {
@@ -93,31 +97,65 @@ public class Enemy extends Character {
 			
 			entity.setLinearVelocity(speed, -2.0f);
 		}		
-//		else {
-//			if(entity.getPosition().x<(spawnX)) {
-//				speed = 2.0f;
-//				if (facingRight == false) {
-//					sprite.flip(true, false);
-//				}
-//				facingRight = true;
-//			}
-//			if (entity.getPosition().x>(spawnX)) {
-//				speed = -2.0f;
-//				if (facingRight == true) {
-//					sprite.flip(true, false);
-//				}
-//				facingRight = false;
-//			}
-//			
-//			entity.setLinearVelocity(speed, -10.0f);
-//		}
-  
-	
 	}
-		// TODO Auto-generated method stub
 		
+	public void spiderMove() {
+		if(entity.getPosition().y<(spawnY-patY)) {
+			speed = 2.0f;
+			if (facingRight == false) {
+				sprite.flip(true, false);
+			}
+			facingRight = true;
+		}
+		if (entity.getPosition().y>(spawnY+patY)) {
+			speed = -2.0f;
+			if (facingRight == true) {
+				sprite.flip(true, false);
+			}
+			facingRight = false;
+		}
+		
+		entity.setLinearVelocity(speed, -2.0f);
+	}
 	
+	public void ramMoveLeft() {
+		//BeginTime = System.nanoTime();
+		//ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+		//System.out.println(BeginTime + " " + ElapsedTime);
 
+		//if(ElapsedTime > 5 && .spitCharge <100) {
+			//frog.spitCharge += 20;
+			
+		//if(directMove == false) {
+//		if(entity.getPosition().x == (spawnX-patX)) {
+//			BeginTime = System.nanoTime();
+//		}
+//		if(entity.getPosition().x == (spawnX+patX)) {
+//			BeginTime = System.nanoTime();
+//		}
+		//if(ElapsedTime > 0) {	
+		
+			
+			if (entity.getPosition().x>(spawnX+patX)) {
+				speed = -2.0f;
+				if (facingRight == true) {
+					sprite.flip(true, false);
+				}
+				facingRight = false;
+				//BeginTime = System.nanoTime();
+			}
+			entity.setLinearVelocity(2*speed, -2.0f);
+	}
+
+	public void ramMoveRight() {
+		speed = 2.0f;
+		if (facingRight == false) {
+			sprite.flip(true, false);
+		}
+		facingRight = true;
+		entity.setLinearVelocity(2*speed, -2.0f);
+	}
+	
 	@Override
 	public void attack() {
 		// TODO Auto-generated method stub

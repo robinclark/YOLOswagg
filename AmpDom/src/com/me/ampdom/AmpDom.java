@@ -55,6 +55,8 @@ public class AmpDom implements ApplicationListener {
 
 	// detect keyboard
 	MyInputProcessor input = new MyInputProcessor();
+	float ElapsedTime;
+	long BeginTime;
 	
 	//background tex
 	Texture backgroundTex;
@@ -205,7 +207,7 @@ public class AmpDom implements ApplicationListener {
 			
 			//System.out.println(frog.entity.getLinearVelocity().y);
 			if(detect.obstacleDmg && detect.isHit){
-				frog.takeDamage(50);	
+				frog.takeDamage(100);	
 				detect.isHit = false;
 				damage.play();
 				System.out.println("youve been hit by spikes!"+ frog.getHealth());
@@ -359,17 +361,10 @@ public class AmpDom implements ApplicationListener {
 						}
 					}
 				}
+				// ram movement
 //				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - e.entity.getPosition().x , 2 )
-//						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 1.5) {
-//					e.spawnX = frog.entity.getPosition().x;
-//					e.spawnY = frog.entity.getPosition().y;
-//					
-//				}
-//				else {
-//					//f.directMove = false;
-//					//f.entity.setLinearVelocity(2.0f, 1.0f);
-//					e.spawnX = e.spawnX0;
-//					e.spawnY = e.spawnY0;
+//						+ Math.pow(frog.entity.getPosition().y - e.entity.getPosition().y , 2 ) ) <= 4) {
+//						e.ramMoveRight();
 //				}
 				e.move();
 				e.batchRender(tiledMapHelper);
