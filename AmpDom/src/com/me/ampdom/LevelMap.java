@@ -2,7 +2,10 @@ package com.me.ampdom;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledObject;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.physics.box2d.World;
@@ -23,8 +26,9 @@ public class LevelMap {
 	static ArrayList<Enemy> enemies;
 	static ArrayList<Obstacle> spikes;
 	static ArrayList<MovingPlat> plats;
-	//static ArrayList<Enemy> enemies;
     static FlyJar jar;
+   static  Texture forestbg;
+   static Sprite forestbgSprite;
      
 	
 	public LevelMap(){
@@ -51,6 +55,8 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
+			
+			
 			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
@@ -58,9 +64,7 @@ public class LevelMap {
 			plats = new ArrayList<MovingPlat>();
 			
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
-
 			tiledMapHelper.setPackerDirectory("data/packer/level");
-
 			tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			
 			tiledMapHelper.loadCollisions("data/packer/level/collisions.txt", world,
@@ -132,7 +136,11 @@ public class LevelMap {
 		
 			break;
 		case 2:
-//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
+			
+			forestbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
+			forestbgSprite = new Sprite(forestbg,0,0,8192,1024);
+			
+			//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
 //			for(TiledObjectGroup tG: objectGroups)
 //			{
 //				for(TiledObject tO: tG.objects)
@@ -146,15 +154,19 @@ public class LevelMap {
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
+			plats=new ArrayList<MovingPlat>();
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
 		    tiledMapHelper.setPackerDirectory("data/packer/level2");
 			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
-	        tiledMapHelper.loadCollisions("data/packer/level2/collisions2.txt", world,
+	        tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
 					PIXELS_PER_METER);
 			break;
 		case 4:
+			forestbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
+			forestbgSprite = new Sprite(forestbg,0,0,8192,1024);
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
+			plats = new ArrayList<MovingPlat>();
 			spikes = new ArrayList<Obstacle>();
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
 		    tiledMapHelper.setPackerDirectory("data/packer/level2");
@@ -198,12 +210,19 @@ public class LevelMap {
 				if(s != null)
 				  world.destroyBody(s.entity);
 			}
+			
+			for(MovingPlat m: LevelMap.plats){
+				if(m!=null)
+					world.destroyBody(m.entity);
+				
+			}
 		
 		endlevelpt1.batch.dispose();
         jar.batch.dispose();
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();
+		plats.clear();
 		//test.dispose();
 		System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();

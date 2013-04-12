@@ -309,6 +309,13 @@ public class AmpDom implements ApplicationListener {
 
 			// need some array to load all creatures or something
 			tiledMapHelper.getCamera().update();
+if(level.currentLevel==2 || level.currentLevel==4){//?
+				batch.begin();
+				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
+				LevelMap.forestbgSprite.setPosition(0, 0);
+				LevelMap.forestbgSprite.draw(batch);
+				batch.end();
+			}
 			tiledMapHelper.render();
 
 
