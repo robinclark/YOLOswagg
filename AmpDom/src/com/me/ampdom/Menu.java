@@ -44,9 +44,9 @@ public class Menu {
 		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
 		addBackground();
 		initializeButtons();
-		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
-		test.setLooping(true);
-		test.play();
+//		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+//		test.setLooping(true);
+//		test.play();
 	}
 	
 	public void initializeButtons(){
@@ -144,7 +144,7 @@ public class Menu {
 						b.draw();
 						b.clicked();
 						if(b.toggle == -1) {
-							test.setVolume(100);
+						//	test.setVolume(100);
 						}
 						else {
 							test.setVolume(0);

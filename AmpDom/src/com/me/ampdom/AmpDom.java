@@ -99,9 +99,9 @@ public class AmpDom implements ApplicationListener {
 		world.setContactListener(detect);
 		
 		level = new LevelMap();		
-		level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
+		level.create(world,state, screenWidth, screenHeight,detect);
 		
-		frog = new Alabaster(world, 1.0f, 5.0f);
+		frog = new Alabaster(world, 1.0f, 9.0f);
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
 		
@@ -171,10 +171,12 @@ public class AmpDom implements ApplicationListener {
 			//camera follows player
 			tiledMapHelper.getCamera().position.x = PIXELS_PER_METER
 					* frog.entity.getPosition().x;
-			if(frog.entity.getPosition().y > 680) {
-				tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
-						* frog.entity.getPosition().y;
-			}
+			tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
+					* frog.entity.getPosition().y;
+//			if(frog.entity.getPosition().y > 680) {
+//				tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
+//						* frog.entity.getPosition().y;
+//			}
 			
 			if(detect.enemyDmg && detect.isHit){
 				if(frog.shell) {
@@ -309,13 +311,17 @@ public class AmpDom implements ApplicationListener {
 
 			// need some array to load all creatures or something
 			tiledMapHelper.getCamera().update();
-if(level.currentLevel==2 || level.currentLevel==4){//?
-				batch.begin();
+			
+			    batch.begin();
 				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
-				LevelMap.forestbgSprite.setPosition(0, 0);
-				LevelMap.forestbgSprite.draw(batch);
+				level.levelSprite.draw(batch);
 				batch.end();
-			}
+		
+
+
+
+
+
 			tiledMapHelper.render();
 
 
@@ -397,7 +403,7 @@ if(level.currentLevel==2 || level.currentLevel==4){//?
 			LevelMap.jar.batchRender(tiledMapHelper);
 			}
 			if(detect.endLevel){
-				  System.out.println("iio");
+				  
 				  detect.endLevel = false;
 				  try {
 					  Thread.sleep(1000);
@@ -453,6 +459,7 @@ if(level.currentLevel==2 || level.currentLevel==4){//?
 	}
 	
 	public void reset(){		
+		
 		level.currentLevel = state;
 		
 		level.deleteLevel();
@@ -465,7 +472,9 @@ if(level.currentLevel==2 || level.currentLevel==4){//?
 	    if(state >= 0 && state%2 == 1 && level.currentLevel%2 == 1){    	
 		    level = new LevelMap();
 		    level.currentLevel = state + 1;
+		    detect = new EnemyContact();
 		    world = new World(new Vector2(0.0f, -10.0f), true);
+		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
 	        frog = new Alabaster(world, 1.0f, 10.0f);

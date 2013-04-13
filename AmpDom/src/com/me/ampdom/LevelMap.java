@@ -2,6 +2,7 @@ package com.me.ampdom;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,8 +28,8 @@ public class LevelMap {
 	static ArrayList<Obstacle> spikes;
 	static ArrayList<MovingPlat> plats;
     static FlyJar jar;
-   static  Texture forestbg;
-   static Sprite forestbgSprite;
+   protected  Texture levelbg;
+   protected Sprite levelSprite;
      
 	
 	public LevelMap(){
@@ -55,7 +56,12 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-			
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level1/dungeonbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			levelSprite.setScale(2.5f,1.0f);
 			
 			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 			flyers = new ArrayList<FlyingEnemy>();
@@ -91,18 +97,7 @@ public class LevelMap {
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));
 			
 			/*****************************************************************************************/
-			//--!!!add flyers from object layer!!!
-			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
-			for(TiledObjectGroup tG: objectGroups)
-			{
-				for(TiledObject tO: tG.objects)
-				{
-					if(tO.name.equals("flyer"))
-					{
-						flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER,64,64));
-					}
-				}
-			}
+
 			/*****************************************************************************************/
 	    	
 		
@@ -136,9 +131,16 @@ public class LevelMap {
 		
 			break;
 		case 2:
-			
-			forestbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
-			forestbgSprite = new Sprite(forestbg,0,0,8192,1024);
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+		    tiledMapHelper.setPackerDirectory("data/packer/level2");
+			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
+	        tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
+					PIXELS_PER_METER);
+			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
 			
 			//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
 //			for(TiledObjectGroup tG: objectGroups)
@@ -155,15 +157,14 @@ public class LevelMap {
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
 			plats=new ArrayList<MovingPlat>();
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
-		    tiledMapHelper.setPackerDirectory("data/packer/level2");
-			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
-	        tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
-					PIXELS_PER_METER);
+			
 			break;
 		case 4:
-			forestbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
-			forestbgSprite = new Sprite(forestbg,0,0,8192,1024);
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			plats = new ArrayList<MovingPlat>();
@@ -171,18 +172,148 @@ public class LevelMap {
 			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
 		    tiledMapHelper.setPackerDirectory("data/packer/level2");
 			tiledMapHelper.loadMap("data/world/level2/level2.2.tmx");
-			tiledMapHelper.loadCollisions("data/packer/level2/collisions2.txt", world,
+			tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
 					PIXELS_PER_METER);
 			break;
-//		case LUCID_DESERT:
-//			break;
-//		case JUNGLE_OF_MISCHIEF:
-//			break;
-//		case RETURN_TO_THE_KINGDOM:
-//			break;
-//		case ZEUS_BATTLE:
-//			break;
+		case 6:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,1024,8192);
+			 levelSprite.setScale(1.8f,2.0f);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
 			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level3");
+			tiledMapHelper.loadMap("data/world/level3/level3.tmx");
+			tiledMapHelper.loadCollisions("data/packer/level3/collisions3.txt", world,
+					PIXELS_PER_METER);
+			
+			break;
+		case 8:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,1024,8192);
+		    levelSprite.setScale(1.8f,2.0f);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level3");
+			tiledMapHelper.loadMap("data/world/level3/level3.2.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level3/collisions3.txt", world,
+					PIXELS_PER_METER);
+			
+			break;
+		case 10:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			levelSprite.setScale(2.5f,.75f);
+			levelSprite.setPosition(0,-65);
+			
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level4");
+			tiledMapHelper.loadMap("data/world/level4/level4.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level4/collisions4.txt", world,
+					PIXELS_PER_METER);
+			
+			break;
+		case 12:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			levelSprite.setScale(2.5f,.75f);
+			levelSprite.setPosition(0,-65);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level4");
+			tiledMapHelper.loadMap("data/world/level4/level4.2.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level4/collisions4.txt", world,
+					PIXELS_PER_METER);
+			break;
+		case 14:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+		    levelSprite.setScale(2.5f,1.0f);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level5");
+			tiledMapHelper.loadMap("data/world/level5/level5.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level5/collisions5.txt", world,
+					PIXELS_PER_METER);
+			break;
+		case 16:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+		    levelSprite.setScale(2.5f,1.0f);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level5");
+			tiledMapHelper.loadMap("data/world/level5/level5.2.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level5/collisions5.txt", world,
+					PIXELS_PER_METER);
+			break;
+		case 18:
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.wav", FileType.Internal));
+			test.setLooping(true);
+			test.play();
+			levelbg = new Texture(Gdx.files.internal("data/world/level6/desertbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			levelbg = new Texture(Gdx.files.internal("data/world/level6/desertbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
+			flyers = new ArrayList<FlyingEnemy>();
+			enemies = new ArrayList<Enemy>();
+			spikes = new ArrayList<Obstacle>();
+			plats = new ArrayList<MovingPlat>();
+			
+			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.setPackerDirectory("data/packer/level6");
+			tiledMapHelper.loadMap("data/world/level6/level6.tmx");
+			
+			tiledMapHelper.loadCollisions("data/packer/level/collisions6.txt", world,
+					PIXELS_PER_METER);
+			break;
 		} 
 	}
 	
@@ -216,17 +347,18 @@ public class LevelMap {
 					world.destroyBody(m.entity);
 				
 			}
-		
+		levelbg.dispose();
+		levelSprite.getTexture().dispose();
 		endlevelpt1.batch.dispose();
         jar.batch.dispose();
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();
 		plats.clear();
-		//test.dispose();
+		test.dispose();
 		System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();
-        tiledMapHelper=null;	
+	
 	}
 }
 	
