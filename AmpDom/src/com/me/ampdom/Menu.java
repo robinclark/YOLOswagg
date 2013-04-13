@@ -14,8 +14,8 @@ public class Menu {
 	public ArrayList<Button> buttons;
 	public OrthographicCamera cam;
 	public Texture start, main, htp, cred, cut1;
-	public Texture back_main, credits, howl, htpb, pause, jump, play;
-	public Texture play_main, son, soff, shell, spit, startb, next;
+	public Texture back_main, credits, htpb, pause, play;
+	public Texture play_main, son, soff, startb, next;
 	public Sprite icon;
 	public SpriteBatch sb;
 	public Music test;
@@ -34,18 +34,14 @@ public class Menu {
 		//button textures
 		back_main = new Texture(Gdx.files.internal("data/Menu/back_main copy.png"));
 		credits = new Texture(Gdx.files.internal("data/Menu/credits_main copy.png"));
-		//howl = new Texture(Gdx.files.internal("data/Menu/hi copy.png"));
 		htpb = new Texture(Gdx.files.internal("data/Menu/HTP_main copy.png"));
 		//pause = new Texture(Gdx.files.internal("data/Menu/pause copy.png"));
-		//jump = new Texture(Gdx.files.internal("data/Menu/pji.png"));
 		//play = new Texture(Gdx.files.internal("data/Menu/play copy.png"));
 		play_main = new Texture(Gdx.files.internal("data/Menu/play_main copy.png"));
 		son = new Texture(Gdx.files.internal("data/Menu/sound1 copy.png"));
 		soff = new Texture(Gdx.files.internal("data/Menu/sound2 copy.png"));
 		startb = new Texture(Gdx.files.internal("data/Menu/start_button copy.png"));
 		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
-		//shell = new Texture(Gdx.files.internal("data/Menu/si copy.png"));
-		//spit = new Texture(Gdx.files.internal("data/Menu/spi copy.png"));
 		addBackground();
 		initializeButtons();
 		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
@@ -67,10 +63,7 @@ public class Menu {
 		buttons.add( new Button("credits",w - 80,10,true,credits,credits, cam) );
 		buttons.add( new Button("htp",w/2+50,h/2,true,htpb,htpb, cam) );
 		//non-clickable buttons
-		//buttons.add( new Button("howl",680,580,false,howl, howl, cam) );
-		//buttons.add( new Button("spit",700,580,false,spit, spit, cam) );
-		//buttons.add( new Button("shell",720,580,false,shell, shell, cam) );
-		//buttons.add( new Button("jump",740,580,false,jump, jump, cam) );
+		
 		
 	}
 	
@@ -97,62 +90,55 @@ public class Menu {
 		draw();
 		for(Button b : buttons){
 			
-			switch(AmpDom.state){
-			//menu states: (-4) - start (-3) - main (-2) - how to play (-1) - credits 0 - play screen
-				case -4:
+			//menu states: (-5) - start 
+			//(-4) - main 
+			//(-3) - how to play 
+			//(-2) - credits
+			//(-1) - first cut scene
+			//(evens) - play screens
+			//(odds) - cut scenes
+				if(AmpDom.state == -5){
 					if(b.name.equals("start")){
 						b.draw();
 					}
 					if(b.clicked() && b.name.equals("start")) {
 						b.draw();	
-						AmpDom.state = -3;
+						AmpDom.state = -4;
 					}
-					
-					
-					break;
-				case -3:
+				}else if(AmpDom.state == -4){
 					if(b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits")){
 						b.draw();
 					}					
 					if(b.clicked() && b.name.equals("htp")){
 						b.draw();	
-						AmpDom.state = -2;
+						AmpDom.state = -3;
 					}
 					if(b.clicked() && b.name.equals("credits")){
 						b.draw();	
-						AmpDom.state = -1;
+						AmpDom.state = -2;
 					}
 					
 					if(b.clicked() && b.name.equals("play_main")){
 						b.draw();	
-						AmpDom.state = 0;
+						AmpDom.state = -1;
 					}
 					changeBackground(main);					
-					
-					break;
-				case -2:
+				}else if(AmpDom.state == -3 || AmpDom.state == -2){
 					if(b.name.equals("sound") || b.name.equals("back")){
 						b.draw();
 					}
 					if(b.clicked() && b.name.equals("back")){
 						b.draw();	
-						AmpDom.state = -3;
+						AmpDom.state = -4;
 					}
-					changeBackground(htp);
+					if(AmpDom.state == -3)
+						changeBackground(htp);
+					else if(AmpDom.state == -2)
+						changeBackground(cred);
 					
-					break;
-				case -1:
-					if(b.name.equals("back") || b.name.equals("sound")){
-						b.draw();
-					}
-					if(b.clicked() && b.name.equals("back")){
-						b.draw();	
-						AmpDom.state = -3;
-					}
-					changeBackground(cred);
-					break;
-					
-				case 0:
+				}
+				//game play screens
+				else if(AmpDom.state%2 == 0 && AmpDom.state > 0){
 					
 					if(b.name.equals("sound")){						
 						b.draw();
@@ -165,27 +151,43 @@ public class Menu {
 						}
 					}
 					
-					break;
-				case 1:
+				}//all cut scenes
+				else if((AmpDom.state%2 == 1 && AmpDom.state > 0) || AmpDom.state == -1){
 					if(b.name.equals("next")){
 						b.draw();
 					}
 					if(b.clicked() && b.name.equals("next")){
 						b.draw();	
-						AmpDom.state = 2;
-					}
-					changeBackground(cut1);
-					break;
-				case 2:	
-					if(b.name.equals("sound")){						
-						b.draw();	
-						b.clicked();
+						if(AmpDom.state == -1)
+							AmpDom.state = 0;
+						else if(AmpDom.state == 1)
+							AmpDom.state = 2;
+						else if(AmpDom.state == 3)
+							AmpDom.state = 4;
+						else if(AmpDom.state == 5)
+							AmpDom.state = 6;
+						else if(AmpDom.state == 7)
+							AmpDom.state = 8;
+						else if(AmpDom.state == 9)
+							AmpDom.state = 10;
+						else if(AmpDom.state == 11)
+							AmpDom.state = 12;
+						else if(AmpDom.state == 13)
+							AmpDom.state = 14;
+						else if(AmpDom.state == 15)
+							AmpDom.state = 16;
+						else if(AmpDom.state == 17)
+							AmpDom.state = 18;
+						else if(AmpDom.state == 19)
+							AmpDom.state = -4;
+						
 					}
 					
-					break;
+					changeBackground(cut1);
+					
+				}
 			
 			}
-		}
 	}
 	
 	public void draw(){
@@ -207,16 +209,12 @@ public class Menu {
 		cred.dispose();
 		back_main.dispose();
 		credits.dispose();
-//		howl.dispose();
 		htpb.dispose();
 //		pause.dispose();
-//		jump.dispose();
 //		play.dispose();
 		play_main.dispose();
 		son.dispose();
 		soff.dispose();
-//		shell.dispose();
-//		spit.dispose();
 		for(Button b : buttons){
 			b.dispose();
 		}
