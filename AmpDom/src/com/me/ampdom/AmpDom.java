@@ -38,7 +38,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = 0;
+	public static int state = -5;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -203,6 +203,7 @@ public class AmpDom implements ApplicationListener {
 						getHit();//BeginTime = System.nanoTime();
 					//}
 					frog.icon.setColor(Color.RED);
+					detect.enemyDmg=false;
 					detect.isHit = false;
 					damage.play();
 				}
@@ -211,6 +212,7 @@ public class AmpDom implements ApplicationListener {
 			//System.out.println(frog.entity.getLinearVelocity().y);
 			if(detect.obstacleDmg && detect.isHit){
 				frog.takeDamage(100);	
+				detect.obstacleDmg=false;
 				detect.isHit = false;
 				damage.play();
 				System.out.println("youve been hit by spikes!"+ frog.getHealth());
@@ -314,6 +316,8 @@ public class AmpDom implements ApplicationListener {
 			tiledMapHelper.getCamera().update();
 
 			
+			
+			//load level bg
 			    batch.begin();
 				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 				level.levelSprite.draw(batch);
@@ -323,12 +327,20 @@ public class AmpDom implements ApplicationListener {
 
 
 			for(FlyingEnemy f : LevelMap.flyers){
-				if(detect.enemPos == f.entity.getPosition() && detect.spitEnem)
+				if(detect.enemPos == f.entity.getPosition() )
 				{
-					f.die();
-					detect.spitEnem = false;
-	          	}
-				
+					 if(detect.spitEnem)
+					 {
+				      	f.die();
+					    detect.spitEnem = false;
+	          	     }
+					 
+					 if(detect.attackEnem){
+						 f.die();
+						 detect.attackEnem=false;
+					 }
+				}
+			
 
 				f.directPos = frog.entity;
 				if(Math.sqrt( Math.pow( frog.entity.getPosition().x - f.entity.getPosition().x , 2 )
@@ -349,14 +361,19 @@ public class AmpDom implements ApplicationListener {
 			
 			for(Enemy e : LevelMap.enemies)
 			{
+				
 				if(detect.enemPos == e.entity.getPosition())
-				{					
+				{
+					
 					if(detect.spitEnem)
 					{
 						detect.spitEnem = false;
 						e.die();
 					}
-					
+					if(detect.attackEnem){
+						e.die();
+						detect.attackEnem=false;
+					}
 					//alter enem vel
 					if(detect.shoutEnem)
 					{
