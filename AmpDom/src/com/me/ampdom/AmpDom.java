@@ -97,20 +97,14 @@ public class AmpDom implements ApplicationListener {
 		world = new World(new Vector2(0.0f, -10.0f), true);
 		detect = new EnemyContact();
 		world.setContactListener(detect);
-<<<<<<< HEAD
-		
-		level = new LevelMap();		
-		level.create(world, 0, screenWidth, screenHeight,detect);
-		
-		frog = new Alabaster(world, 1.0f, 5.0f);
-=======
+
 		level = new LevelMap();
 		int lev = 0;
 		if(state > 0)
 			lev = state;
 		level.create(world,18, screenWidth, screenHeight,detect);
 		frog = new Alabaster(world, 1.0f, 9.0f);
->>>>>>> 1bb51c6d17a0961d3068e3c02612be1538ba4621
+
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
 		damage = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/hit.wav", FileType.Internal));
@@ -318,28 +312,13 @@ public class AmpDom implements ApplicationListener {
 
 			// need some array to load all creatures or something wrd
 			tiledMapHelper.getCamera().update();
-<<<<<<< HEAD
-			if(level.currentLevel==2 || level.currentLevel==4){//?
-				batch.begin();
-				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
-				LevelMap.forestbgSprite.setPosition(0, 0);
-				LevelMap.forestbgSprite.draw(batch);
-				batch.end();
-			}
-			
-=======
+
 			
 			    batch.begin();
 				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 				level.levelSprite.draw(batch);
 				batch.end();
 		
-
-
-
-
-
->>>>>>> 1bb51c6d17a0961d3068e3c02612be1538ba4621
 			tiledMapHelper.render();
 
 
