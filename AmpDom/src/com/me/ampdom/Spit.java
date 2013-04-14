@@ -6,13 +6,33 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Spit {
-	Body b;
-
-	Spit(World world, BodyDef bDef, FixtureDef fDef)
+	Body body;
+	float x, y;
+	float bodyOffset = 0.5f;
+	final float spitVel = 10.0f;
+	
+	public Spit(World w, BodyDef spitBodyDef, FixtureDef spitFixtureDef, boolean facingRight, float x, float y)
 	{
-		b = world.createBody(bDef);
-		b.createFixture(fDef);
+		this.body = w.createBody(spitBodyDef);		
+		this.body.createFixture(spitFixtureDef);
+		
+		if(facingRight)
+			this.body.setUserData("RIGHT_SPIT");
+		else
+			this.body.setUserData("LEFT_SPIT");
+		
+		if(facingRight)
+		{
+			body.setTransform(x, y,0);
+			body.setLinearVelocity(spitVel, 0.0f);
+		}
+		else
+		{
+			body.setTransform(x, y,0);
+			body.setLinearVelocity(-spitVel, 0.0f);
+		}	
+		
+		this.x = this.body.getPosition().x;
+		this.y = this.body.getPosition().y;		
 	}
-	
-	
 }

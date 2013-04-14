@@ -41,7 +41,7 @@ public class AmpDom implements ApplicationListener {
 	public static int state = 0;
 	Sprite shellSprite;
 	Texture shellText;
-	SpriteBatch batch;
+	static SpriteBatch batch;
 	
 	// HUD
 	float shellElapsedTime;
@@ -99,7 +99,7 @@ public class AmpDom implements ApplicationListener {
 		world.setContactListener(detect);
 		
 		level = new LevelMap();		
-		level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
+		level.create(world, 0, screenWidth, screenHeight,detect);
 		
 		frog = new Alabaster(world, 1.0f, 5.0f);
         lastRender = System.nanoTime();
@@ -309,6 +309,14 @@ public class AmpDom implements ApplicationListener {
 
 			// need some array to load all creatures or something wrd
 			tiledMapHelper.getCamera().update();
+			if(level.currentLevel==2 || level.currentLevel==4){//?
+				batch.begin();
+				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
+				LevelMap.forestbgSprite.setPosition(0, 0);
+				LevelMap.forestbgSprite.draw(batch);
+				batch.end();
+			}
+			
 			tiledMapHelper.render();
 
 
@@ -382,12 +390,45 @@ public class AmpDom implements ApplicationListener {
 		
 			}
 			
+			//falling elements
+			for(Dropper d: LevelMap.droppers)
+			{
+				d.check(frog.entity.getPosition().x, frog.entity.getPosition().y);
+				d.batchRender(tiledMapHelper);
+			}
+			
+			//stationary platforms
+			for(StationaryPlatform s: LevelMap.stationaryPlatforms)
+			{
+				s.batchRender(tiledMapHelper);
+			}			
+			
+			//falling logs
+			for(WaterLog w: LevelMap.fallingLogs)
+			{
+				w.fall();
+				w.batchRender(tiledMapHelper);
+			}
+			
+			//sandstorms
+			for(Sandstorm s: LevelMap.sandstorms)
+			{
+				s.attack(frog.entity.getPosition().x);
+				s.batchRender(tiledMapHelper);
+			}
+			
+			//moving platforms
+			for(MovingPlatform m: LevelMap.movingPlatforms)
+			{
+				m.move();
+				m.batchRender(tiledMapHelper);
+			}
+			
 			frog.batchRender(tiledMapHelper);
 
 			if(level.currentLevel==0){//?
-			LevelMap.endlevelpt1.batchRender(tiledMapHelper);
-			
-			LevelMap.jar.batchRender(tiledMapHelper);
+				//LevelMap.endlevelpt1.batchRender(tiledMapHelper);				
+				//LevelMap.jar.batchRender(tiledMapHelper);
 			}
 			if(detect.endLevel){
 				  System.out.println("iio");
