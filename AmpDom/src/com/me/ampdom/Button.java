@@ -1,7 +1,6 @@
 package com.me.ampdom;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,6 +52,9 @@ public class Button{
 		}else if(name.equals("htp")){
 			width = 155;
 			height = t.getHeight()-17;
+		}else if(name.equals("exit")){
+			width = 52;
+			height = t.getHeight() -17;
 		}else{
 			width = t.getWidth();
 			height = t.getHeight();
@@ -86,6 +88,9 @@ public class Button{
 		}else if(name.equals("htp")){
 			width = 155;
 			height = t.getHeight()-17;
+		}else if(name.equals("exit")){
+			width = 52;
+			height = t.getHeight() -17;
 		}else{
 			width = t.getWidth();
 			height = t.getHeight();

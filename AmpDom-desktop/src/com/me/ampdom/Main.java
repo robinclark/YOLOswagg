@@ -11,7 +11,7 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Amphibian Dominion";
 		cfg.useGL20 = false;
-		cfg.width = 1028;
+		cfg.width = 1024;
 		cfg.height = 680;
 		
 		new LwjglApplication(new AmpDom(), cfg);

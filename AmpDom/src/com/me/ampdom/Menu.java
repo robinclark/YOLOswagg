@@ -15,12 +15,12 @@ public class Menu {
 	public ArrayList<Button> buttons;
 	public OrthographicCamera cam;
 	public Texture start, main, htp, cred, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11;
-	public Texture back_main, credits, htpb, pause, play;
-	public Texture play_main, son, soff, startb, next, help;
-	public Sprite icon;
+	public Texture back_main, credits, htpb, pause, play, home;
+	public Texture play_main, son, soff, startb, next, help, exit;
+	public Sprite icon, popup;
 	public SpriteBatch sb;
 	public static Music music;
-	public boolean soundOn = true;
+	public boolean soundOn = true, pop = false;
 	//creates a menu
 	public Menu(OrthographicCamera cam){
 		
@@ -53,13 +53,21 @@ public class Menu {
 		son = new Texture(Gdx.files.internal("data/Menu/soundON.png"));
 		soff = new Texture(Gdx.files.internal("data/Menu/soundOFF.png"));
 		startb = new Texture(Gdx.files.internal("data/Menu/start_button copy.png"));
-		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
+		next = new Texture(Gdx.files.internal("data/Menu/next.png"));
 		help = new Texture(Gdx.files.internal("data/Menu/helpButton.png"));
+		home = new Texture(Gdx.files.internal("data/Menu/home.png"));
+		exit = new Texture(Gdx.files.internal("data/Menu/Exit.png"));
+		initialize();
+	}
+	
+	public void initialize(){
 		addBackground();
 		initializeButtons();
 		music = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 		music.setLooping(true);
 		music.play();
+		popup = new Sprite(htp);
+		popup.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}
 	
 	public void initializeButtons(){
@@ -70,18 +78,20 @@ public class Menu {
 		buttons.add(new Button("next",w-80,10,true,next,next, cam));
 		buttons.add( new Button("start",w/2 - 50,h - (h - 50),true,startb,startb, cam) );
 		buttons.add( new Button("sound",w - 50,h - 50,true,son,soff, cam) );
-		buttons.add( new Button("help", w - 80,h - 50,true,help,help, cam) );
+		buttons.add( new Button("help", w - 90,h - 50,true,help,help, cam) );
+		buttons.add( new Button("home", w - 130,h-50,true,home,home,cam));
+		buttons.add( new Button("exit",w/2-20,h/2-150,true,exit,exit,cam));
 		//buttons.add( new Button("play",760,580,true,pause,play, cam) );
 		buttons.add( new Button("play_main",w/2 - 20,h/2 - 50,true,play_main, play_main, cam) );
 		buttons.add( new Button("back",w/2-20, 50,true,back_main,back_main, cam) );
 		buttons.add( new Button("credits",w/2-40,h/2 - 100,true,credits,credits, cam) );
 		buttons.add( new Button("htp",w/2-70, h/2,true,htpb,htpb, cam) );
 		
+		
 	}
 	
 	public void addButton(Button b){
-		buttons.add(b);
-	
+		buttons.add(b);	
 	}
 	
 	public void addBackground(){		
@@ -94,7 +104,6 @@ public class Menu {
 	public void changeBackground(Texture t){
 		icon = new Sprite(t);
 		icon.setPosition(0, 0);
-		sb = new SpriteBatch();
 		icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}
 	
@@ -117,7 +126,7 @@ public class Menu {
 					if(b.name.equals("start")) {
 						b.draw();
 						if(b.clicked())
-						AmpDom.state = -4;
+							AmpDom.state = -4;
 					}
 				}else if(AmpDom.state == -4){ //main screen
 									
@@ -129,13 +138,19 @@ public class Menu {
 					if(b.name.equals("credits")){
 						b.draw();
 						if(b.clicked())
-						AmpDom.state = -2;
+							AmpDom.state = -2;
+					}
+					
+					if(b.name.equals("exit")){
+						b.draw();	
+						if(b.clicked())
+							System.exit(0);
 					}
 					
 					if(b.name.equals("play_main")){
 						b.draw();	
 						if(b.clicked())
-						AmpDom.state = -1;
+							AmpDom.state = -1;
 					}
 					if(b.name.equals("sound")){						
 						b.draw();
@@ -158,8 +173,9 @@ public class Menu {
 					if(b.name.equals("back")){
 						b.draw();
 						if(b.clicked())
-						AmpDom.state = -4;
+							AmpDom.state = -4;
 					}
+					
 					if(b.name.equals("sound")){						
 						b.draw();
 						if(b.clicked()){
@@ -203,9 +219,43 @@ public class Menu {
 						}
 					}
 					
+					if(b.name.equals("help")){	
+						b.draw();
+						if(b.clicked()){
+							if(b.toggle == -1){
+								pop = false;
+							}else{
+								pop = true;
+							}
+						}
+					}
+					
+					if(b.name.equals("home")){
+						b.draw();
+						if(b.clicked())
+							AmpDom.state = -4;
+					}
+					
 				}else if((AmpDom.state%2 == 1 && AmpDom.state > 0) || AmpDom.state == -1){//all cut scenes
 					
 					LevelMap.bgMusic.setVolume(0);
+					
+					if(b.name.equals("help")){	
+						b.draw();
+						if(b.clicked()){
+							if(b.toggle == -1){
+								pop = false;
+							}else{
+								pop = true;
+							}
+						}
+					}
+					
+					if(b.name.equals("home")){
+						b.draw();
+						if(b.clicked())
+							AmpDom.state = -4;
+					}
 					
 					if(b.name.equals("sound")){						
 						b.draw();
@@ -283,11 +333,18 @@ public class Menu {
 	
 	public void draw(){
 		sb.begin();
+		
+		
 		if(AmpDom.state % 2 == 0 && AmpDom.state >= 0){
 			icon.draw(sb, 0.0f);
 		}else{
 			icon.draw(sb, 1.0f);
 		}
+		//draw popup for help
+		if(pop)
+			popup.draw(sb, 1.0f);
+		else if(!pop)
+			popup.draw(sb, 0.0f);
 		sb.end();
 	}
 	
@@ -306,6 +363,7 @@ public class Menu {
 		play_main.dispose();
 		son.dispose();
 		soff.dispose();
+		help.dispose();
 		c1.dispose();
 		/*c2.dispose();
 		c3.dispose();
