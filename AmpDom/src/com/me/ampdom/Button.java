@@ -1,7 +1,6 @@
 package com.me.ampdom;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,11 +38,32 @@ public class Button{
 	
 	public void initialize(){
 		icon = new Sprite(t);
+		
+		
+		if(name.equals("play_main")){
+			width = 52;
+			height = t.getHeight() -17;
+		}else if(name.equals("back")){
+			width = 57;
+			height = t.getHeight()-17;
+		}else if(name.equals("credits")){
+			width = 90;
+			height = t.getHeight()-17;
+		}else if(name.equals("htp")){
+			width = 155;
+			height = t.getHeight()-17;
+		}else if(name.equals("exit")){
+			width = 52;
+			height = t.getHeight() -17;
+		}else{
+			width = t.getWidth();
+			height = t.getHeight();
+		}
+		
 		icon.setPosition(xLoc, yLoc);
 		
-		width = t.getWidth();
-		height = t.getHeight();
-		icon.setSize(width,height);
+		
+		//icon.setSize(width,height);
 		sb = new SpriteBatch();	
 	}
 	
@@ -56,9 +76,26 @@ public class Button{
 	public void changeIcon(Texture t){
 		icon = new Sprite(t);
 		icon.setPosition(xLoc, yLoc);
-		width = t.getWidth();
-		height = t.getHeight();
-		icon.setSize(width,height);
+		if(name.equals("play_main")){
+			width = 52;
+			height = t.getHeight() -17;
+		}else if(name.equals("back")){
+			width = 57;
+			height = t.getHeight()-17;
+		}else if(name.equals("credits")){
+			width = 90;
+			height = t.getHeight()-17;
+		}else if(name.equals("htp")){
+			width = 155;
+			height = t.getHeight()-17;
+		}else if(name.equals("exit")){
+			width = 52;
+			height = t.getHeight() -17;
+		}else{
+			width = t.getWidth();
+			height = t.getHeight();
+		}
+		//icon.setSize(width, height);
 		sb = new SpriteBatch();
 	}
 	
