@@ -56,7 +56,7 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level1/dungeonbg.png"));
@@ -138,7 +138,7 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			
@@ -160,7 +160,7 @@ public class LevelMap {
 			
 			break;
 		case 4:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
@@ -176,7 +176,7 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 6:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
@@ -195,7 +195,7 @@ public class LevelMap {
 			
 			break;
 		case 8:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
@@ -215,7 +215,7 @@ public class LevelMap {
 			
 			break;
 		case 10:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
@@ -237,7 +237,7 @@ public class LevelMap {
 			
 			break;
 		case 12:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
@@ -257,7 +257,7 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 14:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
@@ -276,7 +276,7 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 16:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
@@ -295,7 +295,7 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 18:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.wav", FileType.Internal));
+			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));
 			test.setLooping(true);
 			test.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level6/desertbg.png"));

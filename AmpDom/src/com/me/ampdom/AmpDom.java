@@ -97,17 +97,13 @@ public class AmpDom implements ApplicationListener {
 		world = new World(new Vector2(0.0f, -10.0f), true);
 		detect = new EnemyContact();
 		world.setContactListener(detect);
-		
 		level = new LevelMap();		
 		level.create(world,state, screenWidth, screenHeight,detect);
-		
 		frog = new Alabaster(world, 1.0f, 9.0f);
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
-		
 		damage = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/hit.wav", FileType.Internal));
 		flyjar = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jar.wav", FileType.Internal));
-		
 		tiledMapHelper = level.getMap();				
 		
 		//load background
