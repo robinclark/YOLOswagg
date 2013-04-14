@@ -14,14 +14,14 @@ public class LevelMap {
 	
 	protected TiledMapHelper tiledMapHelper;
 	int screenWidth;
-	int screenHeight;
+	int levelHeight;
 	//CurrentLevel currentLevel;//RC added
 	int currentLevel; //RC removed. using enums easier 
 	EnemyContact detect;
 	static Music bgMusic;
 	World world;
     public static final float PIXELS_PER_METER = 60.0f;	
-    static EndLevelTrigger endlevelpt1;
+    static EndLevelTrigger endlevel;
 	static ArrayList<FlyingEnemy> flyers;
 	static ArrayList<Enemy> enemies;
 	static ArrayList<Obstacle> spikes;
@@ -43,9 +43,10 @@ public class LevelMap {
     protected Sprite levelSprite;
 
 	
-	public LevelMap(){
+	public LevelMap()
+	{
 		this.currentLevel=0;//CurrentLevel.ESCAPE_FROM_THE_CASTLE;
-		this.screenHeight = -1;
+		this.levelHeight = -1;
 		this.screenWidth = -1;
 		this.tiledMapHelper = new TiledMapHelper();
 		
@@ -60,10 +61,236 @@ public class LevelMap {
 		movingPlatforms = new ArrayList<MovingPlatform>();
 	}
 	
-	public void create(World world, /*CurrentLevel*/int currentLevel, int screenWidth, int screenHeight,EnemyContact detect) {
+	public void reInit()
+	{
+		fallingLogs = new ArrayList<WaterLog>();
+		droppers = new ArrayList<Dropper>();
+		stationaryPlatforms = new ArrayList<StationaryPlatform>();
+		flyers = new ArrayList<FlyingEnemy>();
+		enemies = new ArrayList<Enemy>();
+		spikes = new ArrayList<Obstacle>();
+		plats = new ArrayList<MovingPlat>();
+		sandstorms = new ArrayList<Sandstorm>();
+		movingPlatforms = new ArrayList<MovingPlatform>();
+	}
+	
+	public void loadStuff(int levelHeight)
+	{
+		ArrayList<TiledObjectGroup> objectGroup = tiledMapHelper.getMap().objectGroups;
+		/*********************************************************************************/
+		//--moving platform
+		for(TiledObjectGroup tG: objectGroup)
+		{
+			if(tG.name.equals("movingPlatform"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					float range = 0.0f;
+					boolean vert = false;
+					
+					if(tO.width > tO.height)
+					{
+						range = tO.width/AmpDom.PIXELS_PER_METER;
+						vert = false;
+					}
+					else
+					{
+						range = tO.height/AmpDom.PIXELS_PER_METER;
+						vert = true;
+					}
+					System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
+					System.out.println("y: " + (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
+					
+					System.out.println("range: " + range);
+					movingPlatforms.add(new MovingPlatform(world, "data/Objects/dungeonPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, range/4.0f, vert, 128, 32));
+				}
+			}
+			/*********************************************************************************/
+			//--enemies
+			if(tG.name.equals("wolf"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,64));
+				}
+			}
+			if(tG.name.equals("frog"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,32));
+				}
+			}
+			if(tG.name.equals("snake"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/snake.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,32));
+				}
+			}
+			if(tG.name.equals("lion"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/mountainLion.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,56));
+				}
+			}
+			if(tG.name.equals("ram"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/ram.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,104,64));
+				}
+			}
+			if(tG.name.equals("lizard"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/monitorLizard.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,32));
+				}
+			}
+			if(tG.name.equals("armadillos"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/armadillo.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,48));
+				}
+			}
+			/*********************************************************************************/
+			//--flyers
+			if(tG.name.equals("owl"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					flyers.add(new FlyingEnemy(world, "data/Enemies/owl.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,40));
+				}
+			}
+			if(tG.name.equals("hawk"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					flyers.add(new FlyingEnemy(world, "data/Enemies/hawk.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
+				}
+			}
+			if(tG.name.equals("mosquito"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					flyers.add(new FlyingEnemy(world, "data/Enemies/mosquito.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,48));
+				}
+			}
+			if(tG.name.equals("bats"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
+				}
+			}
+			if(tG.name.equals("vulture"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					flyers.add(new FlyingEnemy(world, "data/Enemies/owl.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,128,64));
+				}
+			}
+			/*********************************************************************************/
+			//--spikes
+			if(tG.name.equals("spikes"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/spikes.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}			
+			if(tG.name.equals("sand"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/quickSand.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}			
+			if(tG.name.equals("cactus"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/cactus.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}
+			if(tG.name.equals("poison"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/swampPoison.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}
+			if(tG.name.equals("plant"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}
+			/*********************************************************************************/
+			//--sandstorms
+			if(tG.name.equals("sandstorm"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 64));
+				}
+			}
+			/*********************************************************************************/
+			//--falling things
+			if(tG.name.equals("log"))//stationary platform
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					fallingLogs.add(new WaterLog(world, "data/Objects/log.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.height/AmpDom.PIXELS_PER_METER, 128, 32));
+				}
+			}
+			if(tG.name.equals("bees"))//beehive
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					droppers.add(new Dropper(world, "data/Objects/beehive.png", tO.x/AmpDom.PIXELS_PER_METER, ((levelHeight - tO.y)/AmpDom.PIXELS_PER_METER), tO.width/AmpDom.PIXELS_PER_METER, 64, 64));
+				}
+			}		
+			/*********************************************************************************/
+			//--stationary plats
+			if(tG.name.equals("leaf"))//stationary platform
+			{
+				System.out.println("height: " + levelHeight);
+				for(TiledObject tO: tG.objects)
+				{
+					System.out.println("x, y: " + tO.x/AmpDom.PIXELS_PER_METER + ", " + (960 - tO.y)/AmpDom.PIXELS_PER_METER);
+					stationaryPlatforms.add(new StationaryPlatform(world, "data/Objects/leafPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 64, 24));
+				}
+			}
+			/*********************************************************************************/
+			//--fly jar	
+			if(tG.name.equals("flyjar"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					jar = new FlyJar(world, "data/Objects/flyjar.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
+				}
+			}
+			/*********************************************************************************/
+			//--end level marker
+			if(tG.name.equals("end"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					endlevel = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
+				}
+			}			
+		}
+	}
+	
+	public void create(World world, /*CurrentLevel*/int currentLevel, int screenWidth, int levelHeight,EnemyContact detect) {
 		this.world = world;
 		this.currentLevel = currentLevel;
-		this.screenHeight = screenHeight;
+		this.levelHeight = levelHeight;
 		this.screenWidth = screenWidth;
 		this.detect = detect;
 		this.tiledMapHelper = new TiledMapHelper();		
@@ -71,99 +298,25 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-
-			
-			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
-			fallingLogs = new ArrayList<WaterLog>();
-			droppers = new ArrayList<Dropper>();
-			stationaryPlatforms = new ArrayList<StationaryPlatform>();
-
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level1/dungeonbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
-			levelSprite.setScale(1.1f,1.0f);
+			levelSprite.setScale(1.1f,1.0f);			
 			
-			//bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
-
-			flyers = new ArrayList<FlyingEnemy>();
-			enemies = new ArrayList<Enemy>();
-			spikes = new ArrayList<Obstacle>();
-			plats = new ArrayList<MovingPlat>();
-			sandstorms = new ArrayList<Sandstorm>();
-			movingPlatforms = new ArrayList<MovingPlatform>();
-			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 
 			tiledMapHelper.setPackerDirectory("data/packer/level");
 			tiledMapHelper.loadMap("data/world/level1/level.tmx");
 			
 			tiledMapHelper.loadCollisions("data/packer/level/collisions.txt", world,
-					PIXELS_PER_METER);
+					PIXELS_PER_METER);			
 			
-			ArrayList<TiledObjectGroup> objectGroup = tiledMapHelper.getMap().objectGroups;
-			for(TiledObjectGroup tG: objectGroup)
-			{
-				for(TiledObject tO: tG.objects)
-				{
-					if(tO.name.equals("movingPlatform"))
-					{
-						float range = 0.0f;
-						boolean vert = false;
-						
-						if(tO.width > tO.height)
-						{
-							range = tO.width/AmpDom.PIXELS_PER_METER;
-							vert = false;
-						}
-						else
-						{
-							range = tO.height/AmpDom.PIXELS_PER_METER;
-							vert = true;
-						}
-						System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
-						System.out.println("y: " + (320 - tO.y)/AmpDom.PIXELS_PER_METER);
-						
-						System.out.println("range: " + range);
-						movingPlatforms.add(new MovingPlatform(world, "data/Objects/dungeonPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (320 - tO.y)/AmpDom.PIXELS_PER_METER, range/4.0f, vert, 128, 32));
-					}
-					if(tO.name.equals("wolf"))
-					{
-						enemies.add(new Enemy(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, .7f, .7f,128,64));
-					}
-					if(tO.name.equals("snake"))
-					{
-						enemies.add(new Enemy(world, "data/Enemies/snake.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, .7f, .7f,128,64));
-					}
-					if(tO.name.equals("sandstorm"))
-					{
-						sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (320 - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 64));
-					}
-					if(tO.name.equals("log"))//stationary platform
-					{
-						fallingLogs.add(new WaterLog(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, (320 - tO.y)/AmpDom.PIXELS_PER_METER, tO.height/AmpDom.PIXELS_PER_METER/2, 128, 64));
-					}
-					if(tO.name.equals("leaf"))//stationary platform
-					{						
-						stationaryPlatforms.add(new StationaryPlatform(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, (320 - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 64));
-					}
-					if(tO.name.equals("bees"))//beehive
-					{
-						droppers.add(new Dropper(world, "data/Objects/beehive.png", tO.x/AmpDom.PIXELS_PER_METER, ((320 - tO.y)/AmpDom.PIXELS_PER_METER), tO.width/AmpDom.PIXELS_PER_METER, 64, 64));
-					}
-					if(tO.name.equals("owl"))
-					{
-						flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER,64,64));
-					}
-					if(tO.name.equals("flyjar"))
-					{
-						jar = new FlyJar(world, "data/Objects/flyjar.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER);
-					}
-				}
-			}
+			reInit();
+			//loadStuff();
 			
-			/*plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 71.29f, 5.2f,0,1));
+			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 71.29f, 5.2f,0,1));
 			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 73.5f, 5.2f,0,-1));
 			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 82.64f, 5.2f,0,-1));
 			plats.add(new MovingPlat(world,"data/Objects/dungeonPlatform.png", 85.07f, 5.2f,0,1));
@@ -182,7 +335,7 @@ public class LevelMap {
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 98.25f, 7.0f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 111.0f, 8.5f,64,64));
 	    	flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", 125.3f, 6.0f,64,64));
-			*/
+			
 			/*****************************************************************************************/
 			//--!!!add flyers from object layer!!!
 			/*ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
@@ -200,7 +353,7 @@ public class LevelMap {
 			/*****************************************************************************************/
 	    	
 		
-			/*enemies.add(new Enemy(world, "data/Enemies/rat2.png", 11.0f, 3.43f, .7f, .7f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 11.0f, 3.43f, .7f, .7f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 16.59f, 4.3f, .7f, .7f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 21.82f, 3.43f,1.42f,1.42f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 28.69f, 1.29f,1.62f,1.62f,128,64));
@@ -223,82 +376,45 @@ public class LevelMap {
 			for(float i=0;i<30;i++)
 		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
 			
-			endlevelpt1 = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
+			endlevel = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
 		    //test.play();
-			*/
+			
 			break;
 		case 2:
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
-		    tiledMapHelper.setPackerDirectory("data/packer/level2");
-			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
-	        tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
-					PIXELS_PER_METER);
-			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
-			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
 			
-			//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
-//			for(TiledObjectGroup tG: objectGroups)
-//			{
-//				for(TiledObject tO: tG.objects)
-//				{
-//					if(tO.name.equals("flyer"))
-//					{
-//						flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER,64,64));
-//					}
-//				}
-//			}
-			ArrayList<TiledObjectGroup> objectGroup1 = tiledMapHelper.getMap().objectGroups;
-			for(TiledObjectGroup tG: objectGroup1)
-			{
-				for(TiledObject tO: tG.objects)
-				{
-					if(tO.name.equals("wolf"))
-					{
-						enemies.add(new Enemy(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, .7f, .7f,128,64));
-					}
-					if(tO.name.equals("snake"))
-					{
-						enemies.add(new Enemy(world, "data/Enemies/snake.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, .7f, .7f,128,64));
-					}
-					if(tO.name.equals("leaf"))//stationary platform
-					{
-						stationaryPlatforms.add(new StationaryPlatform(world, "data/Enemies/wolf.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 64, 21));
-					}
-					if(tO.name.equals("bees"))//beehive
-					{
-						droppers.add(new Dropper(world, "data/Objects/beehive.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 64, 21));
-					}
-					if(tO.name.equals("owl"))
-					{
-						flyers.add(new FlyingEnemy(world, "data/Enemies/bat.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER,64,64));
-					}
-					if(tO.name.equals("flyjar"))
-					{
-						jar = new FlyJar(world, "data/Objects/flyjar.png", tO.x/AmpDom.PIXELS_PER_METER, tO.y/AmpDom.PIXELS_PER_METER);
-					}
-				}
-			}
+			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
+			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 		    tiledMapHelper.setPackerDirectory("data/packer/level2");
 			tiledMapHelper.loadMap("data/world/level2/level2.tmx");
 	        tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
-					PIXELS_PER_METER);
+					PIXELS_PER_METER);		
+
+			reInit();
+			loadStuff(15*64);
+			
 			break;
 		case 4:
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
-			bgMusic.play();
+			bgMusic.play();			
+			
 			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 		    tiledMapHelper.setPackerDirectory("data/packer/level2");
 			tiledMapHelper.loadMap("data/world/level2/level2.2.tmx");
 			tiledMapHelper.loadCollisions("data/packer/level2/collision2", world,
 					PIXELS_PER_METER);
+			
+			reInit();
+			loadStuff(15*64);
+			
 			break;
 		case 6:
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
@@ -308,11 +424,14 @@ public class LevelMap {
 			levelSprite = new Sprite(levelbg,0,0,1024,8192);
 			levelSprite.setScale(1.8f,2.0f);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level3");
 			tiledMapHelper.loadMap("data/world/level3/level3.tmx");
 			tiledMapHelper.loadCollisions("data/packer/level3/collisions3.txt", world,
 					PIXELS_PER_METER);
+			
+			reInit();
+			loadStuff(99*64);
 			
 			break;
 		case 8:
@@ -323,7 +442,7 @@ public class LevelMap {
 			levelSprite = new Sprite(levelbg,0,0,1024,8192);
 		    levelSprite.setScale(1.8f,2.0f);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level3");
 			tiledMapHelper.loadMap("data/world/level3/level3.2.tmx");
 			
@@ -340,7 +459,7 @@ public class LevelMap {
 			levelSprite.setScale(2.5f,.75f);
 			levelSprite.setPosition(0,-65);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level4");
 			tiledMapHelper.loadMap("data/world/level4/level4.tmx");
 			
@@ -357,7 +476,7 @@ public class LevelMap {
 			levelSprite.setScale(2.5f,.75f);
 			levelSprite.setPosition(0,-65);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level4");
 			tiledMapHelper.loadMap("data/world/level4/level4.2.tmx");
 			
@@ -372,7 +491,7 @@ public class LevelMap {
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 		    levelSprite.setScale(2.5f,1.0f);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level5");
 			tiledMapHelper.loadMap("data/world/level5/level5.tmx");
 			
@@ -387,7 +506,7 @@ public class LevelMap {
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 		    levelSprite.setScale(2.5f,1.0f);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level5");
 			tiledMapHelper.loadMap("data/world/level5/level5.2.tmx");
 			
@@ -403,7 +522,7 @@ public class LevelMap {
 			levelSprite.setScale(2.5f,1.0f);
 			levelSprite.setPosition(6000f, 0);
 			
-			tiledMapHelper.prepareCamera(screenWidth, screenHeight);
+			tiledMapHelper.prepareCamera(screenWidth, levelHeight);
 			tiledMapHelper.setPackerDirectory("data/packer/level6");
 			tiledMapHelper.loadMap("data/world/level6/level6.tmx");
 			
@@ -474,7 +593,7 @@ public class LevelMap {
 			
 		levelbg.dispose();
 		levelSprite.getTexture().dispose();
-		endlevelpt1.batch.dispose();
+		endlevel.batch.dispose();
         jar.batch.dispose();
 	    flyers.clear();
 		spikes.clear();

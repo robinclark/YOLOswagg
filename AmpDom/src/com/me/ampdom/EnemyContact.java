@@ -26,64 +26,46 @@ public void beginContact(Contact contact) {
 		final Fixture a=contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
+		/*special bodies*/
 		/**********************************************************/
-		//--bullet sensor contact
-		if(a.getBody().getUserData()=="SPIT" || b.getBody().getUserData()=="SPIT" )
-		{
-			System.out.println("spit collision");
-			if(a.getBody().getUserData()=="ENEMY") //register damage on enemy
-			{
-				
-			}				
-			//destroy spit
-		}
+		//--moving platform contact
+		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="MOVING_PLATFORM")
+			   grounded=true;
+		if(a.getBody().getUserData()=="MOVING_PLATFORM" && b.getBody().getUserData()=="FOOT")
+			   grounded=true;
 		
-		//--floor contact
-		if(a.getType() == Shape.Type.Edge || b.getType() == Shape.Type.Edge)
-		{
-			if(a.getBody().getUserData()=="PLAYER")
-				System.out.println("a");
-			if(b.getBody().getUserData()=="PLAYER") 
-				if(b.getType() == Shape.Type.Edge)
-					System.out.println("b");
-				//if(b.getType() == Shape.Type.Polygon)
-					//System.out.println("b");
-			//System.exit(0);			
-		}
-		
+		//--stationary platform
+		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+			   grounded=true;
+		if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="FOOT")
+			   grounded=true;		
 		/**********************************************************/
+		
 	if(a.getBody().getUserData()!= null &&  b.getBody().getUserData()!=null)
-	{		
+	{	
+		/*player enemy touch*/
+		/*******************************************************************************/
+		//--tongue
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY")
 		{
-	//		System.out.println("enemy contact 1");
 			enemyDmg =true;
 			isHit = true;
-			
-//			a.getBody().applyLinearImpulse(new Vector2(.5f,0.f),//0.8f),
-//		    		new Vector2(a.getBody().getPosition().x, a.getBody().getPosition().y));
 		}
 		
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
 		{
-		//    System.out.println("enemy contact 2");
 		    enemyDmg =true;
 			isHit = true;
-			
-//			b.getBody().applyLinearImpulse(new Vector2(.5f,0.f),//0.8f),
-//		    		new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y));
 		}
-		
-		
 		
 		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 			   grounded=true;
 		if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
-			   grounded=true;
+			   grounded=true;	
 		
-		
-		
-
+		/*flyjar*/
+		/*******************************************************************************/
+		//--flyjar
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FLYJAR")
 		{
 		  //  System.out.println("JAR");
@@ -96,6 +78,9 @@ public void beginContact(Contact contact) {
 		   collectJar=true;
 		}
 		
+		/*alabaster attacks*/
+		/*******************************************************************************/
+		//--tongue
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="TONGUE")
 		{
 		    System.out.println("TONGUE");
@@ -108,10 +93,9 @@ public void beginContact(Contact contact) {
 		    System.out.println("TONGUE");
 		    enemPos=b.getBody().getPosition();
 		    attackEnem = true;
-		}
-
+		}		
 		
-		
+		//--spit
 		if((a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="LEFT_SPIT") || (a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="RIGHT_SPIT"))
 		{
 			System.out.println("spit");
@@ -125,8 +109,9 @@ public void beginContact(Contact contact) {
 			enemPos=b.getBody().getPosition();			
 			  //attackEnem = true;
 			  spitEnem = true;
-		}
-
+		}		
+		
+		//--shout
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
 		{
 			if(spitEnem) System.out.println("spit true");
@@ -139,50 +124,43 @@ public void beginContact(Contact contact) {
 			enemPos=b.getBody().getPosition();
 			shoutEnem = true;
 		}
-
 		
+		/*obstacles*/
+		/*******************************************************************************/
+		//--spikes, poison, plants
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="OBSTACLE")
 		{
-		    //System.out.println("spike contact 1");
 		    obstacleDmg =true;
 		    isHit = true;
-//		    a.getBody().applyLinearImpulse(new Vector2(0.0f,0.95f),//0.8f),
-//		    		a.getBody().getWorldCenter());
-		}
-			
+		}			
 		if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="PLAYER")
 		{
-		    //System.out.println("spike contact 2");
 		    obstacleDmg =true;
-			   isHit = true;
-//			   b.getBody().applyLinearImpulse(new Vector2(0.0f,.95f),//0.8f),
-//					   b.getBody().getWorldCenter());
-		}
+			isHit = true;
+		}		
 		
-		
-			
+		/*end level trigger*/
+		/*******************************************************************************/		
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
 		{
 			//System.out.println("spike contact 1");
 			endLevel =true;
 			//a.getBody().applyLinearImpulse(new Vector2(0f,4.f),//0.8f),
-		    	//	new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y));
-			 
-		}
-				
+		    	//	new Vector2(b.getBody().getPosition().x, b.getBody().getPosition().y));			 
+		}				
 		if(a.getBody().getUserData()=="ENDLEVELTRIGGER" && b.getBody().getUserData()=="PLAYER")
 		{
 		    endLevel = true;
 		    //b.getBody().applyLinearImpulse(new Vector2(0f,4.f),//0.8f),
-		    	//	new Vector2(a.getBody().getPosition().x, a.getBody().getPosition().y));
-		    
+		    	//	new Vector2(a.getBody().getPosition().x, a.getBody().getPosition().y));		    
 		}	
+		/*******************************************************************************/
 	}	
 }
 
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
+		/*// TODO Auto-generated method stub
 		final Fixture a = contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
@@ -203,25 +181,14 @@ public void beginContact(Contact contact) {
 					
 			}
 				
-				
-
-//				if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
-//				grounded=true;
-//				if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
-//				grounded=true;
-//				
-					  
-				
-				
-				
-				if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="TONGUE"){
-						  attackEnem = true;
-						  enemPos=a.getBody().getPosition();
-				}
-				if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="ENEMY"){
+			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="TONGUE"){
 					  attackEnem = true;
 					  enemPos=a.getBody().getPosition();
-				}
+			}
+			if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="ENEMY"){
+				  attackEnem = true;
+				  enemPos=a.getBody().getPosition();
+			}
 						
 			if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="PLAYER"){
 			    System.out.println("TONGUE");
@@ -294,14 +261,14 @@ public void beginContact(Contact contact) {
 			//    System.out.println("JAR");
 			   collectJar=true;
 			}				 
-	   }
+	   }*/
 	}
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
 		final Fixture a=contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
-		if(contact.getFixtureA().getBody().getUserData()!= null && 
+		/*if(contact.getFixtureA().getBody().getUserData()!= null && 
 		   contact.getFixtureB().getBody().getUserData()!=null){
 			
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SHOUT")
@@ -375,7 +342,7 @@ public void beginContact(Contact contact) {
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="TONGUE")
 			   contact.setEnabled(false);
 	
-		}
+		}*/
 	}
 
 	//why do we need this?
@@ -387,15 +354,17 @@ public void beginContact(Contact contact) {
 		
 		if(contact.getFixtureA().getBody().getUserData()!= null && contact.getFixtureB().getBody().getUserData()!=null){
 			
-			 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
-					contact.setEnabled(false);
-			    if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
-				    contact.setEnabled(false);
+		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
+				contact.setEnabled(false);
+		 if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
+			    contact.setEnabled(false);
 		
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
+	    
+	    
 	    if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="ENEMY")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SPIT")

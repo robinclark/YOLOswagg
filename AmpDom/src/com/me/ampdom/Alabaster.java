@@ -421,8 +421,7 @@ public void displayHUD() {
 	// draw Alabaster Icon
 	icon.begin();
 	icon.draw(iconTexture,4,680-45,32,32);
-	icon.end();
-	
+	icon.end();	
 }
 
 	
@@ -437,9 +436,7 @@ public void move(MyInputProcessor input)
 	boolean moveRight = false;	
 	shell = false;
 	//shout = false;
-	//spit = false;
-
-		
+	//spit = false;	
 		//jumping
 
 		if(!input.buttons[MyInputProcessor.JUMP] && input.oldButtons[MyInputProcessor.JUMP])
@@ -573,34 +570,33 @@ public void move(MyInputProcessor input)
 	    	//if(spitCharge > 0) 
 	    	//{
 	    		spitSound.play();
-		    	spit = true;
-		    	//spitBody.setActive(true);
+		    	spit = true;		    	
 		    	spitSound.play();
-	    	
+		    	
+		    	//spitBody.setActive(true);
 		    	//System.out.print("spit");
 		    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
 		    	
-				Body b = world.createBody(spitBodyDef);
-				
-				b.createFixture(spitFixtureDef);
-				
+				//Body b = world.createBody(spitBodyDef);
+				//b.createFixture(spitFixtureDef);
+					    	
 				//handle left or right spit
-				if(facingRight)
-					b.setUserData("RIGHT_SPIT");
-				else
-					b.setUserData("LEFT_SPIT");
-				
-	
-				if(facingRight)
-				{
-					b.setTransform(entity.getPosition().x+bodyOffset,entity.getPosition().y,0);
-					b.setLinearVelocity(spitVel, 0.0f);
-				}
-				else
-				{
-					b.setTransform(entity.getPosition().x-bodyOffset,entity.getPosition().y,0);
-					b.setLinearVelocity(-spitVel, 0.0f);
-				}	
+//				if(facingRight)
+//					b.setUserData("RIGHT_SPIT");
+//				else
+//					b.setUserData("LEFT_SPIT");
+//				
+//	
+//				if(facingRight)
+//				{
+//					b.setTransform(entity.getPosition().x+bodyOffset,entity.getPosition().y,0);
+//					b.setLinearVelocity(spitVel, 0.0f);
+//				}
+//				else
+//				{
+//					b.setTransform(entity.getPosition().x-bodyOffset,entity.getPosition().y,0);
+//					b.setLinearVelocity(-spitVel, 0.0f);
+//				}	
 				
 				spits.add(new Spit(world, spitBodyDef, spitFixtureDef, facingRight, entity.getPosition().x+bodyOffset, entity.getPosition().y));
 	    	}
@@ -680,10 +676,12 @@ public void move(MyInputProcessor input)
 	        		//world.destroyBody(b);
 	        		
 	        		spitsToDestroy.add(b);
-	        		spits.set(i,null);
+	        		
 	        		
 	        		b.body.setActive(false);
+	        		System.out.println("deactivate");
 	        		
+	        		spits.set(i,null);
 	        		//spits.remove(b);
 	        	}
 	        	else

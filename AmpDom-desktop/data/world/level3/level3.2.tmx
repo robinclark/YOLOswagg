@@ -2916,7 +2916,7 @@
   <object x="1220" y="8320" width="72" height="80"/>
   <object x="248" y="1012" width="80" height="88"/>
  </objectgroup>
- <objectgroup name="bird" width="22" height="132">
+ <objectgroup name="vulture" width="22" height="132">
   <object x="1028" y="7672" width="36" height="92"/>
   <object x="184" y="7196" width="88" height="68"/>
   <object x="1116" y="6576" width="64" height="112"/>

@@ -428,10 +428,10 @@ public class AmpDom implements ApplicationListener {
 			
 			frog.batchRender(tiledMapHelper);
 
-			if(level.currentLevel==0){//?
-				//LevelMap.endlevelpt1.batchRender(tiledMapHelper);				
-				//LevelMap.jar.batchRender(tiledMapHelper);
-			}
+
+			LevelMap.endlevel.batchRender(tiledMapHelper);				
+			LevelMap.jar.batchRender(tiledMapHelper);
+			
 			if(detect.endLevel){
 				  
 				  detect.endLevel = false;
@@ -497,7 +497,7 @@ public class AmpDom implements ApplicationListener {
 	    world.destroyBody(frog.entity);
 
 	    world.destroyBody(LevelMap.jar.entity);
-	    world.destroyBody(LevelMap.endlevelpt1.entity);
+	    world.destroyBody(LevelMap.endlevel.entity);
 	  // world.destroyBody(LevelMap.plat.entity);
 	    if(state >= 0 && state%2 == 1 && level.currentLevel%2 == 1){    	
 		    level = new LevelMap();

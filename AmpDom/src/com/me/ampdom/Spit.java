@@ -6,10 +6,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Spit {
-	Body body;
-	float x, y;
-	float bodyOffset = 0.5f;
-	final float spitVel = 10.0f;
+	public Body body;
+	public float x, y;
+	public float bodyOffset = 0.5f;
+	public final float spitVel = 10.0f;
 	
 	public Spit(World w, BodyDef spitBodyDef, FixtureDef spitFixtureDef, boolean facingRight, float x, float y)
 	{
