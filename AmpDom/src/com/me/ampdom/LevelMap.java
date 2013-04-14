@@ -16,10 +16,9 @@ public class LevelMap {
 	protected TiledMapHelper tiledMapHelper;
 	int screenWidth;
 	int screenHeight;
-	//CurrentLevel currentLevel;//RC added
-	int currentLevel; //RC removed. using enums easier
+	int currentLevel; 
 	EnemyContact detect;
-	Music test;
+	Music bgMusic;
 	World world;
     public static final float PIXELS_PER_METER = 60.0f;	
     static EndLevelTrigger endlevelpt1;
@@ -56,14 +55,14 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level1/dungeonbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			levelSprite.setScale(1.1f,1.0f);
 			
-			//test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+			//bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
@@ -127,7 +126,7 @@ public class LevelMap {
 		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
 			
 			endlevelpt1 = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
-		    //test.play();
+		    //bgMusic.play();
 		
 			break;
 		case 2:
@@ -138,9 +137,9 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			
 			//			ArrayList<TiledObjectGroup> objectGroups = tiledMapHelper.getMap().objectGroups;
 //			for(TiledObjectGroup tG: objectGroups)
@@ -160,9 +159,9 @@ public class LevelMap {
 			
 			break;
 		case 4:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level2/forestbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			flyers = new ArrayList<FlyingEnemy>();
@@ -176,9 +175,9 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 6:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,1024,8192);
 			 levelSprite.setScale(1.8f,2.0f);
@@ -195,9 +194,9 @@ public class LevelMap {
 			
 			break;
 		case 8:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level3/mountainbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,1024,8192);
 		    levelSprite.setScale(1.8f,2.0f);
@@ -215,9 +214,9 @@ public class LevelMap {
 			
 			break;
 		case 10:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			levelSprite.setScale(2.5f,.75f);
@@ -237,9 +236,9 @@ public class LevelMap {
 			
 			break;
 		case 12:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level4/desertbg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			levelSprite.setScale(2.5f,.75f);
@@ -257,9 +256,9 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 14:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 		    levelSprite.setScale(2.5f,1.0f);
@@ -276,9 +275,9 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 16:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level5/junglebg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 		    levelSprite.setScale(2.5f,1.0f);
@@ -295,12 +294,13 @@ public class LevelMap {
 					PIXELS_PER_METER);
 			break;
 		case 18:
-			test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));
-			test.setLooping(true);
-			test.play();
+			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));
+			bgMusic.setLooping(true);
+			bgMusic.play();
 			levelbg = new Texture(Gdx.files.internal("data/world/level6/castlebg.png"));
 			levelSprite = new Sprite(levelbg,0,0,8192,1024);
 			levelSprite.setScale(2.5f,1.0f);
+			levelSprite.setPosition(6000f, 0);
 			flyers = new ArrayList<FlyingEnemy>();
 			enemies = new ArrayList<Enemy>();
 			spikes = new ArrayList<Obstacle>();
@@ -354,7 +354,7 @@ public class LevelMap {
 		spikes.clear();
 		enemies.clear();
 		plats.clear();
-		test.dispose();
+		bgMusic.dispose();
 		System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();
 	
