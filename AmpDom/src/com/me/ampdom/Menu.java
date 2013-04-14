@@ -18,8 +18,8 @@ public class Menu {
 	public Texture play_main, son, soff, startb, next;
 	public Sprite icon;
 	public SpriteBatch sb;
-	public Music test;
-	
+	public static Music music;
+	public boolean soundOn = true;
 	//creates a menu
 	public Menu(OrthographicCamera cam){
 		
@@ -55,9 +55,9 @@ public class Menu {
 		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
 		addBackground();
 		initializeButtons();
-		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
-		test.setLooping(true);
-		test.play();
+		music = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+		music.setLooping(true);
+		music.play();
 	}
 	
 	public void initializeButtons(){
@@ -95,7 +95,10 @@ public class Menu {
 	}
 	
 	public void display(){
-		draw();
+		if(AmpDom.state ==- 5)
+			LevelMap.bgMusic.setVolume(0);
+		draw();		
+		
 		for(Button b : buttons){
 			
 			//menu states: (-5) - start 
@@ -105,89 +108,143 @@ public class Menu {
 			//(-1) - first cut scene
 			//(evens) - play screens
 			//(odds) - cut scenes
+			
 				if(AmpDom.state == -5){
-					if(b.name.equals("start")){
+					if(b.name.equals("start")) {
 						b.draw();
-					}
-					if(b.clicked() && b.name.equals("start")) {
-						b.draw();	
+						if(b.clicked())
 						AmpDom.state = -4;
 					}
-				}else if(AmpDom.state == -4){
-					if(b.name.equals("sound") || b.name.equals("htp") || b.name.equals("play_main") || b.name.equals("credits")){
+				}else if(AmpDom.state == -4){ //main screen
+									
+					if(b.name.equals("htp")){
 						b.draw();
-					}					
-					if(b.clicked() && b.name.equals("htp")){
-						b.draw();	
-						AmpDom.state = -3;
+						if(b.clicked())
+							AmpDom.state = -3;
 					}
-					if(b.clicked() && b.name.equals("credits")){
-						b.draw();	
+					if(b.name.equals("credits")){
+						b.draw();
+						if(b.clicked())
 						AmpDom.state = -2;
 					}
 					
-					if(b.clicked() && b.name.equals("play_main")){
+					if(b.name.equals("play_main")){
 						b.draw();	
+						if(b.clicked())
 						AmpDom.state = -1;
 					}
-					changeBackground(main);					
-				}else if(AmpDom.state == -3 || AmpDom.state == -2){
-					if(b.name.equals("sound") || b.name.equals("back")){
+					if(b.name.equals("sound")){						
 						b.draw();
+						if(b.clicked()){
+							if(b.toggle == -1) {
+								music.setVolume(100);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = true;
+							}
+							else {
+								music.setVolume(0);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = false;
+							}
+						}
 					}
-					if(b.clicked() && b.name.equals("back")){
-						b.draw();	
+					changeBackground(main);					
+				}else if(AmpDom.state == -3 || AmpDom.state == -2){ //if how to play or credits screen
+					
+					if(b.name.equals("back")){
+						b.draw();
+						if(b.clicked())
 						AmpDom.state = -4;
 					}
+					if(b.name.equals("sound")){						
+						b.draw();
+						if(b.clicked()){
+							if(b.toggle == -1) {
+								music.setVolume(100);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = true;
+							}
+							else {
+								music.setVolume(0);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = false;
+							}
+						}
+					}
+					
+					
 					if(AmpDom.state == -3)
 						changeBackground(htp);
 					else if(AmpDom.state == -2)
 						changeBackground(cred);
 					
-				}
-				//game play screens
-				else if(AmpDom.state%2 == 0 && AmpDom.state >= 0){
+				}else if(AmpDom.state%2 == 0 && AmpDom.state >= 0){ //game play screens
+					music.setVolume(0);
+					if(soundOn)
+						LevelMap.bgMusic.setVolume(100);
 					
 					if(b.name.equals("sound")){						
 						b.draw();
-						b.clicked();
-						if(b.toggle == -1) {
-							test.setVolume(100);
-						}
-						else {
-							test.setVolume(0);
+						if(b.clicked()){
+							if(b.toggle == -1) {
+								music.setVolume(0);
+								LevelMap.bgMusic.setVolume(100);
+								soundOn = true;
+							}
+							else {
+								music.setVolume(0);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = false;
+							}
 						}
 					}
 					
-				}//all cut scenes
-				else if((AmpDom.state%2 == 1 && AmpDom.state > 0) || AmpDom.state == -1){
+				}else if((AmpDom.state%2 == 1 && AmpDom.state > 0) || AmpDom.state == -1){//all cut scenes
+					
+					LevelMap.bgMusic.setVolume(0);
+					
+					if(b.name.equals("sound")){						
+						b.draw();
+						if(b.clicked()){
+							if(b.toggle == -1) {
+								music.setVolume(100);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = true;
+							}
+							else {
+								music.setVolume(0);
+								LevelMap.bgMusic.setVolume(0);
+								soundOn = false;
+							}
+						}
+					}
+					
 					if(b.name.equals("next")){
 						b.draw();
-					}
-					if(b.clicked() && b.name.equals("next")){
-						b.draw();	
-						if(AmpDom.state == -1)
-							AmpDom.state = 0;
-						else if(AmpDom.state == 1)
-							AmpDom.state = 2;
-						else if(AmpDom.state == 3)
-							AmpDom.state = 4;
-						else if(AmpDom.state == 5)
-							AmpDom.state = 6;
-						else if(AmpDom.state == 7)
-							AmpDom.state = 8;
-						else if(AmpDom.state == 9)
-							AmpDom.state = 10;
-						else if(AmpDom.state == 11)
-							AmpDom.state = 12;
-						else if(AmpDom.state == 13)
-							AmpDom.state = 14;
-						else if(AmpDom.state == 15)
-							AmpDom.state = 16;
-						else if(AmpDom.state == 17)
-							AmpDom.state = 18;
-						else if(AmpDom.state == 19)
-							AmpDom.state = -4;
+						if(b.clicked()){
+							if(AmpDom.state == -1)
+								AmpDom.state = 0;
+							else if(AmpDom.state == 1)
+								AmpDom.state = 2;
+							else if(AmpDom.state == 3)
+								AmpDom.state = 4;
+							else if(AmpDom.state == 5)
+								AmpDom.state = 6;
+							else if(AmpDom.state == 7)
+								AmpDom.state = 8;
+							else if(AmpDom.state == 9)
+								AmpDom.state = 10;
+							else if(AmpDom.state == 11)
+								AmpDom.state = 12;
+							else if(AmpDom.state == 13)
+								AmpDom.state = 14;
+							else if(AmpDom.state == 15)
+								AmpDom.state = 16;
+							else if(AmpDom.state == 17)
+								AmpDom.state = 18;
+							else if(AmpDom.state == 19)
+								AmpDom.state = -4;
+						}
 						
 					}
 					

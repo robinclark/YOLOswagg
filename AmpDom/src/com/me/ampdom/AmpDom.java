@@ -101,7 +101,7 @@ public class AmpDom implements ApplicationListener {
 		int lev = 0;
 		if(state > 0)
 			lev = state;
-		level.create(world,18, screenWidth, screenHeight,detect);
+		level.create(world,lev, screenWidth, screenHeight,detect);
 		frog = new Alabaster(world, 1.0f, 9.0f);
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
