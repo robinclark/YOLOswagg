@@ -31,8 +31,7 @@ public class Alabaster extends Character {
 	//double jump
 	static int count=2;
 	
-	//bools
-	
+	//bools	
 	boolean doubleJump;
 	boolean shell = false;
 	boolean shout = false;
@@ -64,6 +63,7 @@ public class Alabaster extends Character {
 	Body shoutBody;
 	BodyDef shoutBodyDef;
 	Sound shoutSound;
+	
 	//foot
 	FixtureDef footFix;
 	Body foot;
@@ -81,8 +81,8 @@ public class Alabaster extends Character {
 	BodyDef spitBodyDef;
 	Sound spitSound;
 	
-	ArrayList<Body> spits = new ArrayList<Body>();
-	ArrayList<Body> spitsToDestroy = new ArrayList<Body>();
+	ArrayList<Spit> spits = new ArrayList<Spit>();
+	ArrayList<Spit> spitsToDestroy = new ArrayList<Spit>();
 	
 	//sounds
 	Sound jumpSound;	
@@ -100,10 +100,10 @@ public class Alabaster extends Character {
 	
 	// HUD
 	private float k;
-	protected SpriteBatch icon;
-	private SpriteBatch healthText;
+	protected SpriteBatch icon = AmpDom.batch;
+	private SpriteBatch healthText = AmpDom.batch;
 	private BitmapFont font;
-	private ShapeRenderer ShapeRenderer;
+	private ShapeRenderer shapeRenderer;
 	protected int shellCharge = 100;
 	protected int spitCharge = 100;
 	protected int shoutCharge = 100;
@@ -142,7 +142,7 @@ public class Alabaster extends Character {
 		
 		entity.setUserData("PLAYER");
 		
-			/******************************************************/
+		/******************************************************/
 
 		//--shout
 		 shoutText = new Texture(Gdx.files.internal("data/shockwave.png"));
@@ -270,7 +270,7 @@ public class Alabaster extends Character {
 		healthText = new SpriteBatch();
 		font = new BitmapFont();
 	    font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		ShapeRenderer = new ShapeRenderer();
+		shapeRenderer = new ShapeRenderer();
 		
 		// alabaster head
 		iconTexture = new Texture(Gdx.files.internal("data/Alabaster/alabasterFace.png"));
@@ -282,112 +282,124 @@ public void displayHUD() {
 	// display health
 	k = (100f - health) / 100f;
 	
-	ShapeRenderer.begin(ShapeType.FilledRectangle);
+	shapeRenderer.begin(ShapeType.FilledRectangle);
 	
 	// health
-	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
-	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-45), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 200, 20f);
-	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
-	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-45), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 2*health, 20f);
+	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	shapeRenderer.identity();
+	shapeRenderer.translate(40.0f, (680-45), 0.f);
+	shapeRenderer.filledRect(0f, 0f, 200, 20f);
+	shapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
+	shapeRenderer.identity();
+	shapeRenderer.translate(40.0f, (680-45), 0.f);
+	shapeRenderer.filledRect(0f, 0f, 2*health, 20f);
 	
 	// shell
-	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+10+40, (680-40), 0.f);
+		shapeRenderer.translate(2*health+10+40, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+10+40, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
-	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
-	ShapeRenderer.identity();
+		shapeRenderer.translate(2*100+10+40, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, 100, 15f);
+	shapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+10+40, (680-40), 0.f);
+		shapeRenderer.translate(2*health+10+40, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+10+40, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, shellCharge, 15f);
+		shapeRenderer.translate(2*100+10+40, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, shellCharge, 15f);
 	
 	// spit
-	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
-	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
-	ShapeRenderer.identity();
+		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, 100, 15f);
+	shapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, spitCharge, 15f);
+		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, spitCharge, 15f);
 	
 	// shock-wave
-	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 100, 15f);
-	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
-	ShapeRenderer.identity();
+		shapeRenderer.translate(2*100+40+230, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, 100, 15f);
+	shapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
+	shapeRenderer.identity();
+	
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, shoutCharge, 15f);
+		shapeRenderer.translate(2*100+40+230, (680-40), 0.f);
+	
+	shapeRenderer.filledRect(0f, 0f, shoutCharge, 15f);
 	
 	// Icon Background
-	ShapeRenderer.setColor(0f, 0f, 0f, 1.0f);
-	ShapeRenderer.identity();
-	ShapeRenderer.translate(0f, (680-50), 0.f);
-	ShapeRenderer.filledRect(0f, 0f, 40f, 40f);
-	ShapeRenderer.end();
+	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
+	shapeRenderer.identity();
+	shapeRenderer.translate(0f, (680-50), 0.f);
+	shapeRenderer.filledRect(0f, 0f, 40f, 40f);
+	shapeRenderer.end();
 	
 	// BORDER
-	ShapeRenderer.begin(ShapeType.Rectangle);
+	shapeRenderer.begin(ShapeType.Rectangle);
 	
 	// health
-	ShapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
-	ShapeRenderer.identity();
-	ShapeRenderer.translate(40.0f, (680-45), 0.f);
+	shapeRenderer.setColor((255*k)/100, 255*(1.0f - k)/100, 0f, 1.0f);
+	shapeRenderer.identity();
+	shapeRenderer.translate(40.0f, (680-45), 0.f);
 	if(health > 100)
-		ShapeRenderer.rect(0f, 0f, 2*health, 20f);
+		shapeRenderer.rect(0f, 0f, 2*health, 20f);
 	else
-		ShapeRenderer.rect(0f, 0f, 2*100, 20f);
+		shapeRenderer.rect(0f, 0f, 2*100, 20f);
 	
 	// shell 
-	ShapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
+	shapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
-	ShapeRenderer.rect(0f, 0f, 100, 15f);
+		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
+	shapeRenderer.rect(0f, 0f, 100, 15f);
 	
 	// spit
-	ShapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
+	shapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+120, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+120, (680-40), 0.f);
-	ShapeRenderer.rect(0f, 0f, 100, 15f);
+		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
+	shapeRenderer.rect(0f, 0f, 100, 15f);
 	
 	// shock-wave
-	ShapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
-	ShapeRenderer.identity();
+	shapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
+	shapeRenderer.identity();
 	if(health > 100)
-		ShapeRenderer.translate(2*health+40+230, (680-40), 0.f);
+		shapeRenderer.translate(2*health+40+230, (680-40), 0.f);
 	else
-		ShapeRenderer.translate(2*100+40+230, (680-40), 0.f);
-	ShapeRenderer.rect(0f, 0f, 100, 15f);
-	ShapeRenderer.end();
+		shapeRenderer.translate(2*100+40+230, (680-40), 0.f);
+	shapeRenderer.rect(0f, 0f, 100, 15f);
+	shapeRenderer.end();
 	
 	// Print TEXT
 	healthText.begin();
@@ -471,13 +483,19 @@ public void move(MyInputProcessor input)
 			count=2;
 			
 		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
+			System.out.println("frog: " + entity.getPosition().x + ", " + entity.getPosition().y);
+		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
   			moveLeft = true;		
   	
   		//move right
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) 
+  		{
   			moveRight = true;	
+  		}
   		
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
@@ -561,6 +579,7 @@ public void move(MyInputProcessor input)
 	    	
 		    	//System.out.print("spit");
 		    	//spitBody.setLinearVelocity(new Vector2(2.0f, 0.0f));
+		    	
 				Body b = world.createBody(spitBodyDef);
 				
 				b.createFixture(spitFixtureDef);
@@ -583,7 +602,7 @@ public void move(MyInputProcessor input)
 					b.setLinearVelocity(-spitVel, 0.0f);
 				}	
 				
-				spits.add(b);
+				spits.add(new Spit(world, spitBodyDef, spitFixtureDef, facingRight, entity.getPosition().x+bodyOffset, entity.getPosition().y));
 	    	}
 		//}	
 	    /****************************************************************
@@ -603,7 +622,7 @@ public void move(MyInputProcessor input)
 	    }
 	    
 	    /****************************************************************
-  		 * SHOUT INPUT  		 										* 
+  		 * SHOUT INPUT  hi		 										* 
   		 ***************************************************************/
 	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
 	    {	    	
@@ -646,12 +665,12 @@ public void move(MyInputProcessor input)
   		 * UPDATE SPITS		 											* 
   		 ***************************************************************/
 	    //destroy spit if too far or collided w/something
-        for(Body b: spits)
+        for(Spit b: spits)
         {
         	
         	if(b == null) continue;        	
 	        	//System.out.println(spits.size());
-	        	if(b.getPosition().x < entity.getPosition().x - 2*100/PIXELS_PER_METER || b.getPosition().x > entity.getPosition().x + 2*100/PIXELS_PER_METER)
+	        	if(b.body.getPosition().x < b.x/*entity.getPosition().x*/ - 2*100/PIXELS_PER_METER || b.body.getPosition().x > b.x/*entity.getPosition().x*/ + 2*100/PIXELS_PER_METER)
 
 	        	{
 	        		//System.out.println("removing");	        		
@@ -663,7 +682,7 @@ public void move(MyInputProcessor input)
 	        		spitsToDestroy.add(b);
 	        		spits.set(i,null);
 	        		
-	        		b.setActive(false);
+	        		b.body.setActive(false);
 	        		
 	        		//spits.remove(b);
 	        	}
@@ -760,25 +779,25 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 			    	 shoutSprite.draw(batch);
 					}			 
 			}
-			for(Body b: spits)
+			for(Spit b: spits)
 			{
 				if(b == null) continue;
 				
-					if(b.getUserData() == "RIGHT_SPIT")
+					if(b.body.getUserData() == "RIGHT_SPIT")
 					{
 						spitSprite.setPosition(
-								PIXELS_PER_METER * b.getPosition().x
+								PIXELS_PER_METER * b.body.getPosition().x
 										- spitSprite.getWidth() / 2,
-								PIXELS_PER_METER * b.getPosition().y
+								PIXELS_PER_METER * b.body.getPosition().y
 										- spitSprite.getHeight() / 2);				
 						spitSprite.draw(batch);
 					}
-					if(b.getUserData() == "LEFT_SPIT")
+					if(b.body.getUserData() == "LEFT_SPIT")
 					{
 						leftSpitSprite.setPosition(
-								PIXELS_PER_METER * b.getPosition().x
+								PIXELS_PER_METER * b.body.getPosition().x
 										- leftSpitSprite.getWidth() / 2,
-								PIXELS_PER_METER * b.getPosition().y
+								PIXELS_PER_METER * b.body.getPosition().y
 										- leftSpitSprite.getHeight() / 2);				
 						leftSpitSprite.draw(batch);
 					}					
@@ -790,7 +809,7 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 	{
 		for(int i = 0; i < spits.size(); i++)
 		{
-			world.destroyBody(spitsToDestroy.get(i));
+			world.destroyBody(spitsToDestroy.get(i).body);
 		}
 	}
 

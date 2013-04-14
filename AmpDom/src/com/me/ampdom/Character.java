@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public abstract class Character  {
 	
 	protected Sprite sprite;
-	protected SpriteBatch batch;
+	protected SpriteBatch batch = AmpDom.batch;
 	protected Rectangle rect;
 	protected int health = 100;
 	protected boolean isKilled = false;
@@ -46,7 +46,7 @@ public abstract class Character  {
 		entityDef = new BodyDef();
 		entityDef.type = BodyDef.BodyType.DynamicBody;
 		//entityDef.position.set(2.0f, 2.0f);
-		batch = new SpriteBatch();
+		//batch = new SpriteBatch();
 //		world.createBody(entityDef);
 	}
 

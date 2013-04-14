@@ -9,9 +9,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Shape;
 
 public class EnemyContact implements ContactListener  {
-
-	
-
 boolean enemyDmg=false;
 boolean isHit = false;
 boolean obstacleDmg = false;
