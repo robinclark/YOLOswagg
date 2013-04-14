@@ -18,7 +18,7 @@ public class LevelMap {
 	//CurrentLevel currentLevel;//RC added
 	int currentLevel; //RC removed. using enums easier 
 	EnemyContact detect;
-	Music bgMusic;
+	static Music bgMusic;
 	World world;
     public static final float PIXELS_PER_METER = 60.0f;	
     static EndLevelTrigger endlevelpt1;
