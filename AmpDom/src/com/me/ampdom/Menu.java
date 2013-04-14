@@ -13,20 +13,31 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Menu {
 	public ArrayList<Button> buttons;
 	public OrthographicCamera cam;
-	public Texture start, main, htp, cred, cut1;
+	public Texture start, main, htp, cred, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11;
 	public Texture back_main, credits, htpb, pause, play;
 	public Texture play_main, son, soff, startb, next;
 	public Sprite icon;
 	public SpriteBatch sb;
 	public Music test;
 	
-	//creates a menu with a specified number of buttons
+	//creates a menu
 	public Menu(OrthographicCamera cam){
 		
 		this.cam = cam;
 		buttons = new ArrayList<Button>();
+		//cut scene textures
+		c1 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		/*c2 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c3 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c4 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c5 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c6 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c7 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c8 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c9 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c10 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
+		c11 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));*/
 		//screen textures
-		cut1 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
 		start = new Texture(Gdx.files.internal("data/Menu/Start_Screen copy.png"));
 		main = new Texture(Gdx.files.internal("data/Menu/Main_Screen copy.png"));
 		htp = new Texture(Gdx.files.internal("data/Menu/HTP_Screen copy.png"));
@@ -44,9 +55,9 @@ public class Menu {
 		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
 		addBackground();
 		initializeButtons();
-//		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
-//		test.setLooping(true);
-//		test.play();
+		test = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+		test.setLooping(true);
+		test.play();
 	}
 	
 	public void initializeButtons(){
@@ -62,9 +73,6 @@ public class Menu {
 		buttons.add( new Button("back",10, 10,true,back_main,back_main, cam) );
 		buttons.add( new Button("credits",w - 80,10,true,credits,credits, cam) );
 		buttons.add( new Button("htp",w/2+50,h/2,true,htpb,htpb, cam) );
-		//non-clickable buttons
-		
-		
 	}
 	
 	public void addButton(Button b){
@@ -138,13 +146,13 @@ public class Menu {
 					
 				}
 				//game play screens
-				else if(AmpDom.state%2 == 0 && AmpDom.state > 0){
+				else if(AmpDom.state%2 == 0 && AmpDom.state >= 0){
 					
 					if(b.name.equals("sound")){						
 						b.draw();
 						b.clicked();
 						if(b.toggle == -1) {
-						//	test.setVolume(100);
+							test.setVolume(100);
 						}
 						else {
 							test.setVolume(0);
@@ -183,7 +191,29 @@ public class Menu {
 						
 					}
 					
-					changeBackground(cut1);
+					//if(AmpDom.state == -1)
+						changeBackground(c1);
+					/*else if(AmpDom.state == 1)
+						changeBackground(c2);
+					else if(AmpDom.state == 3)
+						changeBackground(c3);
+					else if(AmpDom.state == 5)
+						changeBackground(c4);
+					else if(AmpDom.state == 7)
+						changeBackground(c5);
+					else if(AmpDom.state == 9)
+						changeBackground(c6);
+					else if(AmpDom.state == 11)
+						changeBackground(c7);
+					else if(AmpDom.state == 13)
+						changeBackground(c8);
+					else if(AmpDom.state == 15)
+						changeBackground(c9);
+					else if(AmpDom.state == 17)
+						changeBackground(c10);
+					else if(AmpDom.state == 19)
+						changeBackground(c11);
+					*/
 					
 				}
 			
@@ -215,6 +245,17 @@ public class Menu {
 		play_main.dispose();
 		son.dispose();
 		soff.dispose();
+		c1.dispose();
+		/*c2.dispose();
+		c3.dispose();
+		c4.dispose();
+		c5.dispose();
+		c6.dispose();
+		c7.dispose();
+		c8.dispose();
+		c9.dispose();
+		c10.dispose();
+		c11.dispose();*/
 		for(Button b : buttons){
 			b.dispose();
 		}

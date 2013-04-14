@@ -97,8 +97,11 @@ public class AmpDom implements ApplicationListener {
 		world = new World(new Vector2(0.0f, -10.0f), true);
 		detect = new EnemyContact();
 		world.setContactListener(detect);
-		level = new LevelMap();		
-		level.create(world,state, screenWidth, screenHeight,detect);
+		level = new LevelMap();
+		int lev = 0;
+		if(state > 0)
+			lev = state;
+		level.create(world,lev, screenWidth, screenHeight,detect);
 		frog = new Alabaster(world, 1.0f, 9.0f);
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
