@@ -268,9 +268,10 @@ public void beginContact(Contact contact) {
 		final Fixture a=contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
-		/*if(contact.getFixtureA().getBody().getUserData()!= null && 
+		if(contact.getFixtureA().getBody().getUserData()!= null && 
 		   contact.getFixtureB().getBody().getUserData()!=null){
 			
+		/*	
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SHOUT")
 				contact.setEnabled(false);
 
@@ -282,67 +283,97 @@ public void beginContact(Contact contact) {
 
 	    if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="PLAYER")
 	    	contact.setEnabled(false);
+	    */
+			
+		//--leaves n shat
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+		{
+			//if player lower than body, turn off collision
+			if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+				contact.setEnabled(false);
+		}
+	    if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="PLAYER")
+	    {    	
+	    	if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+				contact.setEnabled(false);
+	    }
 	    
+	    //--foot ground
 	    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
 		    contact.setEnabled(false);
 	    
+	    //--character enemy
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
 	    
+	    //--moving plat
 	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="MOVINGPLAT")
 			contact.setEnabled(false);
-
+	    if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="MOVINGPLAT")
+			contact.setEnabled(false);
 	    
+	    //--player obstacle
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="OBSTACLE")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="PLAYER")
 		    contact.setEnabled(false);
+	    
+	    //--tongue obstacle
 	    if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="OBSTACLE")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="TONGUE")
 		    contact.setEnabled(false);
+	    
+	    //--shout obstacle
 	    if(a.getBody().getUserData()=="SHOUT" && b.getBody().getUserData()=="OBSTACLE")
 			contact.setEnabled(false);
 	    if(a.getBody().getUserData()=="OBSTACLE" && b.getBody().getUserData()=="SHOUT")
 		    contact.setEnabled(false);
+	    
+	    //--player endlevel trigger
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
 			contact.setEnabled(false);
-
-		    if(a.getBody().getUserData()=="MOVINGPLAT" && b.getBody().getUserData()=="ENEMY")
-			    contact.setEnabled(false);
+	    if(a.getBody().getUserData()=="MOVINGPLAT" && b.getBody().getUserData()=="ENEMY")
+		    contact.setEnabled(false);
 		    
-		    
-		    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
-		    	contact.setEnabled(false);
-			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FOOT")
-				contact.setEnabled(false);
-		    
-			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
-				contact.setEnabled(false);
-			if(a.getBody().getUserData()=="ENDLEVELTRIGGER" && b.getBody().getUserData()=="PLAYER")
-			   contact.setEnabled(false);
-					  
+		//--foot player  
+	    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="PLAYER")
+	    	contact.setEnabled(false);
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FOOT")
+			contact.setEnabled(false);
+	    
+		//--player end level trigger
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENDLEVELTRIGGER")
+			contact.setEnabled(false);
+		if(a.getBody().getUserData()=="ENDLEVELTRIGGER" && b.getBody().getUserData()=="PLAYER")
+		   contact.setEnabled(false);
+		
+		//--player flyjar
 		if(a.getBody().getUserData()=="FLYJAR" && b.getBody().getUserData()=="PLAYER")
-			   contact.setEnabled(false);
-				
+			   contact.setEnabled(false);				
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="FLYJAR")
 			   contact.setEnabled(false);
+		
+		//--enemy flyjar
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="FLYJAR")
-			   contact.setEnabled(false);
-		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="ENEMY")
 			   contact.setEnabled(false);
 		if(a.getBody().getUserData()=="FLYJAR" && b.getBody().getUserData()=="ENEMY")
 			   contact.setEnabled(false);
+		
+		//--enemy enemy
+		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="ENEMY")
+			   contact.setEnabled(false);
+		
+		//--player tongue
 		if(a.getBody().getUserData()=="TONGUE" && b.getBody().getUserData()=="PLAYER")
 			   contact.setEnabled(false);
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="TONGUE")
 			   contact.setEnabled(false);
-	
-		}*/
+		}
 	}
 
 	//why do we need this?
@@ -353,6 +384,18 @@ public void beginContact(Contact contact) {
 		
 		
 		if(contact.getFixtureA().getBody().getUserData()!= null && contact.getFixtureB().getBody().getUserData()!=null){
+			
+			//--leaf player
+			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+			{
+				if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+					contact.setEnabled(true);
+			}
+		    if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="PLAYER")
+		    {
+		    	if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+					contact.setEnabled(true);
+		    }	
 			
 		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 				contact.setEnabled(false);

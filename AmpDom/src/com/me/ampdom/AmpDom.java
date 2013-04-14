@@ -99,7 +99,7 @@ public class AmpDom implements ApplicationListener {
 		world.setContactListener(detect);
 
 		level = new LevelMap();
-		int lev = 0;
+		int lev = 2;
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);

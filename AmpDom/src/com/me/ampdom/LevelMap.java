@@ -98,10 +98,10 @@ public class LevelMap {
 						range = tO.height/AmpDom.PIXELS_PER_METER;
 						vert = true;
 					}
-					System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
-					System.out.println("y: " + (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
+					//System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
+					//System.out.println("y: " + (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
 					
-					System.out.println("range: " + range);
+					//System.out.println("range: " + range);
 					movingPlatforms.add(new MovingPlatform(world, "data/Objects/dungeonPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, range/4.0f, vert, 128, 32));
 				}
 			}
@@ -259,10 +259,10 @@ public class LevelMap {
 			//--stationary plats
 			if(tG.name.equals("leaf"))//stationary platform
 			{
-				System.out.println("height: " + levelHeight);
+				//System.out.println("height: " + levelHeight);
 				for(TiledObject tO: tG.objects)
 				{
-					System.out.println("x, y: " + tO.x/AmpDom.PIXELS_PER_METER + ", " + (960 - tO.y)/AmpDom.PIXELS_PER_METER);
+					//System.out.println("x, y: " + tO.x/AmpDom.PIXELS_PER_METER + ", " + (960 - tO.y)/AmpDom.PIXELS_PER_METER);
 					stationaryPlatforms.add(new StationaryPlatform(world, "data/Objects/leafPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 64, 24));
 				}
 			}
@@ -540,72 +540,76 @@ public class LevelMap {
 		this.currentLevel = currentLevel;
 	}
 	
-	public void deleteLevel(){
+public void deleteLevel(){
 		
-		for(FlyingEnemy f : flyers){
-			if(f != null)
-	       world.destroyBody(f.entity);
-			}
+	for(FlyingEnemy f : flyers)
+	{
+		if(f != null)
+			world.destroyBody(f.entity);
+	}
 			
-			for(Enemy e : LevelMap.enemies){
-				if(e != null)
-				  world.destroyBody(e.entity);
-			}
+		for(Enemy e : LevelMap.enemies){
+			if(e != null)
+			  world.destroyBody(e.entity);
+		}
+		
+		for(Obstacle s : LevelMap.spikes){
+			if(s != null)
+			  world.destroyBody(s.entity);
+		}
+		
+		for(MovingPlat m: LevelMap.plats){
+			if(m!=null)
+				world.destroyBody(m.entity);
 			
-			for(Obstacle s : LevelMap.spikes){
-				if(s != null)
-				  world.destroyBody(s.entity);
-			}
-			
-			for(MovingPlat m: LevelMap.plats){
-				if(m!=null)
-					world.destroyBody(m.entity);
-				
-			}
-			//falling elements
-			for(Dropper d: LevelMap.droppers)
-			{
-				world.destroyBody(d.body);
-			}
-			
-			//stationary platforms
-			for(StationaryPlatform s: LevelMap.stationaryPlatforms)
-			{
-				world.destroyBody(s.body);
-			}			
-			
-			//falling logs
-			for(WaterLog w: LevelMap.fallingLogs)
-			{
-				world.destroyBody(w.body);
-			}
-			
-			//sandstorms
-			for(Sandstorm s: LevelMap.sandstorms)
-			{
-				world.destroyBody(s.body);
-			}			
-			//moving platforms
-			for(MovingPlatform m: LevelMap.movingPlatforms)
-			{
-				world.destroyBody(m.body);
-			}
+		}
+		
+		//falling elements
+		for(Dropper d: LevelMap.droppers)
+		{
+			world.destroyBody(d.body);
+		}
+		
+		//stationary platforms
+		for(StationaryPlatform s: LevelMap.stationaryPlatforms)
+		{
+			world.destroyBody(s.body);
+		}			
+		
+		//falling logs
+		for(WaterLog w: LevelMap.fallingLogs)
+		{
+			world.destroyBody(w.body);
+		}
+		
+		//sandstorms
+		for(Sandstorm s: LevelMap.sandstorms)
+		{
+			world.destroyBody(s.body);
+		}			
+		//moving platforms
+		for(MovingPlatform m: LevelMap.movingPlatforms)
+		{
+			world.destroyBody(m.body);
+		}
 			
 		levelbg.dispose();
 		levelSprite.getTexture().dispose();
-		endlevel.batch.dispose();
-        jar.batch.dispose();
+		//endlevel.batch.dispose();
+        //jar.batch.dispose();
+        bgMusic.dispose();
+        
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();
 		plats.clear();
-		fallingLogs.clear();
+		/*fallingLogs.clear();
 		droppers.clear();
 		stationaryPlatforms.clear();
 		sandstorms.clear();
-		movingPlatforms.clear();
-		bgMusic.dispose();
-		System.out.println("before dispose  "+tiledMapHelper);
+		movingPlatforms.clear();*/		
+		
+		//System.out.println("before dispose  "+tiledMapHelper);
         tiledMapHelper.dispose();	
 	}
 	
