@@ -97,17 +97,24 @@ public class AmpDom implements ApplicationListener {
 		world = new World(new Vector2(0.0f, -10.0f), true);
 		detect = new EnemyContact();
 		world.setContactListener(detect);
+<<<<<<< HEAD
 		
 		level = new LevelMap();		
 		level.create(world, 0, screenWidth, screenHeight,detect);
 		
 		frog = new Alabaster(world, 1.0f, 5.0f);
+=======
+		level = new LevelMap();
+		int lev = 0;
+		if(state > 0)
+			lev = state;
+		level.create(world,18, screenWidth, screenHeight,detect);
+		frog = new Alabaster(world, 1.0f, 9.0f);
+>>>>>>> 1bb51c6d17a0961d3068e3c02612be1538ba4621
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
-		
 		damage = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/hit.wav", FileType.Internal));
 		flyjar = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/jar.wav", FileType.Internal));
-		
 		tiledMapHelper = level.getMap();				
 		
 		//load background
@@ -171,10 +178,12 @@ public class AmpDom implements ApplicationListener {
 			//camera follows player
 			tiledMapHelper.getCamera().position.x = PIXELS_PER_METER
 					* frog.entity.getPosition().x;
-			if(frog.entity.getPosition().y > 680) {
-				tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
-						* frog.entity.getPosition().y;
-			}
+			tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
+					* frog.entity.getPosition().y;
+//			if(frog.entity.getPosition().y > 680) {
+//				tiledMapHelper.getCamera().position.y = PIXELS_PER_METER
+//						* frog.entity.getPosition().y;
+//			}
 			
 			if(detect.enemyDmg && detect.isHit){
 				if(frog.shell) {
@@ -309,6 +318,7 @@ public class AmpDom implements ApplicationListener {
 
 			// need some array to load all creatures or something wrd
 			tiledMapHelper.getCamera().update();
+<<<<<<< HEAD
 			if(level.currentLevel==2 || level.currentLevel==4){//?
 				batch.begin();
 				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
@@ -317,6 +327,19 @@ public class AmpDom implements ApplicationListener {
 				batch.end();
 			}
 			
+=======
+			
+			    batch.begin();
+				batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
+				level.levelSprite.draw(batch);
+				batch.end();
+		
+
+
+
+
+
+>>>>>>> 1bb51c6d17a0961d3068e3c02612be1538ba4621
 			tiledMapHelper.render();
 
 
@@ -431,7 +454,7 @@ public class AmpDom implements ApplicationListener {
 				//LevelMap.jar.batchRender(tiledMapHelper);
 			}
 			if(detect.endLevel){
-				  System.out.println("iio");
+				  
 				  detect.endLevel = false;
 				  try {
 					  Thread.sleep(1000);
@@ -487,6 +510,7 @@ public class AmpDom implements ApplicationListener {
 	}
 	
 	public void reset(){		
+		
 		level.currentLevel = state;
 		
 		level.deleteLevel();
@@ -499,7 +523,9 @@ public class AmpDom implements ApplicationListener {
 	    if(state >= 0 && state%2 == 1 && level.currentLevel%2 == 1){    	
 		    level = new LevelMap();
 		    level.currentLevel = state + 1;
+		    detect = new EnemyContact();
 		    world = new World(new Vector2(0.0f, -10.0f), true);
+		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
 	        frog = new Alabaster(world, 1.0f, 10.0f);
