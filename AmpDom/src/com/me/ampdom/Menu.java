@@ -15,7 +15,7 @@ public class Menu {
 	public OrthographicCamera cam;
 	public Texture start, main, htp, cred, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11;
 	public Texture back_main, credits, htpb, pause, play;
-	public Texture play_main, son, soff, startb, next;
+	public Texture play_main, son, soff, startb, next, help;
 	public Sprite icon;
 	public SpriteBatch sb;
 	public static Music music;
@@ -43,16 +43,17 @@ public class Menu {
 		htp = new Texture(Gdx.files.internal("data/Menu/HTP_Screen copy.png"));
 		cred = new Texture(Gdx.files.internal("data/Menu/Credits_Screen copy.png"));
 		//button textures
-		back_main = new Texture(Gdx.files.internal("data/Menu/back_main copy.png"));
-		credits = new Texture(Gdx.files.internal("data/Menu/credits_main copy.png"));
-		htpb = new Texture(Gdx.files.internal("data/Menu/HTP_main copy.png"));
+		back_main = new Texture(Gdx.files.internal("data/Menu/Back_button.png"));
+		credits = new Texture(Gdx.files.internal("data/Menu/Credits_button.png"));
+		htpb = new Texture(Gdx.files.internal("data/Menu/HTP_button.png"));
 		//pause = new Texture(Gdx.files.internal("data/Menu/pause copy.png"));
 		//play = new Texture(Gdx.files.internal("data/Menu/play copy.png"));
-		play_main = new Texture(Gdx.files.internal("data/Menu/play_main copy.png"));
-		son = new Texture(Gdx.files.internal("data/Menu/sound1 copy.png"));
-		soff = new Texture(Gdx.files.internal("data/Menu/sound2 copy.png"));
+		play_main = new Texture(Gdx.files.internal("data/Menu/Play_button.png"));
+		son = new Texture(Gdx.files.internal("data/Menu/soundON.png"));
+		soff = new Texture(Gdx.files.internal("data/Menu/soundOFF.png"));
 		startb = new Texture(Gdx.files.internal("data/Menu/start_button copy.png"));
 		next = new Texture(Gdx.files.internal("data/Menu/next copy.png"));
+		help = new Texture(Gdx.files.internal("data/Menu/helpButton.png"));
 		addBackground();
 		initializeButtons();
 		music = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
@@ -68,11 +69,13 @@ public class Menu {
 		buttons.add(new Button("next",w-80,10,true,next,next, cam));
 		buttons.add( new Button("start",w/2 - 50,h - (h - 50),true,startb,startb, cam) );
 		buttons.add( new Button("sound",w - 50,h - 50,true,son,soff, cam) );
+		buttons.add( new Button("help", w - 80,h - 50,true,help,help, cam) );
 		//buttons.add( new Button("play",760,580,true,pause,play, cam) );
-		buttons.add( new Button("play_main",w/2 - 100,h/2,true,play_main, play_main, cam) );
-		buttons.add( new Button("back",10, 10,true,back_main,back_main, cam) );
-		buttons.add( new Button("credits",w - 80,10,true,credits,credits, cam) );
-		buttons.add( new Button("htp",w/2+50,h/2,true,htpb,htpb, cam) );
+		buttons.add( new Button("play_main",w/2 - 20,h/2 - 50,true,play_main, play_main, cam) );
+		buttons.add( new Button("back",w/2-20, 50,true,back_main,back_main, cam) );
+		buttons.add( new Button("credits",w/2-40,h/2 - 100,true,credits,credits, cam) );
+		buttons.add( new Button("htp",w/2-70, h/2,true,htpb,htpb, cam) );
+		
 	}
 	
 	public void addButton(Button b){
