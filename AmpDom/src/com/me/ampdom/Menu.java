@@ -39,10 +39,10 @@ public class Menu {
 		c10 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
 		c11 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));*/
 		//screen textures
-		start = new Texture(Gdx.files.internal("data/Menu/Start_Screen copy.png"));
-		main = new Texture(Gdx.files.internal("data/Menu/Main_Screen copy.png"));
-		htp = new Texture(Gdx.files.internal("data/Menu/HTP_Screen copy.png"));
-		cred = new Texture(Gdx.files.internal("data/Menu/Credits_Screen copy.png"));
+		start = new Texture(Gdx.files.internal("data/Menu/Start_Screen.png"));
+		main = new Texture(Gdx.files.internal("data/Menu/Main_Screen.png"));
+		htp = new Texture(Gdx.files.internal("data/Menu/HTP_Screen.png"));
+		cred = new Texture(Gdx.files.internal("data/Menu/Credits_Screen.png"));
 		//button textures
 		back_main = new Texture(Gdx.files.internal("data/Menu/Back_button.png"));
 		credits = new Texture(Gdx.files.internal("data/Menu/Credits_button.png"));
@@ -52,7 +52,7 @@ public class Menu {
 		play_main = new Texture(Gdx.files.internal("data/Menu/Play_button.png"));
 		son = new Texture(Gdx.files.internal("data/Menu/soundON.png"));
 		soff = new Texture(Gdx.files.internal("data/Menu/soundOFF.png"));
-		startb = new Texture(Gdx.files.internal("data/Menu/start_button copy.png"));
+		startb = new Texture(Gdx.files.internal("data/Menu/start.png"));
 		next = new Texture(Gdx.files.internal("data/Menu/next.png"));
 		help = new Texture(Gdx.files.internal("data/Menu/helpButton.png"));
 		home = new Texture(Gdx.files.internal("data/Menu/home.png"));
@@ -79,13 +79,15 @@ public class Menu {
 		buttons.add( new Button("start",w/2 - 50,h - (h - 50),true,startb,startb, cam) );
 		buttons.add( new Button("sound",w - 50,h - 50,true,son,soff, cam) );
 		buttons.add( new Button("help", w - 90,h - 50,true,help,help, cam) );
-		buttons.add( new Button("home", w - 130,h-50,true,home,home,cam));
-		buttons.add( new Button("exit",w/2-20,h/2-150,true,exit,exit,cam));
+		buttons.add( new Button("home", w - 130,h-50,true,home,home,cam));		
 		//buttons.add( new Button("play",760,580,true,pause,play, cam) );
-		buttons.add( new Button("play_main",w/2 - 20,h/2 - 50,true,play_main, play_main, cam) );
-		buttons.add( new Button("back",w/2-20, 50,true,back_main,back_main, cam) );
-		buttons.add( new Button("credits",w/2-40,h/2 - 100,true,credits,credits, cam) );
 		buttons.add( new Button("htp",w/2-70, h/2,true,htpb,htpb, cam) );
+		buttons.add( new Button("play_main",w/2 - 20,h/2 - 50,true,play_main, play_main, cam) );
+		buttons.add( new Button("credits",w/2-40,h/2 - 100,true,credits,credits, cam) );
+		buttons.add( new Button("exit",w/2-20,h/2 - 150,true,exit,exit,cam));
+		buttons.add( new Button("back",w/2-20,h/2 - 200,true,back_main,back_main, cam) );
+		
+		
 		
 		
 	}
@@ -98,13 +100,13 @@ public class Menu {
 		icon = new Sprite(start);
 		icon.setPosition(0, 0);
 		sb = new SpriteBatch();	
-		icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		//icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}	
 	
 	public void changeBackground(Texture t){
 		icon = new Sprite(t);
 		icon.setPosition(0, 0);
-		icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		//icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}
 	
 	public void display(){
