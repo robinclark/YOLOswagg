@@ -286,13 +286,26 @@ public void beginContact(Contact contact) {
 	    */
 			
 		//--leaves n shat
-		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+		if(a.getBody().getUserData()=="PLAYER"  && (b.getBody().getUserData()=="STATIONARY_PLATFORM"))
 		{
 			//if player lower than body, turn off collision
 			if(a.getBody().getPosition().y > b.getBody().getPosition().y)
 				contact.setEnabled(false);
-		}
-	    if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="PLAYER")
+		}		
+	    if((a.getBody().getUserData()=="STATIONARY_PLATFORM") && (b.getBody().getUserData()=="PLAYER"))
+	    {    	
+	    	if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+				contact.setEnabled(false);
+	    }
+	    
+	    //--moving platforms
+	    if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="MOVING_PLATFORM")
+		{
+			//if player lower than body, turn off collision
+			if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+				contact.setEnabled(false);
+		}		
+	    if((a.getBody().getUserData()=="MOVING_PLATFORM") && (b.getBody().getUserData()=="PLAYER"))
 	    {    	
 	    	if(a.getBody().getPosition().y > b.getBody().getPosition().y)
 				contact.setEnabled(false);
@@ -382,20 +395,22 @@ public void beginContact(Contact contact) {
 		final Fixture a=contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
-		
+		//--
 		if(contact.getFixtureA().getBody().getUserData()!= null && contact.getFixtureB().getBody().getUserData()!=null){
 			
 			//--leaf player
-			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+			if(a.getBody().getUserData()=="PLAYER" && (b.getBody().getUserData()=="STATIONARY_PLATFORM"|| b.getBody().getUserData()=="MOVING_PLATFORM"))
 			{
 				if(a.getBody().getPosition().y < b.getBody().getPosition().y)
 					contact.setEnabled(true);
 			}
-		    if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="PLAYER")
+		    if((a.getBody().getUserData()=="STATIONARY_PLATFORM" || a.getBody().getUserData()=="MOVING_PLATFORM") && b.getBody().getUserData()=="PLAYER")
 		    {
 		    	if(a.getBody().getPosition().y < b.getBody().getPosition().y)
 					contact.setEnabled(true);
 		    }	
+		    
+		    
 			
 		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 				contact.setEnabled(false);
