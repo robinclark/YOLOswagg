@@ -182,7 +182,7 @@ public class LevelMap {
 					flyers.add(new FlyingEnemy(world, "data/Enemies/mosquito.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,48));
 				}
 			}
-			if(tG.name.equals("bats"))
+			if(tG.name.equals("bat"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
@@ -231,6 +231,13 @@ public class LevelMap {
 				for(TiledObject tO: tG.objects)
 				{
 					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+				}
+			}
+			if(tG.name.equals("fire"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
 				}
 			}
 			/*********************************************************************************/
@@ -356,19 +363,19 @@ public class LevelMap {
 			/*****************************************************************************************/
 	    	
 		
-			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 11.0f, 3.43f, .7f, .7f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 11.0f, 3.43f, .7f, .7f,64,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 16.59f, 4.3f, .7f, .7f,128,64));
-			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 21.82f, 3.43f,1.42f,1.42f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 21.82f, 3.43f,1.42f,1.42f,64,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 28.69f, 1.29f,1.62f,1.62f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 36.2f, 3.44f,1.42f,1.42f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 44.62f, 1.29f,1.6f,5.1f,128,64));
-			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 56.2f, 4.49f,1.30f,1.30f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 56.2f, 4.49f,1.30f,1.30f,64,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 61.59f, 5.56f,1.30f,1.30f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 67.21f, 6.63f,1.42f,1.42f,128,64));
-			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 89.57f, 6.63f,1.42f,1.42f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 89.57f, 6.63f,1.42f,1.42f,64,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 98.08f, 4.49f,1.42f,1.42f,128,64));
 			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 106.74f, 6.63f,1.42f,1.42f,128,64));
-			enemies.add(new Enemy(world, "data/Enemies/rat2.png", 124.11f, 1.5f,1.42f,1.42f,128,64));
+			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 124.11f, 1.5f,1.42f,1.42f,64,64));
 			
 			for(float i=0;i<6;i++)
 		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 14f+i, 2.0f));

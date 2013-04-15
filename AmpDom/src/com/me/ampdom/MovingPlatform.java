@@ -25,10 +25,10 @@ public class MovingPlatform extends SpecialBody{
 		xUpper = (x + range);
 		xLower = (x - range);
 		
-		if(!vert)
+		/*if(!vert)
 		{
 			System.out.println("x: " + xLower + ", " + xUpper);
-		}
+		}*/
 		
 		if(vert)
 		{

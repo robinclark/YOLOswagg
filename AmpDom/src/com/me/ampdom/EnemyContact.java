@@ -513,10 +513,10 @@ public void beginContact(Contact contact) {
 		    }
 		    /**********************************************************************************************/
 		    
-		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
-				contact.setEnabled(false);
-		 if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
-			    contact.setEnabled(false);
+//		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
+//				contact.setEnabled(false);
+//		 if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
+//			    contact.setEnabled(false);
 //		 
 //		 if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
 //				contact.setEnabled(true);
