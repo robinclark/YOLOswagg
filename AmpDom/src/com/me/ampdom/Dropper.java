@@ -20,7 +20,7 @@ public class Dropper extends SpecialBody{
 		if(y < yLoc)
 		{
 			//if alabaster w/in range change body to dynamic
-			if(x > (xLoc - 4*range))
+			if(x > (xLoc -1.5*range))
 			{
 				System.out.println("in range");
 				body.setType(BodyDef.BodyType.DynamicBody);

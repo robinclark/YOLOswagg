@@ -8,9 +8,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 
 public class Alabaster extends Character {
@@ -108,7 +111,10 @@ public class Alabaster extends Character {
 	protected int spitCharge = 100;
 	protected int shoutCharge = 100;
 	private Texture iconTexture;
-	
+	Texture textureMove;
+	Animation animate;
+	Texture motionText;
+	TextureRegion motionSheet;
 	
 	final float spitVel = 10.0f;
 	
@@ -119,9 +125,17 @@ public class Alabaster extends Character {
 		/*setup physics n sounds*/
 		
 		//--alabaster
+		motionText = new Texture(Gdx.files.internal("data/Alabaster/motionRegion.png"));
+		motionSheet = new TextureRegion();
+		motionSheet.setRegion(motionText);
+		animate = new Animation(2,motionSheet);
+		
+		textureMove = new Texture(Gdx.files.internal("data/Alabaster/alabasterM.png"));
 		texture = new Texture(Gdx.files.internal("data/Alabaster/alabasterS.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		textureMove.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite = new Sprite(texture, 0, 0, 64, 51);
+		
 		
 		entityDef.position.set(x, y);
 		entity = world.createBody(entityDef);
@@ -165,9 +179,6 @@ public class Alabaster extends Character {
 		shoutFixtureDef.shape = shoutShape;
 		shoutFixtureDef.density = 1.0f;
 		shoutFixtureDef.friction = 1.0f;
-
-		
-		
 		shoutBody.createFixture(shoutFixtureDef);
 
 		shoutShape.dispose();
@@ -430,12 +441,16 @@ public void move(MyInputProcessor input)
 {	  				
 	//System.out.println(count);
 	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
-	foot.applyForceToCenter(0.0f,10f);
+	foot.applyForceToCenter(0,10.0f);
 	tongueBody.setActive(false);
-	//shoutBody.setActive(false);
+	shoutBody.setActive(false);
 	boolean moveLeft = false;
 	boolean moveRight = false;	
 	shell = false;
+	sprite.setTexture(texture);
+	sprite.setSize(64f, 51f);
+
+	
 	//shout = false;
 	//spit = false;	
 		//jumping
@@ -444,13 +459,13 @@ public void move(MyInputProcessor input)
 	    {
 
 			
-			EnemyContact.grounded=false;
+	        EnemyContact.grounded=false;
 			if(powerLegs)
 			{
 				
 				if(count > 0&&doubleJump)
 				{
-			
+
 					jumpSound.setLooping(1, false);
 					jumpSound.play();
 					entity.applyLinearImpulse(new Vector2(0.0f,4.8f),entity.getWorldCenter());
@@ -487,12 +502,22 @@ public void move(MyInputProcessor input)
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
-  			moveLeft = true;		
+  		{
+  			moveLeft = true;
+  			
+//  			sprite.setTexture(textureMove);
+//  			sprite.setSize(128,51);
+  			//moveRight=false;
+  		}
+  					
   	
   		//move right
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) 
   		{
-  			moveRight = true;	
+  			moveRight = true;
+  		//	sprite.setTexture(textureMove);
+  		//	sprite.setSize(128,51);
+  			//moveLeft=false;
   		}
   		
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -536,8 +561,10 @@ public void move(MyInputProcessor input)
   		
   		if (moveRight) 
   		{
-  			entity.applyLinearImpulse(new Vector2(.15f, 0.0f),
-  			entity.getWorldCenter());
+  		
+  			entity.applyLinearImpulse(new Vector2(.15f, 0.0f),entity.getWorldCenter());
+  			
+  			
   			
   			if (facingRight == false)
   			{
@@ -548,19 +575,24 @@ public void move(MyInputProcessor input)
   			}
   		
   			facingRight = true;
+  			
   		} 
   		else if (moveLeft)
   		{
-  			entity.applyLinearImpulse(new Vector2(-.15f, 0.0f),
-  			entity.getWorldCenter());
+  			
+  			entity.applyLinearImpulse(new Vector2(-.15f, 0.0f),entity.getWorldCenter());
+  			
+  			
   			if (facingRight == true)
   			{
+  				
   				sprite.flip(true, false);
   				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
   				//spitSprite.flip(true, false);
   			}
   			facingRight = false;
+  			
   		}
 
   		/****************************************************************
@@ -568,8 +600,8 @@ public void move(MyInputProcessor input)
   		 ***************************************************************/
 	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
 	    {
-	    	//if(spitCharge > 0) 
-	    	//{
+	    	if(spitCharge > 0) 
+	    	{
 	    		spitSound.play();
 		    	spit = true;		    	
 		    	spitSound.play();
@@ -601,7 +633,7 @@ public void move(MyInputProcessor input)
 				
 				spits.add(new Spit(world, spitBodyDef, spitFixtureDef, facingRight, entity.getPosition().x+bodyOffset, entity.getPosition().y));
 	    	}
-		//}	
+	}	
 	    /****************************************************************
   		 * TONGUE INPUT  		 										* 
   		 ***************************************************************/
@@ -623,6 +655,7 @@ public void move(MyInputProcessor input)
   		 ***************************************************************/
 	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
 	    {	    	
+	    
 	    	if(shoutCharge > 0) 
 	    	{
 	    		shoutTime = System.nanoTime();
@@ -650,8 +683,9 @@ public void move(MyInputProcessor input)
 	    {
 	    	last = System.nanoTime();
 	    	long time = (last - shoutTime)/1000000;
-	    	if((System.nanoTime() - shoutTime)/1000000 > 500)
+	    	if((System.nanoTime() - shoutTime)/1000000 > 20)
     		{
+	    		
 	    		shout = false;
 	    		shoutBody.setActive(false);
     		}

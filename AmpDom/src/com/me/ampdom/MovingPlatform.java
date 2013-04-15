@@ -18,6 +18,7 @@ public class MovingPlatform extends SpecialBody{
 	}	
 	public void move()
 	{
+		
 		float yUpper, yLower, xUpper, xLower;
 		yUpper = (y + range);
 		yLower = (y - range);

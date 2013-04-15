@@ -168,6 +168,9 @@ public class Enemy extends Character {
 	}
 
 	public void die() {
+		 EnemyContact.enemyDmg=false;
+		 EnemyContact.isHit=false;
+ EnemyContact.insideEnemy=false;
 		sprite.setScale(0, 0);
         entity.setActive(false);
 	}
