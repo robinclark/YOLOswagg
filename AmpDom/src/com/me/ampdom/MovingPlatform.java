@@ -15,8 +15,7 @@ public class MovingPlatform extends SpecialBody{
 			body.setLinearVelocity(0.0f, velocity);
 		else
 			body.setLinearVelocity(velocity, 0.0f);
-	}
-	
+	}	
 	public void move()
 	{
 		float yUpper, yLower, xUpper, xLower;

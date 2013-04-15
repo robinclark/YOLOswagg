@@ -173,6 +173,7 @@ public class Alabaster extends Character {
 		shoutShape.dispose();
 		
 		shoutBody.setUserData("SHOUT");
+		shoutBody.setActive(false);
 		
 		//--tongue
 	   	tongueText = new Texture(Gdx.files.internal("data/alabaster/tongue.png"));

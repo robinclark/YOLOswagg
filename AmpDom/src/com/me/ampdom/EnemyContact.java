@@ -284,7 +284,7 @@ public void beginContact(Contact contact) {
 	    if(a.getBody().getUserData()=="SPIT" && b.getBody().getUserData()=="PLAYER")
 	    	contact.setEnabled(false);
 	    */
-			
+		/*********************************************************************************************/	
 		//--leaves n shat
 		if(a.getBody().getUserData()=="PLAYER"  && (b.getBody().getUserData()=="STATIONARY_PLATFORM"))
 		{
@@ -303,13 +303,40 @@ public void beginContact(Contact contact) {
 		{
 			//if player lower than body, turn off collision
 			if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+			{
+				System.out.println("enable contact");
 				contact.setEnabled(false);
+			}
 		}		
 	    if((a.getBody().getUserData()=="MOVING_PLATFORM") && (b.getBody().getUserData()=="PLAYER"))
 	    {    	
 	    	if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+	    	{
+				System.out.println("enable contact");
 				contact.setEnabled(false);
+			}
 	    }
+	    
+	    //--player log 
+	    if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="WATER_LOG")
+		{
+			//if player lower than body, turn off collision
+			if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+			{
+				System.out.println("enable contact foot");
+				contact.setEnabled(false);
+			}
+		}		
+	    
+	    if((a.getBody().getUserData()=="WATER_LOG") && (b.getBody().getUserData()=="PLAYER"))
+	    {    	
+	    	if(a.getBody().getPosition().y > b.getBody().getPosition().y)
+	    	{
+				System.out.println("enable contact foot");
+				contact.setEnabled(false);
+			}
+	    }
+	    /*********************************************************************************************/	
 	    
 	    //--foot ground
 	    if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
@@ -398,20 +425,58 @@ public void beginContact(Contact contact) {
 		//--
 		if(contact.getFixtureA().getBody().getUserData()!= null && contact.getFixtureB().getBody().getUserData()!=null){
 			
+			/**********************************************************************************************/
 			//--leaf player
-			if(a.getBody().getUserData()=="PLAYER" && (b.getBody().getUserData()=="STATIONARY_PLATFORM"|| b.getBody().getUserData()=="MOVING_PLATFORM"))
+			if(a.getBody().getUserData()=="PLAYER" && (b.getBody().getUserData()=="STATIONARY_PLATFORM"))
 			{
 				if(a.getBody().getPosition().y < b.getBody().getPosition().y)
 					contact.setEnabled(true);
 			}
-		    if((a.getBody().getUserData()=="STATIONARY_PLATFORM" || a.getBody().getUserData()=="MOVING_PLATFORM") && b.getBody().getUserData()=="PLAYER")
+		    if((a.getBody().getUserData()=="STATIONARY_PLATFORM") && b.getBody().getUserData()=="PLAYER")
 		    {
 		    	if(a.getBody().getPosition().y < b.getBody().getPosition().y)
 					contact.setEnabled(true);
 		    }	
 		    
+		  //--moving platforms
+		    if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="WATER_LOG")
+			{
+				//if player lower than body, turn off collision
+				if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+				{
+					System.out.println("enable contact");
+					contact.setEnabled(true);
+				}
+			}		
+		    if((a.getBody().getUserData()=="WATER_LOG") && (b.getBody().getUserData()=="PLAYER"))
+		    {    	
+		    	if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+		    	{
+					System.out.println("enable contact");
+					contact.setEnabled(true);
+				}
+		    }
 		    
-			
+		  //--moving platform foot
+		    if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="MOVING_PLATFORM")
+			{
+				//if player lower than body, turn off collision
+				if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+				{
+					System.out.println("enable contact foot");
+					contact.setEnabled(true);
+				}
+			}		
+		    if((a.getBody().getUserData()=="PLAYER") && (b.getBody().getUserData()=="FOOT"))
+		    {    	
+		    	if(a.getBody().getPosition().y < b.getBody().getPosition().y)
+		    	{
+					System.out.println("enable contact foot");
+					contact.setEnabled(true);
+				}
+		    }
+		    /**********************************************************************************************/
+		    
 		 if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 				contact.setEnabled(false);
 		 if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
