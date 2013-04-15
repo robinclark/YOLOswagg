@@ -9,17 +9,18 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Shape;
 
 public class EnemyContact implements ContactListener  {
-boolean enemyDmg=false;
-boolean isHit = false;
+static boolean enemyDmg=false;
+static boolean isHit = false;
 boolean obstacleDmg = false;
 boolean endLevel = false;
 boolean collectJar = false;
 boolean attackEnem = false;
 static boolean grounded = false;
 Vector2 enemPos;
-
+boolean dropperHit;
 boolean spitEnem = false;
 boolean shoutEnem = false;
+static boolean insideEnemy = false;
 
 @Override
 public void beginContact(Contact contact) {
@@ -50,13 +51,21 @@ public void beginContact(Contact contact) {
 		{
 			enemyDmg =true;
 			isHit = true;
+			insideEnemy=true;
+		
 		}
 		
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER")
 		{
 		    enemyDmg =true;
 			isHit = true;
+			insideEnemy=true;
+		
 		}
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="GROUND")
+			   grounded=false;
+		if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="PLAYER")
+			   grounded=false;	
 		
 		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="GROUND")
 			   grounded=true;
@@ -111,6 +120,15 @@ public void beginContact(Contact contact) {
 			  spitEnem = true;
 		}		
 		
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="DROPPER"){
+			dropperHit=true;
+	    System.out.println("dopper");
+		}
+		if(a.getBody().getUserData()=="DROPPER" && b.getBody().getUserData()=="PLAYER"){
+			dropperHit=true;	
+	    System.out.println("dopper");
+		}
+		
 		//--shout
 		if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="SHOUT")
 		{
@@ -160,24 +178,39 @@ public void beginContact(Contact contact) {
 
 	@Override
 	public void endContact(Contact contact) {
-		/*// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 		final Fixture a = contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
 			if(contact.getFixtureA().getBody().getUserData()!= null && 
 				contact.getFixtureB().getBody().getUserData()!=null){
 			
+				
+				if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="DROPPER"){
+					dropperHit=false;
+				}
+				if(a.getBody().getUserData()=="DROPPER" && b.getBody().getUserData()=="PLAYER"){
+					dropperHit=false;	
+				}
+				
+				
 			if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY"){
 			    //System.out.println("enemy contact 1");
-			   enemyDmg =false;
-			   isHit = false;
+			  ///enemyDmg =true;
+				System.out.println("inside enemy");
+				insideEnemy=false;
+			    isHit = false;
+			    enemyDmg=false;
 		
 			}
 				
 			if(a.getBody().getUserData()=="ENEMY" && b.getBody().getUserData()=="PLAYER"){
 		//	    System.out.println("enemy contact 2");
-			    enemyDmg =false;
+			 // enemyDmg =true;
+				System.out.println("inside enemy");
+				   insideEnemy=false;
 				   isHit = false;
+				   enemyDmg=false;
 					
 			}
 				
@@ -261,16 +294,21 @@ public void beginContact(Contact contact) {
 			//    System.out.println("JAR");
 			   collectJar=true;
 			}				 
-	   }*/
+	   }
 	}
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
 		final Fixture a=contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
-		/*if(contact.getFixtureA().getBody().getUserData()!= null && 
+		if(contact.getFixtureA().getBody().getUserData()!= null && 
 		   contact.getFixtureB().getBody().getUserData()!=null){
 			
+			 
+			
+			 
+			
+			 
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SHOUT")
 				contact.setEnabled(false);
 
@@ -342,7 +380,7 @@ public void beginContact(Contact contact) {
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="TONGUE")
 			   contact.setEnabled(false);
 	
-		}*/
+		}
 	}
 
 	//why do we need this?
@@ -358,6 +396,11 @@ public void beginContact(Contact contact) {
 				contact.setEnabled(false);
 		 if(a.getBody().getUserData()=="GROUND" && b.getBody().getUserData()=="FOOT")
 			    contact.setEnabled(false);
+//		 
+//		 if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="STATIONARY_PLATFORM")
+//				contact.setEnabled(true);
+//		 if(a.getBody().getUserData()=="STATIONARY_PLATFORM" && b.getBody().getUserData()=="PLAYER")
+//			    contact.setEnabled(true);
 		
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="ENEMY")
 			contact.setEnabled(false);

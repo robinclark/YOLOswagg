@@ -98,10 +98,11 @@ public class LevelMap {
 						range = tO.height/AmpDom.PIXELS_PER_METER;
 						vert = true;
 					}
-					System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
-					System.out.println("y: " + (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
-					
-					System.out.println("range: " + range);
+//					System.out.println("x: " + tO.x/AmpDom.PIXELS_PER_METER);
+//					System.out.println("y: " + (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER);
+//					
+//					System.out.println("range: " + range);
+					System.out.println("AODMSOMASDOASM");
 					movingPlatforms.add(new MovingPlatform(world, "data/Objects/dungeonPlatform.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, range/4.0f, vert, 128, 32));
 				}
 			}
@@ -241,7 +242,7 @@ public class LevelMap {
 			}
 			/*********************************************************************************/
 			//--falling things
-			if(tG.name.equals("log"))//stationary platform
+			if(tG.name.equals("log"))//moving platform
 			{
 				for(TiledObject tO: tG.objects)
 				{
@@ -446,7 +447,7 @@ public class LevelMap {
 			tiledMapHelper.setPackerDirectory("data/packer/level3");
 			tiledMapHelper.loadMap("data/world/level3/level3.2.tmx");
 			
-			tiledMapHelper.loadCollisions("data/packer/level3/collisions3.txt", world,
+			tiledMapHelper.loadCollisions("data/packer/level3/collisions3.3txt", world,
 					PIXELS_PER_METER);
 			
 			break;
@@ -593,8 +594,8 @@ public class LevelMap {
 			
 		levelbg.dispose();
 		levelSprite.getTexture().dispose();
-		endlevel.batch.dispose();
-        jar.batch.dispose();
+//		endlevel.batch.dispose();
+//        jar.batch.dispose();
 	    flyers.clear();
 		spikes.clear();
 		enemies.clear();

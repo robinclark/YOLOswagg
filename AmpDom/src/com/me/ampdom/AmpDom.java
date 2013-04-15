@@ -38,7 +38,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = -5;
+	public static int state = 2;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -52,6 +52,9 @@ public class AmpDom implements ApplicationListener {
 	long spitBeginTime; 
 	float hitElapsedTime;
 	long hitBeginTime;
+	long isHitBeginTime;
+	float isHitElapsedTime;
+	static boolean insideCheck;
 
 	// detect keyboard
 	MyInputProcessor input = new MyInputProcessor();
@@ -128,6 +131,7 @@ public class AmpDom implements ApplicationListener {
 
 	// blink baster
 	public void getHit() {
+		
 		hitBeginTime = System.nanoTime();
 		hitElapsedTime = (System.nanoTime() - hitBeginTime)/1000000000.0f;
 
@@ -146,7 +150,7 @@ public class AmpDom implements ApplicationListener {
 		
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-	
+//	System.out.println(insideCheck);
 		if(state >= 0 && state%2 == 0 && level.currentLevel%2 == 0){
 
 			//if(level.test.isPlaying() == false)
@@ -161,7 +165,7 @@ public class AmpDom implements ApplicationListener {
 			
 			frog.move(input);
 			input.tick();
-			
+			isHitBeginTime=System.nanoTime();
 
 
 			//System.out.println(frog.entity.getPosition());
@@ -179,7 +183,8 @@ public class AmpDom implements ApplicationListener {
 //						* frog.entity.getPosition().y;
 //			}
 			
-			if(detect.enemyDmg && detect.isHit){
+			if(EnemyContact.enemyDmg && EnemyContact.isHit){
+				isHitBeginTime = System.nanoTime();
 				if(frog.shell) {
 					if(frog.shellCharge-1 >= 0) {
 						frog.shellCharge -= 1;
@@ -190,34 +195,43 @@ public class AmpDom implements ApplicationListener {
 							shellBeginTime = System.nanoTime();
 					}
 				} else {
-					frog.takeDamage(10);
-					//frog.sprite.setColor(Color.RED);
-					
-					//frog.sprite.setColor(1f, 1f, 1f, .2f);
-					//long BeginTime = System.nanoTime();
-					//float ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
-
-					//if(ElapsedTime >0 && ElapsedTime <5) {
-					//hitElapsedTime = System.nanoTime();
-					//if(hitElapsedTime > 0 && hitElapsedTime < 3)
-						getHit();//BeginTime = System.nanoTime();
-					//}
+					if(!insideCheck)
+					frog.takeDamage(20);
+					EnemyContact.enemyDmg=false;
+					EnemyContact.isHit=false;
+//					System.out.println(" time" + isHitBeginTime/1000000000f%2)
+			
 					frog.icon.setColor(Color.RED);
-					detect.enemyDmg=false;
-					detect.isHit = false;
+					frog.sprite.setColor(1.0f, 1.0f, 1.0f, .2f);
+//					detect.enemyDmg=false;
+//					detect.isHit = false;
 					damage.play();
+				//	System.out.println(detect.insideEnemy);
+					
+				}
+			
+			}
+			if(EnemyContact.insideEnemy){
+               insideCheck=true;
+//				System.out.println(isHitBeginTime/1000000000f);
+			    isHitElapsedTime = (System.nanoTime() - isHitBeginTime)/1000000000.0f;
+				System.out.println(isHitElapsedTime);
+				if(isHitBeginTime/1000000000f%2==0.0)
+				{
+					System.out.println(" time" + isHitBeginTime/1000000000f%2);
+					frog.takeDamage(20);
+
 				}
 			}
-			
-			//System.out.println(frog.entity.getLinearVelocity().y);
-			if(detect.obstacleDmg && detect.isHit){
+			if(EnemyContact.insideEnemy==false)insideCheck=false;
+			if(detect.obstacleDmg && EnemyContact.isHit){
 				frog.takeDamage(100);	
 				detect.obstacleDmg=false;
-				detect.isHit = false;
+				EnemyContact.isHit = false;
 				damage.play();
 				System.out.println("youve been hit by spikes!"+ frog.getHealth());
 				}
-			
+		//	System.out.println(EnemyContact.grounded);
 			if(detect.collectJar){
 				 System.out.println("jar----"+LevelMap.jar.sprite.toString());
 				frog.incHealth(20);
@@ -233,8 +247,15 @@ public class AmpDom implements ApplicationListener {
 				frog = new Alabaster(world, 1.0f, 5.0f);
 				frog.shell = false;
 				frog.shout = false;
+				EnemyContact.enemyDmg=false;
+				EnemyContact.isHit = false;
+				EnemyContact.insideEnemy=false;
 			}
-			
+			if(detect.dropperHit){
+				frog.takeDamage(20);
+				detect.dropperHit=false;
+				System.out.println("lol");
+			}
 			if(!frog.shell) {
 				//if(frog.shellHealth == 0) {
 					shellElapsedTime = (System.nanoTime() - shellBeginTime)/1000000000.0f;
@@ -246,6 +267,7 @@ public class AmpDom implements ApplicationListener {
 			}
 			
 			if(frog.shout) {
+				
 				if(frog.shoutCharge-20 >= 0) {
 					frog.shoutCharge -= 20;
 					System.out.println("SHOUT HEALTH: " + frog.shoutCharge);
@@ -254,6 +276,7 @@ public class AmpDom implements ApplicationListener {
 					if(frog.shoutCharge == 0)
 						shoutBeginTime = System.nanoTime();
 				}
+				
 			}
 
 			if(!frog.shout) {
@@ -267,9 +290,10 @@ public class AmpDom implements ApplicationListener {
 			}
 
 			if(frog.spit) {
+				
 				if(frog.spitCharge-20 >= 0) {
 					frog.spitCharge -= 20;
-
+					frog.spit=false;
 					System.out.println("SPIT HEALTH: " + frog.spitCharge);
 
 					// initiate timer
@@ -278,7 +302,7 @@ public class AmpDom implements ApplicationListener {
 				}
 			}
 
-			if(!frog.spit) {
+			if(!frog.spit && frog.spitCharge == 0) {
 					spitElapsedTime = (System.nanoTime() - spitBeginTime)/1000000000.0f;
 
 					if(spitElapsedTime > 5 && frog.spitCharge <100) {

@@ -36,6 +36,7 @@ public class FlyingEnemy extends Character {
 		texture = new Texture(Gdx.files.internal(path));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite = new Sprite(texture, 0, 0, sizeW, sizeH);
+		sprite.setScale(1.5f,1.5f);
 		rect = new Rectangle(x,y,texture.getWidth(),texture.getHeight());
 		/**
 		 * Boxes are defined by their "half width" and "half height", hence the
@@ -134,8 +135,11 @@ public class FlyingEnemy extends Character {
 	}
 	
 	public void die() {
+		 EnemyContact.enemyDmg=false;
+	 EnemyContact.isHit=false;
+        EnemyContact.insideEnemy=false;
 		sprite.setScale(0, 0);
-		entity.setActive(false);
+        entity.setActive(false);
 	}
 
 	public void batchRender(TiledMapHelper tiledMapHelper) {
