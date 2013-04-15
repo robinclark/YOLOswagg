@@ -159,7 +159,7 @@ public class Alabaster extends Character {
 		/******************************************************/
 
 		//--shout
-		 shoutText = new Texture(Gdx.files.internal("data/shockwave.png"));
+		 shoutText = new Texture(Gdx.files.internal("data/Alabaster/shout.png"));
 		 shoutText.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	     shoutSprite = new Sprite(shoutText, 0, 0, 64, 128);
 	     
@@ -234,10 +234,10 @@ public class Alabaster extends Character {
 		foot.setUserData("FOOT");
 		    
 		//--spit		
-		leftSpitTexture = new Texture(Gdx.files.internal("data/leftSpit.png"));
+		leftSpitTexture = new Texture(Gdx.files.internal("data/Alabaster/leftSpit.png"));
 		leftSpitSprite = new Sprite(leftSpitTexture, 0, 0, 64, 64);
 		
-		spitTexture = new Texture(Gdx.files.internal("data/spit.png"));
+		spitTexture = new Texture(Gdx.files.internal("data/Alabaster/spit.png"));
 	    spitSprite = new Sprite(spitTexture, 0, 0, 64, 64);
 	   	 
 	   	spitBodyDef = new BodyDef();
@@ -269,8 +269,8 @@ public class Alabaster extends Character {
 		spitBody.setUserData("SPIT");
 		
 		//--shell			     
-		shellText = new Texture(Gdx.files.internal("data/flyJar.png"));
-	    shellSprite = new Sprite(shellText, 0, 0, 32, 32);
+		shellText = new Texture(Gdx.files.internal("data/Alabaster/shell.png"));
+	    shellSprite = new Sprite(shellText, 0, 0, 64, 64);
 	    shellSound = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/shellSound.wav", FileType.Internal));
 	    
 	    /*sounds*/
@@ -442,13 +442,13 @@ public void move(MyInputProcessor input)
 	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
 	foot.applyForceToCenter(0,10.0f);
 	tongueBody.setActive(false);
-	//shoutBody.setActive(false);
+	shoutBody.setActive(false);
 	boolean moveLeft = false;
 	boolean moveRight = false;	
 	shell = false;
 	sprite.setTexture(texture);
 	sprite.setSize(64f, 51f);
-//	AmpDom.insideCheck=false;
+
 	
 	//shout = false;
 	//spit = false;	
