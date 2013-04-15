@@ -32,6 +32,7 @@ public class SpecialBody {
 		texture = new Texture(Gdx.files.internal(path));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite = new Sprite(texture, 0, 0, width, height);
+		sprite.setScale(1.2f,1.0f);
 		
 		//body
 		bodyDef = new BodyDef();

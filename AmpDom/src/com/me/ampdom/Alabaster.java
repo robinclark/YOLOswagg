@@ -108,7 +108,7 @@ public class Alabaster extends Character {
 	protected int spitCharge = 100;
 	protected int shoutCharge = 100;
 	private Texture iconTexture;
-	
+	Texture textureMove;
 	
 	final float spitVel = 10.0f;
 	
@@ -119,9 +119,12 @@ public class Alabaster extends Character {
 		/*setup physics n sounds*/
 		
 		//--alabaster
+		textureMove = new Texture(Gdx.files.internal("data/Alabaster/alabasterM.png"));
 		texture = new Texture(Gdx.files.internal("data/Alabaster/alabasterS.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		textureMove.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sprite = new Sprite(texture, 0, 0, 64, 51);
+		
 		
 		entityDef.position.set(x, y);
 		entity = world.createBody(entityDef);
@@ -435,6 +438,10 @@ public void move(MyInputProcessor input)
 	boolean moveLeft = false;
 	boolean moveRight = false;	
 	shell = false;
+	sprite.setTexture(texture);
+	sprite.setSize(64f, 51f);
+	
+	
 	//shout = false;
 	//spit = false;	
 		//jumping
@@ -486,12 +493,21 @@ public void move(MyInputProcessor input)
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
-  			moveLeft = true;		
+  		{
+  			moveLeft = true;
+  			sprite.setTexture(textureMove);
+  			sprite.setSize(128,51);
+  			moveRight=false;
+  		}
+  					
   	
   		//move right
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) 
   		{
-  			moveRight = true;	
+  			moveRight = true;
+  			sprite.setTexture(textureMove);
+  			sprite.setSize(128,51);
+  			moveLeft=false;
   		}
   		
   		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -535,8 +551,10 @@ public void move(MyInputProcessor input)
   		
   		if (moveRight) 
   		{
-  			entity.applyLinearImpulse(new Vector2(.15f, 0.0f),
-  			entity.getWorldCenter());
+  			if(entity.getLinearVelocity().x<2.5f)
+  			entity.applyLinearImpulse(new Vector2(1.5f, 0.0f),entity.getWorldCenter());
+  			else{}
+  			
   			
   			if (facingRight == false)
   			{
@@ -547,19 +565,24 @@ public void move(MyInputProcessor input)
   			}
   		
   			facingRight = true;
+  			
   		} 
   		else if (moveLeft)
   		{
-  			entity.applyLinearImpulse(new Vector2(-.15f, 0.0f),
-  			entity.getWorldCenter());
+  			if(entity.getLinearVelocity().x>-2.5f)
+  			entity.applyLinearImpulse(new Vector2(-1.5f, 0.0f),entity.getWorldCenter());
+  			else{}
+  			
   			if (facingRight == true)
   			{
+  				
   				sprite.flip(true, false);
   				tongueSprite.flip(true, false);
   				shoutSprite.flip(true,false);
   				//spitSprite.flip(true, false);
   			}
   			facingRight = false;
+  			
   		}
 
   		/****************************************************************
