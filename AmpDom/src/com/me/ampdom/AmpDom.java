@@ -39,7 +39,7 @@ public class AmpDom implements ApplicationListener {
 	private Menu m;
 	private OrthographicCamera camera;
 
-	public static int state = -5;
+	public static int state = 10;
 
 	Sprite shellSprite;
 	Texture shellText;
@@ -151,7 +151,7 @@ public class AmpDom implements ApplicationListener {
 	
 	@Override
 	public void render() {		
-		System.out.println(Alabaster.abilityState);
+		//System.out.println(Alabaster.abilityState);
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 //	System.out.println(insideCheck);
@@ -204,6 +204,24 @@ public class AmpDom implements ApplicationListener {
 							shellBeginTime = System.nanoTime();
 					}
 				} else {
+					/*
+					if(detect.storm)
+					{
+						detect.storm = false;
+						if(frog.shell)
+						{
+						frog.takeDamage(20);
+						EnemyContact.enemyDmg=false;
+						EnemyContact.isHit=false;
+//						System.out.println(" time" + isHitBeginTime/1000000000f%2)
+				
+						frog.icon.setColor(Color.RED);
+						frog.sprite.setColor(1.0f, 1.0f, 1.0f, .2f);
+//						detect.enemyDmg=false;
+//						detect.isHit = false;
+						damage.play();
+						}
+					}*/
 					if(!insideCheck)
 					frog.takeDamage(20);
 					EnemyContact.enemyDmg=false;
@@ -531,10 +549,10 @@ public class AmpDom implements ApplicationListener {
 			}
 
 			//debugger
-		     //debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
-		    	//	 AmpDom.PIXELS_PER_METER,
-		    		// AmpDom.PIXELS_PER_METER,
-		    //		 AmpDom.PIXELS_PER_METER));
+		     debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
+		    		 AmpDom.PIXELS_PER_METER,
+		    		 AmpDom.PIXELS_PER_METER,
+		    		 AmpDom.PIXELS_PER_METER));
 			lastRender = now;
 			
 			frog.displayHUD();
