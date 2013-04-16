@@ -106,7 +106,7 @@ public class AmpDom implements ApplicationListener {
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);
-		frog = new Alabaster(world, 1.5f, 8.0f);
+		frog = new Alabaster(world, 1.5f, 8.0f, state);
 
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
@@ -212,6 +212,7 @@ public class AmpDom implements ApplicationListener {
 			
 			}
 			if(EnemyContact.insideEnemy){
+				if(!frog.shell){
                insideCheck=true;
 //				System.out.println(isHitBeginTime/1000000000f);
 			    isHitElapsedTime = (System.nanoTime() - isHitBeginTime)/1000000000.0f;
@@ -221,6 +222,20 @@ public class AmpDom implements ApplicationListener {
 					System.out.println(" time" + isHitBeginTime/1000000000f%2);
 					frog.takeDamage(20);
 
+				}
+				}
+				else {
+					if(frog.shellCharge-1 >= 0) {
+						frog.shellCharge -= 1;
+						System.out.println("SHELL HEALTH: " + frog.shellCharge);
+						
+						// initiate timer
+						if(frog.shellCharge == 0)
+						{
+							frog.shell=false;
+							shellBeginTime = System.nanoTime();
+						}
+					}
 				}
 			}
 			if(EnemyContact.insideEnemy==false)insideCheck=false;
@@ -244,7 +259,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-				frog = new Alabaster(world, 1.0f, 8.0f);
+				frog = new Alabaster(world, 1.0f, 8.0f, state);
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -282,8 +297,8 @@ public class AmpDom implements ApplicationListener {
 			if(!frog.shout) {
 					shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
 
-					if(shoutElapsedTime > 5 && frog.shoutCharge <100) {
-						frog.shoutCharge += 20;
+					if(shoutElapsedTime > 8 && frog.shoutCharge <100) {
+						frog.shoutCharge += 100;
 						shoutBeginTime = System.nanoTime();
 						//shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
 					}
@@ -305,8 +320,8 @@ public class AmpDom implements ApplicationListener {
 			if(!frog.spit && frog.spitCharge == 0) {
 					spitElapsedTime = (System.nanoTime() - spitBeginTime)/1000000000.0f;
 
-					if(spitElapsedTime > 5 && frog.spitCharge <100) {
-						frog.spitCharge += 20;
+					if(spitElapsedTime > 8 && frog.spitCharge <100) {
+						frog.spitCharge += 100;
 						spitBeginTime = System.nanoTime();
 						//spitElapsedTime = (System.nanoTime() - spitBeginTime)/1000000000.0f;
 					}
@@ -551,7 +566,7 @@ public class AmpDom implements ApplicationListener {
 		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
-	        frog = new Alabaster(world, 1.0f, 8.0f);
+	        frog = new Alabaster(world, 1.0f, 8.0f, state);
 	        lastRender = System.nanoTime();
 	    }
 	}

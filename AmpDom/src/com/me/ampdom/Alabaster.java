@@ -566,7 +566,7 @@ public void move(MyInputProcessor input)
 		}
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
-			System.out.println("frog: " + entity.getPosition().x + ", " + entity.getPosition().y);
+			System.out.println("RIBBIT!!!");
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
@@ -666,7 +666,7 @@ public void move(MyInputProcessor input)
   		/****************************************************************
   		 * SPIT INPUT  		 											* 
   		 ***************************************************************/
-	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
+	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell && hasSpit)
 	    {
 	    	if(spitCharge > 0) 
 	    	{
@@ -719,9 +719,9 @@ public void move(MyInputProcessor input)
 	    }
 	    
 	    /****************************************************************
-  		 * SHOUT INPUT  hi		 										* 
+  		 * SHOUT INPUT		 										* 
   		 ***************************************************************/
-	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
+	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell && hasShout)
 	    {	    	
 	    
 	    	if(shoutCharge > 0) 
@@ -764,34 +764,37 @@ public void move(MyInputProcessor input)
   		 * UPDATE SPITS		 											* 
   		 ***************************************************************/
 	    //destroy spit if too far or collided w/something
-        for(Spit b: spits)
-        {
-        	
-        	if(b == null) continue;        	
-	        	//System.out.println(spits.size());
-	        	if(b.body.getPosition().x < b.x/*entity.getPosition().x*/ - 2*100/PIXELS_PER_METER || b.body.getPosition().x > b.x/*entity.getPosition().x*/ + 2*100/PIXELS_PER_METER)
-
-	        	{
-	        		//System.out.println("removing");	        		
-	        		int i = spits.indexOf(b);
-	        		
-	        		//spits.set(i,null);
-	        		//world.destroyBody(b);
-	        		
-	        		spitsToDestroy.add(b);
-	        		
-	        		
-	        		b.body.setActive(false);
-	        		System.out.println("deactivate");
-	        		
-	        		spits.set(i,null);
-	        		//spits.remove(b);
-	        	}
-	        	else
-	        	{
-
-	        	}
-        }
+	    if(hasSpit)
+	    {
+	        for(Spit b: spits)
+	        {
+	        	
+	        	if(b == null) continue;        	
+		        	//System.out.println(spits.size());
+		        	if(b.body.getPosition().x < b.x/*entity.getPosition().x*/ - 2*100/PIXELS_PER_METER || b.body.getPosition().x > b.x/*entity.getPosition().x*/ + 2*100/PIXELS_PER_METER)
+	
+		        	{
+		        		//System.out.println("removing");	        		
+		        		int i = spits.indexOf(b);
+		        		
+		        		//spits.set(i,null);
+		        		//world.destroyBody(b);
+		        		
+		        		spitsToDestroy.add(b);
+		        		
+		        		
+		        		b.body.setActive(false);
+		        		System.out.println("deactivate");
+		        		
+		        		spits.set(i,null);
+		        		//spits.remove(b);
+		        	}
+		        	else
+		        	{
+	
+		        	}
+	        }
+	    }
         
         /*if(spitBody.getLinearVelocity().x < 2.0f)
         {
