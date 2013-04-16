@@ -153,11 +153,19 @@ static protected float spawnY;
 					enemies.add(new Enemy(world, "data/Enemies/monitorLizard.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,32));
 				}
 			}
-			if(tG.name.equals("armadillos"))
+			if(tG.name.equals("armadillo"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					enemies.add(new Enemy(world, "data/Enemies/armadillo.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,48));
+					enemies.add(new Enemy(world, "data/Enemies/armadillo.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,64,48));
+				}
+			}
+			
+			if(tG.name.equals("rsnake"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/rattlesnake.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,64,48));
 				}
 			}
 			/*********************************************************************************/
@@ -194,7 +202,7 @@ static protected float spawnY;
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					flyers.add(new FlyingEnemy(world, "data/Enemies/owl.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,128,64));
+					flyers.add(new FlyingEnemy(world, "data/Enemies/vulture.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,128,64));
 				}
 			}
 			/*********************************************************************************/

@@ -47,7 +47,7 @@ public class Obstacle extends Character {
 		fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.0f;
-		fixtureDef.friction = 5.0f;
+		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 0.0f;
 		entity = world.createBody(entityDef);
 		entity.createFixture(fixtureDef);

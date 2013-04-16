@@ -2748,15 +2748,20 @@
   <object x="10291" y="694"/>
  </objectgroup>
  <objectgroup name="armadillo" width="210" height="13"/>
- <objectgroup name="snake" width="210" height="13">
+ <objectgroup name="rsnake" width="210" height="13">
   <object x="2112" y="600"/>
-  <object x="2809" y="612"/>
-  <object x="3452" y="609"/>
+  <object x="3458" y="542"/>
+  <object x="2755" y="552"/>
+  <object x="5188" y="542"/>
+  <object x="8133" y="336"/>
  </objectgroup>
  <objectgroup name="hawk" width="210" height="13">
   <object x="10548" y="230"/>
   <object x="12006" y="176"/>
   <object x="1391" y="245"/>
+  <object x="470" y="334"/>
+  <object x="5888" y="191"/>
+  <object x="6639" y="345"/>
  </objectgroup>
  <objectgroup name="lizard" width="210" height="13">
   <object x="4767" y="409"/>
@@ -2845,7 +2850,7 @@
   <object x="6685" y="737"/>
   <object x="2206" y="996" width="42" height="14"/>
  </objectgroup>
- <objectgroup name="spike" width="210" height="13">
+ <objectgroup name="spikes" width="210" height="13">
   <object x="10602" y="742"/>
   <object x="10664" y="740"/>
   <object x="10724" y="738"/>
@@ -2869,7 +2874,14 @@
   <object x="11876" y="738"/>
   <object x="12002" y="730"/>
   <object x="12070" y="740"/>
-  <object x="11938" y="736" height="294"/>
   <object x="11936" y="732"/>
+ </objectgroup>
+ <objectgroup name="sandstorm" width="210" height="13">
+  <object x="6388" y="542" width="415" height="55"/>
+  <object x="4391" y="521" width="524" height="70"/>
+  <object x="2782" y="467" width="603" height="42"/>
+  <object x="5673" y="376" width="515" height="30"/>
+  <object x="3964" y="342" width="248" height="27"/>
+  <object x="1797" y="476" width="727" height="70"/>
  </objectgroup>
 </map>
