@@ -532,6 +532,10 @@ public class AmpDom implements ApplicationListener {
 		
 
 		 m.display();
+		 if(m.homeIsPressed == true){			 
+			 resetToBeginning();
+			 m.homeIsPressed = false;
+		 }
 	}
 
 	@Override
@@ -546,6 +550,28 @@ public class AmpDom implements ApplicationListener {
 	public void dispose() {
 		m.dispose();
 		frog.dispose();
+	}
+	
+	public void resetToBeginning(){
+		level.currentLevel = 0;
+		level.deleteLevel();
+		
+	    world.destroyBody(frog.entity);
+
+	    world.destroyBody(LevelMap.jar.entity);
+	    world.destroyBody(LevelMap.endlevel.entity);
+	  // world.destroyBody(LevelMap.plat.entity);
+	       	
+		    level = new LevelMap();
+		    level.currentLevel = 0;
+		    detect = new EnemyContact();
+		    world = new World(new Vector2(0.0f, -10.0f), true);
+		    world.setContactListener(detect);
+			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
+	        tiledMapHelper = level.getMap();		
+	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, 0);
+	        lastRender = System.nanoTime();
+	    
 	}
 	
 	public void reset(){		
