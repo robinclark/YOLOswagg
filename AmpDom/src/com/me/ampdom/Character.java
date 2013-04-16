@@ -67,7 +67,6 @@ public abstract class Character  {
 	
 	public boolean isKilled(){
 		return isKilled;
-		
 	}
 
 	public boolean collision(Character c){
