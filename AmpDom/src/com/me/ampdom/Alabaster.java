@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -120,8 +121,12 @@ public class Alabaster extends Character {
 	TextureRegion motionSheet;
 	
 	final float spitVel = 10.0f;
+	ParticleEffect particleEffect;
+    float fpsCounter;
 	
-	long now, last, shoutTime;
+	long now, last, shoutTime, shoutBeginTime;
+	float shoutElapsedTime;
+	boolean drawShout = false;
 	
 	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
@@ -253,6 +258,9 @@ public class Alabaster extends Character {
 		
 		shoutBody.setUserData("SHOUT");
 		shoutBody.setActive(false);
+		
+		particleEffect = new ParticleEffect();
+	    particleEffect.load(Gdx.files.internal("data/shout.p"), Gdx.files.internal("data"));
 		
 		//--tongue
 	   	tongueText = new Texture(Gdx.files.internal("data/alabaster/tongue.png"));
@@ -729,6 +737,8 @@ public void move(MyInputProcessor input)
 	    	if(shoutCharge > 0) 
 	    	{
 	    		shoutTime = System.nanoTime();
+	    		drawShout = true;
+	    		shoutBeginTime = System.nanoTime();
 		    	shout = true;
 		    	shoutBody.setActive(true);
 		        shoutSound.play();
@@ -832,6 +842,7 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 	batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 	batch.begin();
 	
+	float delta = Gdx.graphics.getDeltaTime();
 		if(!shell){
 				sprite.setPosition(
 						PIXELS_PER_METER * entity.getPosition().x
@@ -868,12 +879,14 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 				}			   
 		}
 			if(shout){
+				
 				if(facingRight){
 					shoutSprite.setPosition(
 							PIXELS_PER_METER * entity.getPosition().x+64f
 									- shoutSprite.getWidth() / 2,
 							PIXELS_PER_METER * entity.getPosition().y+10f
-									- shoutSprite.getHeight() / 2);				
+									- shoutSprite.getHeight() / 2);
+					shoutSprite.setColor(1.0f, 1.0f, 1.0f, 0.0f);
 					shoutSprite.draw(batch);
 				}
 				else{	  		
@@ -882,8 +895,40 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 									- shoutSprite.getWidth() /2,
 							PIXELS_PER_METER * entity.getPosition().y+10f
 									- shoutSprite.getHeight() / 2);
+			    	shoutSprite.setColor(1.0f, 1.0f, 1.0f, 0.0f);
 			    	 shoutSprite.draw(batch);
-					}			 
+					}	
+			}
+
+			// particle shout
+			fpsCounter += delta;
+			if (fpsCounter > 3 )
+				fpsCounter = 0;
+			
+			
+			if(drawShout) {
+				if(facingRight) {
+					particleEffect.setPosition(PIXELS_PER_METER * entity.getPosition().x+82f- shoutSprite.getWidth() / 2,
+							PIXELS_PER_METER * entity.getPosition().y);
+					particleEffect.start();
+					particleEffect.draw(batch, delta);
+				}
+				else {
+					particleEffect.setPosition(
+							PIXELS_PER_METER * entity.getPosition().x-32f
+									- shoutSprite.getWidth() /2,
+							PIXELS_PER_METER * entity.getPosition().y);
+					particleEffect.start();
+					particleEffect.draw(batch, delta);
+				}
+				
+				shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
+			}
+			
+			if(shoutElapsedTime > 0.6) {
+				drawShout = false;
+				shoutBeginTime = 0;
+				shoutElapsedTime = 0;
 			}
 			for(Spit b: spits)
 			{

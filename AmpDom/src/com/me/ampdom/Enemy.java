@@ -187,7 +187,6 @@ public class Enemy extends Character {
 		EnemyContact.insideEnemy=false;
 		sprite.setScale(0, 0);
         entity.setActive(false);
-        //ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
         explosion.play();
 	}
 	
