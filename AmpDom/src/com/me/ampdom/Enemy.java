@@ -2,14 +2,19 @@ package com.me.ampdom;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 
 public class Enemy extends Character {
@@ -24,7 +29,10 @@ public class Enemy extends Character {
     float patY;
     protected float ElapsedTime;
     protected long BeginTime;
-	
+    
+    ParticleEffect particleEffect;
+    float fpsCounter;
+	Sound explosion;
 	
 	public Enemy(World world, String path, float x, float y,float patrolX,float patrolY,int sizeW, int sizeH) {
 		super(world, x, y);
@@ -51,8 +59,6 @@ public class Enemy extends Character {
 	
 	
 		entity.setFixedRotation(true);
-		
-
 	
 		FixtureDef FixtureDef = new FixtureDef();
 		FixtureDef.shape = shape;
@@ -71,6 +77,13 @@ public class Enemy extends Character {
 		spawnY0 = spawnY;
 		BeginTime = System.nanoTime();
 		ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+		
+		particleEffect = new ParticleEffect();
+	    particleEffect.load(Gdx.files.internal("data/redFire.p"), Gdx.files.internal("data"));
+	    particleEffect.setPosition(PIXELS_PER_METER * entity.getPosition().x,
+				PIXELS_PER_METER * entity.getPosition().y-3
+				);
+	    explosion = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/Explosion.wav", FileType.Internal));
 	}
 	
 	public Enemy getEnemy() {
@@ -168,20 +181,38 @@ public class Enemy extends Character {
 	}
 
 	public void die() {
-		 EnemyContact.enemyDmg=false;
-		 EnemyContact.isHit=false;
- EnemyContact.insideEnemy=false;
+		BeginTime = System.nanoTime();
+		EnemyContact.enemyDmg=false;
+		EnemyContact.isHit=false;
+		EnemyContact.insideEnemy=false;
 		sprite.setScale(0, 0);
         entity.setActive(false);
+        //ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+        explosion.play();
 	}
 	
 	public void batchRender(TiledMapHelper tiledMapHelper) {
 		batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 		batch.begin();
-	
+		float delta = Gdx.graphics.getDeltaTime();
 		sprite.setPosition(PIXELS_PER_METER * entity.getPosition().x- sprite.getWidth() / 2,
 				PIXELS_PER_METER * entity.getPosition().y
 						- sprite.getHeight() / 2);
+		
+		fpsCounter += delta;
+		if (fpsCounter > 3 )
+			fpsCounter = 0;
+		if(isKilled) {
+			particleEffect.start();
+			particleEffect.draw(batch, delta);
+			ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+		}
+		
+		if(ElapsedTime > 2) {
+			isKilled = false;
+			BeginTime = 0;
+			ElapsedTime = 0;
+		}
 		sprite.draw(batch);
 		batch.end();
 		

@@ -2,8 +2,11 @@ package com.me.ampdom;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,6 +27,12 @@ public class FlyingEnemy extends Character {
 	Body directPos;
 	float patX,patY;
 	boolean directMove = false;
+    protected float ElapsedTime;
+    protected long BeginTime;
+	
+	ParticleEffect particleEffect;
+    float fpsCounter;
+	Sound explosion;
 	
 	public FlyingEnemy(World world, String path, float x, float y,int sizeW,int sizeH) {
 		super(world, x, y);
@@ -56,7 +65,7 @@ public class FlyingEnemy extends Character {
 		fixtureDef.density = 1.0f;
 		//FixtureDef.friction = 5.0f;
 		fixtureDef.restitution = 0.0f;
-		fixtureDef.isSensor = true;
+		fixtureDef.isSensor = false;
 		entity = world.createBody(entityDef);
 		entity.createFixture(fixtureDef);
 		spawnX = entity.getPosition().x;
@@ -66,6 +75,13 @@ public class FlyingEnemy extends Character {
 		entity.setUserData("ENEMY");
 		shape.dispose();
 		facingRight = false;
+		
+		particleEffect = new ParticleEffect();
+	    particleEffect.load(Gdx.files.internal("data/redFire.p"), Gdx.files.internal("data"));
+	    particleEffect.setPosition(PIXELS_PER_METER * entity.getPosition().x,
+				PIXELS_PER_METER * entity.getPosition().y-3
+				);
+		explosion = Gdx.audio.newSound(Gdx.files.getFileHandle("data/sounds/Explosion.wav", FileType.Internal));
 	}
 	
 	public FlyingEnemy getFlyingEnemy() {
@@ -135,23 +151,40 @@ public class FlyingEnemy extends Character {
 	}
 	
 	public void die() {
-		 EnemyContact.enemyDmg=false;
-	 EnemyContact.isHit=false;
-        EnemyContact.insideEnemy=false;
+		BeginTime = System.nanoTime();
+		EnemyContact.enemyDmg=false;
+		EnemyContact.isHit=false;
+		EnemyContact.insideEnemy=false;
 		sprite.setScale(0, 0);
-        entity.setActive(false);
+	    entity.setActive(false);
+	    //ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+	    explosion.play();
 	}
 
 	public void batchRender(TiledMapHelper tiledMapHelper) {
 		batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 		batch.begin();
-	
+		
+		float delta = Gdx.graphics.getDeltaTime();
 		sprite.setPosition(PIXELS_PER_METER * entity.getPosition().x- sprite.getWidth() / 2,
 				PIXELS_PER_METER * entity.getPosition().y
 						- sprite.getHeight() / 2);
 		sprite.draw(batch);
 	
+		fpsCounter += delta;
+		if (fpsCounter > 3 )
+			fpsCounter = 0;
+		if(isKilled) {
+			particleEffect.start();
+			particleEffect.draw(batch, delta);
+			ElapsedTime = (System.nanoTime() - BeginTime)/1000000000.0f;
+		}
 		
+		if(ElapsedTime > 2) {
+			isKilled = false;
+			BeginTime = 0;
+			ElapsedTime = 0;
+		}
 		batch.end();
 		
 	}

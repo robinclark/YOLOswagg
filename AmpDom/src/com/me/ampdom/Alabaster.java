@@ -38,6 +38,7 @@ public class Alabaster extends Character {
 	boolean doubleJump;
 	boolean shell = false;
 	boolean shout = false;
+<<<<<<< HEAD
 	boolean tongueAct=false;
 	boolean powerLegs=false;
 	boolean spit = false;
@@ -45,6 +46,15 @@ public class Alabaster extends Character {
 	boolean hasShell = false;
 	boolean hasSpit = false;
 	boolean hasShout = false;
+=======
+    boolean tongueAct=false;
+	static boolean powerLegs=false;
+	boolean spit = false;
+	boolean tongueOut = false;
+	static boolean hasShell = false;
+	static boolean hasSpit = false;
+	static boolean hasShout = false;
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 	
 	//boolean shoutOut = false;
 	//boolean doubleJump;
@@ -118,13 +128,14 @@ public class Alabaster extends Character {
 	Animation animate;
 	Texture motionText;
 	TextureRegion motionSheet;
-	
+	static int abilityState;
 	final float spitVel = 10.0f;
 	
 	long now, last, shoutTime;
 	
 	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
+<<<<<<< HEAD
 		
 		/*enable power based on level*/
 		switch(level)
@@ -191,6 +202,74 @@ public class Alabaster extends Character {
 				break;
 		}
 		
+=======
+		abilityState = level;
+		/*enable power based on level*/
+//		switch(abilityState)
+//		{			
+//			case -1://dungeon
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;				
+//				break;			
+//			case 1://forest
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;			
+//			case 3://forest
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 5://mountain
+//				powerLegs  = true;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 7://mountain
+//				powerLegs  = true;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 9://desert
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 11://desert
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 13://jungle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = false;
+//				break;	
+//			case 15://jungle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = false;
+//				break;
+//			case 17://castle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = true;
+//				break;
+//		}
+		
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 		/*setup physics n sounds*/		
 		//--alabaster
 		motionText = new Texture(Gdx.files.internal("data/Alabaster/motionRegion.png"));
@@ -565,8 +644,15 @@ public void move(MyInputProcessor input)
 			
 		}
 		
+<<<<<<< HEAD
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
 			System.out.println("RIBBIT!!!");
+=======
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)){
+			System.out.println("RIBBIT!!!");
+			System.out.println(entity.getPosition());
+		}
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 

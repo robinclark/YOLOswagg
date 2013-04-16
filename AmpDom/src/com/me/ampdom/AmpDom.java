@@ -38,7 +38,11 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
+<<<<<<< HEAD
 	public static int state = 6;
+=======
+	public static int state = 12;
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -106,7 +110,11 @@ public class AmpDom implements ApplicationListener {
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);
+<<<<<<< HEAD
 		frog = new Alabaster(world, 1.5f, 8.0f, state);
+=======
+		frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
@@ -147,7 +155,7 @@ public class AmpDom implements ApplicationListener {
 	
 	@Override
 	public void render() {		
-		
+		System.out.println(Alabaster.abilityState);
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 //	System.out.println(insideCheck);
@@ -264,7 +272,11 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
+<<<<<<< HEAD
 				frog = new Alabaster(world, 1.0f, 8.0f, state);
+=======
+				frog = new Alabaster(world, 1.0f, 8.0f, level.currentLevel);
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -289,7 +301,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.shout) {
 				
 				if(frog.shoutCharge-20 >= 0) {
-					frog.shoutCharge -= 20;
+					frog.shoutCharge -= 100;
 					System.out.println("SHOUT HEALTH: " + frog.shoutCharge);
 
 					// initiate timer
@@ -302,7 +314,7 @@ public class AmpDom implements ApplicationListener {
 			if(!frog.shout) {
 					shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
 
-					if(shoutElapsedTime > 8 && frog.shoutCharge <100) {
+					if(shoutElapsedTime > 8 && frog.shoutCharge < 100) {
 						frog.shoutCharge += 100;
 						shoutBeginTime = System.nanoTime();
 						//shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
@@ -375,11 +387,13 @@ public class AmpDom implements ApplicationListener {
 				{
 					 if(detect.spitEnem)
 					 {
+						f.isKilled = true;
 				      	f.die();
 					    detect.spitEnem = false;
 	          	     }
 					 
 					 if(detect.attackEnem){
+						 f.isKilled = true;
 						 f.die();
 						 detect.attackEnem=false;
 					 }
@@ -412,9 +426,11 @@ public class AmpDom implements ApplicationListener {
 					if(detect.spitEnem)
 					{
 						detect.spitEnem = false;
+						e.isKilled = true;
 						e.die();
 					}
 					if(detect.attackEnem){
+						e.isKilled = true;
 						e.die();
 						detect.attackEnem=false;
 					}
@@ -533,6 +549,10 @@ public class AmpDom implements ApplicationListener {
 		
 
 		 m.display();
+		 if(m.homeIsPressed == true){			 
+			 resetToBeginning();
+			 m.homeIsPressed = false;
+		 }
 	}
 
 	@Override
@@ -547,6 +567,28 @@ public class AmpDom implements ApplicationListener {
 	public void dispose() {
 		m.dispose();
 		frog.dispose();
+	}
+	
+	public void resetToBeginning(){
+		level.currentLevel = 0;
+		level.deleteLevel();
+		
+	    world.destroyBody(frog.entity);
+
+	    world.destroyBody(LevelMap.jar.entity);
+	    world.destroyBody(LevelMap.endlevel.entity);
+	  // world.destroyBody(LevelMap.plat.entity);
+	       	
+		    level = new LevelMap();
+		    level.currentLevel = 0;
+		    detect = new EnemyContact();
+		    world = new World(new Vector2(0.0f, -10.0f), true);
+		    world.setContactListener(detect);
+			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
+	        tiledMapHelper = level.getMap();		
+	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, 0);
+	        lastRender = System.nanoTime();
+	    
 	}
 	
 	public void reset(){		
@@ -571,7 +613,11 @@ public class AmpDom implements ApplicationListener {
 		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
+<<<<<<< HEAD
 	        frog = new Alabaster(world, 1.0f, 8.0f, state);
+=======
+	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 	        lastRender = System.nanoTime();
 	    }
 	}

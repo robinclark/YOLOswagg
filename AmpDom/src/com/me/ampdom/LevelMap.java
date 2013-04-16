@@ -41,7 +41,8 @@ public class LevelMap {
     static Sprite forestbgSprite;
     protected  Texture levelbg;
     protected Sprite levelSprite;
-
+static protected float spawnX;
+static protected float spawnY;
 	
 	public LevelMap()
 	{
@@ -152,11 +153,19 @@ public class LevelMap {
 					enemies.add(new Enemy(world, "data/Enemies/monitorLizard.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,32));
 				}
 			}
-			if(tG.name.equals("armadillos"))
+			if(tG.name.equals("armadillo"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					enemies.add(new Enemy(world, "data/Enemies/armadillo.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,128,48));
+					enemies.add(new Enemy(world, "data/Enemies/armadillo.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,64,48));
+				}
+			}
+			
+			if(tG.name.equals("rsnake"))
+			{
+				for(TiledObject tO: tG.objects)
+				{
+					enemies.add(new Enemy(world, "data/Enemies/rattlesnake.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, .7f, .7f,64,48));
 				}
 			}
 			/*********************************************************************************/
@@ -193,7 +202,7 @@ public class LevelMap {
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					flyers.add(new FlyingEnemy(world, "data/Enemies/owl.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,128,64));
+					flyers.add(new FlyingEnemy(world, "data/Enemies/vulture.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,128,64));
 				}
 			}
 			/*********************************************************************************/
@@ -202,42 +211,50 @@ public class LevelMap {
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/spikes.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/spikes.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
 				}
 			}			
 			if(tG.name.equals("sand"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/quickSand.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/quickSand.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,44));
 				}
 			}			
 			if(tG.name.equals("cactus"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/cactus.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/cactus.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, 128,128));
 				}
 			}
 			if(tG.name.equals("poison"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/swampPoison.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/swampPoison.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,44));
 				}
 			}
 			if(tG.name.equals("plant"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
+<<<<<<< HEAD
 					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+=======
+					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,128));
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 				}
 			}
 			if(tG.name.equals("fire"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
+<<<<<<< HEAD
 					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+=======
+					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 				}
 			}
 			/*********************************************************************************/
@@ -246,7 +263,7 @@ public class LevelMap {
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 64));
+					sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 256));
 				}
 			}
 			/*********************************************************************************/
@@ -308,6 +325,8 @@ public class LevelMap {
 		switch(currentLevel)
 		{
 		case 0:
+			spawnX = .6f;
+			spawnY = 4.71f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/dungeon.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -378,13 +397,13 @@ public class LevelMap {
 			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 124.11f, 1.5f,1.42f,1.42f,64,64));
 			
 			for(float i=0;i<6;i++)
-		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 14f+i, 2.0f));
+		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 14f+i, 2.0f,64,64));
 			
 			for(float i=0;i<22;i++)
-			spikes.add(new Obstacle(world, "data/Objects/spikes.png", 54f+i, 2.0f));
+			spikes.add(new Obstacle(world, "data/Objects/spikes.png", 54f+i, 2.0f,64,64));
 			
 			for(float i=0;i<30;i++)
-		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
+		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f,64,64));
 			
 			endlevel = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
 		    //test.play();
@@ -392,6 +411,8 @@ public class LevelMap {
 			break;
 			//lvl 2
 		case 2:
+			spawnX = 1.05f;
+			spawnY = 4.71f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -411,6 +432,8 @@ public class LevelMap {
 			break;
 			//lvl 2.2
 		case 4:
+			spawnX = 1.07f;
+			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/forest.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();			
@@ -430,6 +453,9 @@ public class LevelMap {
 			break;
 			//lvl 3
 		case 6:
+			Alabaster.powerLegs=true;
+			spawnX = 1.07f;
+			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -447,8 +473,15 @@ public class LevelMap {
 			loadStuff(100*64);
 			
 			break;
+<<<<<<< HEAD
 			//lvl 3.3
+=======
+			//lvl o
+>>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 		case 8:
+			Alabaster.powerLegs=true;
+			spawnX = 1.07f;
+			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -469,6 +502,10 @@ public class LevelMap {
 			break;
 			//lvl 4
 		case 10:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			spawnX = 1.11f;
+			spawnY = 2.58f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -490,6 +527,10 @@ public class LevelMap {
 			break;
 			//4.4
 		case 12:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			spawnX = 1.13f;
+			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -511,6 +552,11 @@ public class LevelMap {
 			break;
 			//5
 		case 14:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
+			spawnX = 1.16f;
+			spawnY = 6.84f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -531,6 +577,11 @@ public class LevelMap {
 			break;
 			//5.2
 		case 16:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
+			spawnX = 1.0f;
+			spawnY = 5.780f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -551,6 +602,12 @@ public class LevelMap {
 			break;
 			//6
 		case 18:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
+			Alabaster.hasShout =true;
+			spawnX = 1.0f;
+			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));
 			bgMusic.setLooping(true);
 			bgMusic.play();
@@ -659,6 +716,8 @@ public void deleteLevel(){
 	{
 		this.currentLevel = currentLevel;
 	}
+	
+	
 }
 	
 
