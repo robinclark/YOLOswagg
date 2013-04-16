@@ -38,11 +38,9 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-<<<<<<< HEAD
-	public static int state = 6;
-=======
-	public static int state = 12;
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
+
+	public static int state = -5;
+
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -110,11 +108,9 @@ public class AmpDom implements ApplicationListener {
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);
-<<<<<<< HEAD
-		frog = new Alabaster(world, 1.5f, 8.0f, state);
-=======
+
 		frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
+
 
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
@@ -272,11 +268,9 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-<<<<<<< HEAD
-				frog = new Alabaster(world, 1.0f, 8.0f, state);
-=======
+
 				frog = new Alabaster(world, 1.0f, 8.0f, level.currentLevel);
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
+
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -549,6 +543,7 @@ public class AmpDom implements ApplicationListener {
 		
 
 		 m.display();
+		 
 		 if(m.homeIsPressed == true){			 
 			 resetToBeginning();
 			 m.homeIsPressed = false;
@@ -613,11 +608,9 @@ public class AmpDom implements ApplicationListener {
 		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
-<<<<<<< HEAD
-	        frog = new Alabaster(world, 1.0f, 8.0f, state);
-=======
+
 	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
+
 	        lastRender = System.nanoTime();
 	    }
 	}

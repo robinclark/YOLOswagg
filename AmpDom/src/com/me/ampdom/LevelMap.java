@@ -239,22 +239,14 @@ static protected float spawnY;
 			{
 				for(TiledObject tO: tG.objects)
 				{
-<<<<<<< HEAD
-					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
-=======
 					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,128));
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 				}
 			}
 			if(tG.name.equals("fire"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-<<<<<<< HEAD
-					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
-=======
 					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
 				}
 			}
 			/*********************************************************************************/
@@ -473,11 +465,7 @@ static protected float spawnY;
 			loadStuff(100*64);
 			
 			break;
-<<<<<<< HEAD
-			//lvl 3.3
-=======
-			//lvl o
->>>>>>> 92fc302b4cc7ddddcf2f6202bb6af4b2cc1bdc98
+
 		case 8:
 			Alabaster.powerLegs=true;
 			spawnX = 1.07f;
