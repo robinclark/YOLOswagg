@@ -2194,7 +2194,7 @@
  <objectgroup name="end" width="168" height="13">
   <object x="10452" y="388"/>
  </objectgroup>
- <objectgroup name="snake" width="168" height="13">
+ <objectgroup name="snakes" width="168" height="13">
   <object x="1168" y="732"/>
   <object x="1460" y="740"/>
   <object x="2808" y="592"/>

@@ -39,10 +39,13 @@ public class Alabaster extends Character {
 	boolean shell = false;
 	boolean shout = false;
 	boolean tongueAct=false;
-	boolean powerLegs=true;
+	boolean powerLegs=false;
 	boolean spit = false;
 	boolean tongueOut = false;
-
+	boolean hasShell = false;
+	boolean hasSpit = false;
+	boolean hasShout = false;
+	
 	//boolean shoutOut = false;
 	//boolean doubleJump;
 
@@ -120,10 +123,75 @@ public class Alabaster extends Character {
 	
 	long now, last, shoutTime;
 	
-	public Alabaster(World world, float x, float y) {
+	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
-		/*setup physics n sounds*/
 		
+		/*enable power based on level*/
+		switch(level)
+		{			
+			case 0://dungeon
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;				
+				break;			
+			case 2://forest
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;			
+			case 4://forest
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 6://mountain
+				powerLegs  = true;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 8://mountain
+				powerLegs  = true;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 10://desert
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 12://desert
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 14://jungle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = false;
+				break;	
+			case 16://jungle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = false;
+				break;
+			case 18://castle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = true;
+				break;
+		}
+		
+		/*setup physics n sounds*/		
 		//--alabaster
 		motionText = new Texture(Gdx.files.internal("data/Alabaster/motionRegion.png"));
 		motionSheet = new TextureRegion();
@@ -184,6 +252,7 @@ public class Alabaster extends Character {
 		shoutShape.dispose();
 		
 		shoutBody.setUserData("SHOUT");
+		shoutBody.setActive(false);
 		
 		//--tongue
 	   	tongueText = new Texture(Gdx.files.internal("data/alabaster/tongue.png"));
@@ -462,7 +531,7 @@ public void move(MyInputProcessor input)
 			if(powerLegs)
 			{
 				
-				if(count > 0&&doubleJump)
+				if(count > 0 && doubleJump)
 				{
 
 					jumpSound.setLooping(1, false);
@@ -496,8 +565,10 @@ public void move(MyInputProcessor input)
 			
 		}
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
-			System.out.println("frog: " + entity.getPosition().x + ", " + entity.getPosition().y);
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)){
+			System.out.println("RIBBIT!!!");
+			System.out.println(entity.getPosition());
+		}
 		
 	    //move left
   		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) 
@@ -519,7 +590,7 @@ public void move(MyInputProcessor input)
   			//moveLeft=false;
   		}
   		
-  		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+  		if (Gdx.input.isKeyPressed(Input.Keys.S) && hasShell) {
 
 	  		if(shellCharge > 0) {
 	  			EnemyContact.grounded= true;
@@ -597,7 +668,7 @@ public void move(MyInputProcessor input)
   		/****************************************************************
   		 * SPIT INPUT  		 											* 
   		 ***************************************************************/
-	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell)
+	    if(!input.buttons[MyInputProcessor.SPIT] && input.oldButtons[MyInputProcessor.SPIT] && !shell && hasSpit)
 	    {
 	    	if(spitCharge > 0) 
 	    	{
@@ -650,9 +721,9 @@ public void move(MyInputProcessor input)
 	    }
 	    
 	    /****************************************************************
-  		 * SHOUT INPUT  hi		 										* 
+  		 * SHOUT INPUT		 										* 
   		 ***************************************************************/
-	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell)
+	    if(input.buttons[MyInputProcessor.SHOUT] && !input.oldButtons[MyInputProcessor.SHOUT] && !shell && hasShout)
 	    {	    	
 	    
 	    	if(shoutCharge > 0) 
@@ -695,34 +766,37 @@ public void move(MyInputProcessor input)
   		 * UPDATE SPITS		 											* 
   		 ***************************************************************/
 	    //destroy spit if too far or collided w/something
-        for(Spit b: spits)
-        {
-        	
-        	if(b == null) continue;        	
-	        	//System.out.println(spits.size());
-	        	if(b.body.getPosition().x < b.x/*entity.getPosition().x*/ - 2*100/PIXELS_PER_METER || b.body.getPosition().x > b.x/*entity.getPosition().x*/ + 2*100/PIXELS_PER_METER)
-
-	        	{
-	        		//System.out.println("removing");	        		
-	        		int i = spits.indexOf(b);
-	        		
-	        		//spits.set(i,null);
-	        		//world.destroyBody(b);
-	        		
-	        		spitsToDestroy.add(b);
-	        		
-	        		
-	        		b.body.setActive(false);
-	        		System.out.println("deactivate");
-	        		
-	        		spits.set(i,null);
-	        		//spits.remove(b);
-	        	}
-	        	else
-	        	{
-
-	        	}
-        }
+	    if(hasSpit)
+	    {
+	        for(Spit b: spits)
+	        {
+	        	
+	        	if(b == null) continue;        	
+		        	//System.out.println(spits.size());
+		        	if(b.body.getPosition().x < b.x/*entity.getPosition().x*/ - 2*100/PIXELS_PER_METER || b.body.getPosition().x > b.x/*entity.getPosition().x*/ + 2*100/PIXELS_PER_METER)
+	
+		        	{
+		        		//System.out.println("removing");	        		
+		        		int i = spits.indexOf(b);
+		        		
+		        		//spits.set(i,null);
+		        		//world.destroyBody(b);
+		        		
+		        		spitsToDestroy.add(b);
+		        		
+		        		
+		        		b.body.setActive(false);
+		        		System.out.println("deactivate");
+		        		
+		        		spits.set(i,null);
+		        		//spits.remove(b);
+		        	}
+		        	else
+		        	{
+	
+		        	}
+	        }
+	    }
         
         /*if(spitBody.getLinearVelocity().x < 2.0f)
         {

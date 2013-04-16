@@ -38,7 +38,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = -5;
+	public static int state = 18;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -106,7 +106,7 @@ public class AmpDom implements ApplicationListener {
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);
-		frog = new Alabaster(world, 1.0f, 9.0f);
+		frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
 
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
@@ -259,7 +259,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-				frog = new Alabaster(world, 1.0f, 5.0f);
+				frog = new Alabaster(world, 1.0f, 8.0f, state);
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -516,10 +516,10 @@ public class AmpDom implements ApplicationListener {
 			}
 
 			//debugger
-		     debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
-		    		 AmpDom.PIXELS_PER_METER,
-		    		 AmpDom.PIXELS_PER_METER,
-		    		 AmpDom.PIXELS_PER_METER));
+		     //debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
+		    	//	 AmpDom.PIXELS_PER_METER,
+		    		// AmpDom.PIXELS_PER_METER,
+		    //		 AmpDom.PIXELS_PER_METER));
 			lastRender = now;
 			
 			frog.displayHUD();
@@ -547,7 +547,7 @@ public class AmpDom implements ApplicationListener {
 	public void reset(){		
 		
 		level.currentLevel = state;
-		
+		System.out.println("state: " + state);
 		level.deleteLevel();
 		
 	    world.destroyBody(frog.entity);
@@ -558,12 +558,15 @@ public class AmpDom implements ApplicationListener {
 	    if(state >= 0 && state%2 == 1 && level.currentLevel%2 == 1){    	
 		    level = new LevelMap();
 		    level.currentLevel = state + 1;
+		    
+		    System.out.println("state increment: " + level.currentLevel);
 		    detect = new EnemyContact();
+		    
 		    world = new World(new Vector2(0.0f, -10.0f), true);
 		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
-	        frog = new Alabaster(world, 1.0f, 10.0f);
+	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, state);
 	        lastRender = System.nanoTime();
 	    }
 	}

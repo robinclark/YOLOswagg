@@ -56,7 +56,7 @@ public class FlyingEnemy extends Character {
 		fixtureDef.density = 1.0f;
 		//FixtureDef.friction = 5.0f;
 		fixtureDef.restitution = 0.0f;
-		fixtureDef.isSensor = true;
+		fixtureDef.isSensor = false;
 		entity = world.createBody(entityDef);
 		entity.createFixture(fixtureDef);
 		spawnX = entity.getPosition().x;
