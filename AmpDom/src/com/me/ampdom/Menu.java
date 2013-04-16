@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Menu {
 	public ArrayList<Button> buttons;
 	public OrthographicCamera cam;
-	public Texture start, main, htp, cred, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11,c12;
+	public Texture start, main, htp, cred, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11;
 	public Texture back_main, credits, htpb, pause, play, home;
 	public Texture play_main, son, soff, startb, next, help, exit;
 	public Sprite icon, popup;
@@ -27,18 +27,17 @@ public class Menu {
 		this.cam = cam;
 		buttons = new ArrayList<Button>();
 		//cut scene textures
-		c1 = new Texture(Gdx.files.internal("data/Cutscenes/cutscene_test.png"));
-	/*	c2 = new Texture(Gdx.files.internal("data/Cutscenes/cut0.1.png"));
-		c3 = new Texture(Gdx.files.internal("data/Cutscenes/cut0.2.png"));
-		c4 = new Texture(Gdx.files.internal("data/Cutscenes/cut1.1.png"));
-		c5 = new Texture(Gdx.files.internal("data/Cutscenes/cut2.1.png"));
-		c6 = new Texture(Gdx.files.internal("data/Cutscenes/cut2.2.png"));
-		c7 = new Texture(Gdx.files.internal("data/Cutscenes/cut3.1.png"));
-		c8 = new Texture(Gdx.files.internal("data/Cutscenes/cut3.2.png"));
-		c9 = new Texture(Gdx.files.internal("data/Cutscenes/cut4.1.png"));
-		c10 = new Texture(Gdx.files.internal("data/Cutscenes/cut4.2.png"));
-		c11 = new Texture(Gdx.files.internal("data/Cutscenes/cut5.1.png"));
-		c12 = new Texture(Gdx.files.internal("data/Cutscenes/cut5.2.png"));*/
+		c1 = new Texture(Gdx.files.internal("data/Cutscenes/c1.png"));
+		c2 = new Texture(Gdx.files.internal("data/Cutscenes/c2.png"));
+		c3 = new Texture(Gdx.files.internal("data/Cutscenes/c3.png"));
+		c4 = new Texture(Gdx.files.internal("data/Cutscenes/c4.png"));
+		c5 = new Texture(Gdx.files.internal("data/Cutscenes/c5.png"));
+		c6 = new Texture(Gdx.files.internal("data/Cutscenes/c6.png"));
+		c7 = new Texture(Gdx.files.internal("data/Cutscenes/c7.png"));
+		c8 = new Texture(Gdx.files.internal("data/Cutscenes/c8.png"));
+		c9 = new Texture(Gdx.files.internal("data/Cutscenes/c9.png"));
+		c10 = new Texture(Gdx.files.internal("data/Cutscenes/c10.png"));
+		c11 = new Texture(Gdx.files.internal("data/Cutscenes/c11.png"));
 		//screen textures
 		start = new Texture(Gdx.files.internal("data/Menu/Start_Screen.png"));
 		main = new Texture(Gdx.files.internal("data/Menu/Main_Screen.png"));
@@ -64,7 +63,7 @@ public class Menu {
 	public void initialize(){
 		addBackground();
 		initializeButtons();
-		music = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/beat.mp3", FileType.Internal));
+		music = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));
 		music.setLooping(true);
 		music.play();
 		popup = new Sprite(htp);
@@ -202,6 +201,7 @@ public class Menu {
 						changeBackground(cred);
 					
 				}else if(AmpDom.state%2 == 0 && AmpDom.state >= 0){ //game play screens
+					
 					music.setVolume(0);
 					if(soundOn)
 						LevelMap.bgMusic.setVolume(100);
@@ -305,9 +305,9 @@ public class Menu {
 						
 					}
 					
-					//if(AmpDom.state == -1)
+					if(AmpDom.state == -1)
 						changeBackground(c1);
-				/*	else if(AmpDom.state == 1)
+					else if(AmpDom.state == 1)
 						changeBackground(c2);
 					else if(AmpDom.state == 3)
 						changeBackground(c3);
@@ -327,7 +327,8 @@ public class Menu {
 						changeBackground(c10);
 					else if(AmpDom.state == 19)
 						changeBackground(c11);
-				*/	
+					else
+						changeBackground(c1);
 					
 				}
 			
@@ -335,8 +336,7 @@ public class Menu {
 	}
 	
 	public void draw(){
-		sb.begin();
-		
+		sb.begin();	
 		
 		if(AmpDom.state % 2 == 0 && AmpDom.state >= 0){
 			icon.draw(sb, 0.0f);
@@ -368,7 +368,7 @@ public class Menu {
 		soff.dispose();
 		help.dispose();
 		c1.dispose();
-		/*c2.dispose();
+		c2.dispose();
 		c3.dispose();
 		c4.dispose();
 		c5.dispose();
@@ -377,7 +377,7 @@ public class Menu {
 		c8.dispose();
 		c9.dispose();
 		c10.dispose();
-		c11.dispose();*/
+		c11.dispose();
 		for(Button b : buttons){
 			b.dispose();
 		}
