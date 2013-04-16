@@ -38,7 +38,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = -5;
+	public static int state = 8;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
