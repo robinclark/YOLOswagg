@@ -163,6 +163,11 @@ public class AmpDom implements ApplicationListener {
 
 			long now = System.nanoTime();			
 			
+			/*frog animation*/
+			//float deltaTime = Gdx.graphics.getDeltaTime();
+			//frog.update(deltaTime)
+			
+			
 			frog.move(input);
 			input.tick();
 			isHitBeginTime=System.nanoTime();
