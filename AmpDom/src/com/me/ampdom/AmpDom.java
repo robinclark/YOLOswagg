@@ -39,7 +39,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = 18;
+	public static int state = 14;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -148,7 +148,7 @@ public class AmpDom implements ApplicationListener {
 	
 	@Override
 	public void render() {		
-		
+		System.out.println(Alabaster.abilityState);
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 //	System.out.println(insideCheck);
@@ -260,7 +260,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-				frog = new Alabaster(world, 1.0f, 8.0f, state);
+				frog = new Alabaster(world, 1.0f, 8.0f, level.currentLevel);
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -533,6 +533,10 @@ public class AmpDom implements ApplicationListener {
 		
 
 		 m.display();
+		 if(m.homeIsPressed == true){			 
+			 resetToBeginning();
+			 m.homeIsPressed = false;
+		 }
 	}
 
 	@Override
@@ -547,6 +551,28 @@ public class AmpDom implements ApplicationListener {
 	public void dispose() {
 		m.dispose();
 		frog.dispose();
+	}
+	
+	public void resetToBeginning(){
+		level.currentLevel = 0;
+		level.deleteLevel();
+		
+	    world.destroyBody(frog.entity);
+
+	    world.destroyBody(LevelMap.jar.entity);
+	    world.destroyBody(LevelMap.endlevel.entity);
+	  // world.destroyBody(LevelMap.plat.entity);
+	       	
+		    level = new LevelMap();
+		    level.currentLevel = 0;
+		    detect = new EnemyContact();
+		    world = new World(new Vector2(0.0f, -10.0f), true);
+		    world.setContactListener(detect);
+			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
+	        tiledMapHelper = level.getMap();		
+	        frog = new Alabaster(world, LevelMap.spawnX, LevelMap.spawnY, 0);
+	        lastRender = System.nanoTime();
+	    
 	}
 	
 	public void reset(){		

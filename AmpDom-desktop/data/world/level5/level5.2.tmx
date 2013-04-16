@@ -1492,8 +1492,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1655,8 +1655,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1699,10 +1699,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1719,30 +1715,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="2"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1759,18 +1731,7 @@
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1793,6 +1754,45 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1830,8 +1830,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="3"/>
@@ -2194,11 +2194,13 @@
  <objectgroup name="end" width="168" height="13">
   <object x="10648" y="272"/>
  </objectgroup>
- <objectgroup name="snakes" width="168" height="13">
-  <object x="1036" y="596"/>
+ <objectgroup name="snake" width="168" height="13">
   <object x="2016" y="532"/>
+  <object x="3902" y="482"/>
+  <object x="2802" y="482"/>
+  <object x="4572" y="274"/>
  </objectgroup>
- <objectgroup name="flyer" width="168" height="13">
+ <objectgroup name="mosquito" width="168" height="13">
   <object x="2636" y="152"/>
   <object x="3764" y="156"/>
   <object x="5304" y="104"/>
@@ -2206,13 +2208,8 @@
   <object x="6232" y="412"/>
   <object x="9148" y="272"/>
  </objectgroup>
- <objectgroup name="frog" width="168" height="13">
-  <object x="9340" y="588"/>
-  <object x="10112" y="536"/>
-  <object x="10316" y="336"/>
- </objectgroup>
+ <objectgroup name="frog" width="168" height="13"/>
  <objectgroup name="plant" width="168" height="13">
-  <object x="6176" y="604"/>
   <object x="6956" y="292"/>
   <object x="7272" y="484"/>
   <object x="3684" y="608"/>
@@ -2221,6 +2218,7 @@
  <objectgroup name="leaf" width="168" height="13">
   <object x="10490" y="574"/>
   <object x="10494" y="410"/>
+  <object x="942" y="472"/>
  </objectgroup>
  <objectgroup name="spike" width="168" height="13"/>
  <objectgroup name="flyjar" width="168" height="13">

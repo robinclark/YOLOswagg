@@ -2068,9 +2068,9 @@
   <object x="4815" y="842" width="109" height="106"/>
   <object x="5053" y="837" width="94" height="109"/>
   <object x="483" y="921"/>
-  <object x="993" y="934"/>
-  <object x="1064" y="933"/>
-  <object x="1124" y="931"/>
+  <object x="992" y="933"/>
+  <object x="1063" y="934"/>
+  <object x="1125" y="935"/>
  </objectgroup>
  <objectgroup name="leaf" width="128" height="16">
   <object x="721" y="876" width="21" height="21"/>

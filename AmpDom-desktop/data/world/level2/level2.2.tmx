@@ -2102,7 +2102,6 @@
   <object x="3369" y="693" width="33" height="42"/>
   <object x="3469" y="695" width="35" height="39"/>
   <object x="3364" y="567" width="39" height="43"/>
-  <object x="7869" y="719"/>
  </objectgroup>
  <objectgroup name="bees" width="128" height="16">
   <object x="5867" y="-294" height="18"/>
