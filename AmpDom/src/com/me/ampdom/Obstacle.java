@@ -18,7 +18,7 @@ public class Obstacle extends Character {
 	float spawnX;
 	float spawnY;
 	
-	public Obstacle(World world, String path, float x, float y) {
+	public Obstacle(World world, String path, float x, float y,int sizeW,int sizeH) {
 		super(world, x, y);
 		
 		BodyDef entityDef = new BodyDef();
@@ -29,7 +29,7 @@ public class Obstacle extends Character {
 		
 		texture = new Texture(Gdx.files.internal(path));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		sprite = new Sprite(texture, 0, 0, 64, 64);
+		sprite = new Sprite(texture, 0, 0, sizeW, sizeH);
 		rect = new Rectangle(x,y,texture.getWidth(),texture.getHeight());
 		/**
 		 * Boxes are defined by their "half width" and "half height", hence the

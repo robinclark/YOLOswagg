@@ -2740,7 +2740,6 @@
  <objectgroup name="cactus" width="210" height="13">
   <object x="1009" y="721"/>
   <object x="3958" y="373"/>
-  <object x="5752" y="585"/>
   <object x="7182" y="712"/>
   <object x="9291" y="703"/>
   <object x="9639" y="697"/>

@@ -211,42 +211,42 @@ static protected float spawnY;
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/spikes.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/spikes.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
 				}
 			}			
 			if(tG.name.equals("sand"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/quickSand.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/quickSand.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,44));
 				}
 			}			
 			if(tG.name.equals("cactus"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/cactus.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/cactus.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, 128,128));
 				}
 			}
 			if(tG.name.equals("poison"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/swampPoison.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/swampPoison.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,44));
 				}
 			}
 			if(tG.name.equals("plant"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Enemies/venusFlyTrap.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,128));
 				}
 			}
 			if(tG.name.equals("fire"))
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER));
+					spikes.add(new Obstacle(world, "data/Objects/fire.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER,64,64));
 				}
 			}
 			/*********************************************************************************/
@@ -255,7 +255,7 @@ static protected float spawnY;
 			{
 				for(TiledObject tO: tG.objects)
 				{
-					sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 64));
+					sandstorms.add(new Sandstorm(world, "data/Objects/sandstorm.png", tO.x/AmpDom.PIXELS_PER_METER, (levelHeight - tO.y)/AmpDom.PIXELS_PER_METER, tO.width/AmpDom.PIXELS_PER_METER, 128, 256));
 				}
 			}
 			/*********************************************************************************/
@@ -389,13 +389,13 @@ static protected float spawnY;
 			enemies.add(new Enemy(world, "data/Enemies/skeletonFrog.png", 124.11f, 1.5f,1.42f,1.42f,64,64));
 			
 			for(float i=0;i<6;i++)
-		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 14f+i, 2.0f));
+		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 14f+i, 2.0f,64,64));
 			
 			for(float i=0;i<22;i++)
-			spikes.add(new Obstacle(world, "data/Objects/spikes.png", 54f+i, 2.0f));
+			spikes.add(new Obstacle(world, "data/Objects/spikes.png", 54f+i, 2.0f,64,64));
 			
 			for(float i=0;i<30;i++)
-		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f));
+		    spikes.add(new Obstacle(world, "data/Objects/spikes.png", 83f+i, 2.0f,64,64));
 			
 			endlevel = new EndLevelTrigger(world,"data/Objects/endGoalPost.png", 134.9f,6.62f);
 		    //test.play();
