@@ -39,10 +39,13 @@ public class Alabaster extends Character {
 	boolean shell = false;
 	boolean shout = false;
 	boolean tongueAct=false;
-	boolean powerLegs=true;
+	boolean powerLegs=false;
 	boolean spit = false;
 	boolean tongueOut = false;
-
+	boolean hasShell = false;
+	boolean hasSpit = false;
+	boolean hasShout = false;
+	
 	//boolean shoutOut = false;
 	//boolean doubleJump;
 
@@ -120,10 +123,75 @@ public class Alabaster extends Character {
 	
 	long now, last, shoutTime;
 	
-	public Alabaster(World world, float x, float y) {
+	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
-		/*setup physics n sounds*/
 		
+		/*enable power based on level*/
+		switch(level)
+		{			
+			case 0://dungeon
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;				
+				break;			
+			case 2://forest
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;			
+			case 4://forest
+				powerLegs  = false;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 6://mountain
+				powerLegs  = true;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 8://mountain
+				powerLegs  = true;
+				hasShell = false;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 10://desert
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 12://desert
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = false;
+				hasShout = false;
+				break;
+			case 14://jungle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = false;
+				break;	
+			case 16://jungle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = false;
+				break;
+			case 18://castle
+				powerLegs  = true;
+				hasShell = true;
+				hasSpit = true;
+				hasShout = true;
+				break;
+		}
+		
+		/*setup physics n sounds*/		
 		//--alabaster
 		motionText = new Texture(Gdx.files.internal("data/Alabaster/motionRegion.png"));
 		motionSheet = new TextureRegion();
@@ -463,7 +531,7 @@ public void move(MyInputProcessor input)
 			if(powerLegs)
 			{
 				
-				if(count > 0&&doubleJump)
+				if(count > 0 && doubleJump)
 				{
 
 					jumpSound.setLooping(1, false);
@@ -520,7 +588,7 @@ public void move(MyInputProcessor input)
   			//moveLeft=false;
   		}
   		
-  		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+  		if (Gdx.input.isKeyPressed(Input.Keys.S) && hasShell) {
 
 	  		if(shellCharge > 0) {
 	  			EnemyContact.grounded= true;

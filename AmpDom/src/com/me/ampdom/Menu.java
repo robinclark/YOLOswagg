@@ -67,7 +67,7 @@ public class Menu {
 		music.setLooping(true);
 		music.play();
 		popup = new Sprite(htp);
-		popup.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		popup.setPosition(0,0);
 	}
 	
 	public void initializeButtons(){

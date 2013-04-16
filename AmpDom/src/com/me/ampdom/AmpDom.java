@@ -106,7 +106,7 @@ public class AmpDom implements ApplicationListener {
 		if(state > 0)
 			lev = state;
 		level.create(world,lev, screenWidth, screenHeight,detect);
-		frog = new Alabaster(world, 1.5f, 6.0f);
+		frog = new Alabaster(world, 1.5f, 8.0f);
 
         lastRender = System.nanoTime();
         debugRenderer = new Box2DDebugRenderer();		
@@ -244,7 +244,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-				frog = new Alabaster(world, 1.0f, 6.0f);
+				frog = new Alabaster(world, 1.0f, 8.0f);
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
@@ -501,10 +501,10 @@ public class AmpDom implements ApplicationListener {
 			}
 
 			//debugger
-		     debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
-		    		 AmpDom.PIXELS_PER_METER,
-		    		 AmpDom.PIXELS_PER_METER,
-		    		 AmpDom.PIXELS_PER_METER));
+		     //debugRenderer.render(world,tiledMapHelper.getCamera().combined.scale(
+		    	//	 AmpDom.PIXELS_PER_METER,
+		    		// AmpDom.PIXELS_PER_METER,
+		    //		 AmpDom.PIXELS_PER_METER));
 			lastRender = now;
 			
 			frog.displayHUD();
@@ -551,7 +551,7 @@ public class AmpDom implements ApplicationListener {
 		    world.setContactListener(detect);
 			level.create(world, level.currentLevel, screenWidth, screenHeight,detect);
 	        tiledMapHelper = level.getMap();		
-	        frog = new Alabaster(world, 1.0f, 6.0f);
+	        frog = new Alabaster(world, 1.0f, 8.0f);
 	        lastRender = System.nanoTime();
 	    }
 	}

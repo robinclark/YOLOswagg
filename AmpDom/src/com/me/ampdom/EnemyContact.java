@@ -179,7 +179,7 @@ public void beginContact(Contact contact) {
 	@Override
 	public void endContact(Contact contact) {
 		// TODO Auto-generated method stub
-		final Fixture a = contact.getFixtureA();
+		/*final Fixture a = contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
 		
 			if(contact.getFixtureA().getBody().getUserData()!= null && 
@@ -294,7 +294,7 @@ public void beginContact(Contact contact) {
 			//    System.out.println("JAR");
 			   collectJar=true;
 			}				 
-	   }
+	   }*/
 	}
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
