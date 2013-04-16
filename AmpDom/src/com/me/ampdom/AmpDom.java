@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -39,7 +40,7 @@ public class AmpDom implements ApplicationListener {
 	private Menu m;
 	private OrthographicCamera camera;
 
-	public static int state = 10;
+	public static int state = -5;
 
 	Sprite shellSprite;
 	Texture shellText;

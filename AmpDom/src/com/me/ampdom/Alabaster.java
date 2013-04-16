@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -122,8 +123,12 @@ public class Alabaster extends Character {
 	TextureRegion motionSheet;
 	static int abilityState;
 	final float spitVel = 10.0f;
+	ParticleEffect particleEffect;
+    float fpsCounter;
 	
-	long now, last, shoutTime;
+	long now, last, shoutTime, shoutBeginTime;
+	float shoutElapsedTime;
+	boolean drawShout = false;
 	
 	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
@@ -190,6 +195,9 @@ public class Alabaster extends Character {
 		
 		shoutBody.setUserData("SHOUT");
 		shoutBody.setActive(false);
+		
+		particleEffect = new ParticleEffect();
+	    particleEffect.load(Gdx.files.internal("data/shout.p"), Gdx.files.internal("data"));
 		
 		//--tongue
 	   	tongueText = new Texture(Gdx.files.internal("data/alabaster/tongue.png"));
@@ -311,6 +319,7 @@ public void displayHUD() {
 	shapeRenderer.translate(40.0f, (680-45), 0.f);
 	shapeRenderer.filledRect(0f, 0f, 2*health, 20f);
 	
+	if(hasShell) {
 	// shell
 	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	shapeRenderer.identity();
@@ -330,7 +339,9 @@ public void displayHUD() {
 		shapeRenderer.translate(2*100+10+40, (680-40), 0.f);
 	
 	shapeRenderer.filledRect(0f, 0f, shellCharge, 15f);
+	}
 	
+	if(hasSpit) {
 	// spit
 	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	shapeRenderer.identity();
@@ -350,7 +361,9 @@ public void displayHUD() {
 		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	
 	shapeRenderer.filledRect(0f, 0f, spitCharge, 15f);
+	}
 	
+	if(hasShout) {
 	// shock-wave
 	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
 	shapeRenderer.identity();
@@ -370,6 +383,7 @@ public void displayHUD() {
 		shapeRenderer.translate(2*100+40+230, (680-40), 0.f);
 	
 	shapeRenderer.filledRect(0f, 0f, shoutCharge, 15f);
+	}
 	
 	// Icon Background
 	shapeRenderer.setColor(0f, 0f, 0f, 1.0f);
@@ -390,6 +404,7 @@ public void displayHUD() {
 	else
 		shapeRenderer.rect(0f, 0f, 2*100, 20f);
 	
+	if(hasShell) {
 	// shell 
 	shapeRenderer.setColor(1.0f, .77f, .05f, 1.0f);
 	shapeRenderer.identity();
@@ -397,8 +412,10 @@ public void displayHUD() {
 		shapeRenderer.translate(2*health+40+120, (680-40), 0.f);
 	else
 		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
-	shapeRenderer.rect(0f, 0f, 100, 15f);
+	//shapeRenderer.rect(0f, 0f, 100, 15f);
+	}
 	
+	if(hasSpit) {
 	// spit
 	shapeRenderer.setColor(0.52f, 0.38f, .53f, 1.0f);
 	shapeRenderer.identity();
@@ -407,7 +424,9 @@ public void displayHUD() {
 	else
 		shapeRenderer.translate(2*100+40+120, (680-40), 0.f);
 	shapeRenderer.rect(0f, 0f, 100, 15f);
+	}
 	
+	if(hasShout) {
 	// shock-wave
 	shapeRenderer.setColor(0.18f, 0.46f, 1.0f, 1.0f);
 	shapeRenderer.identity();
@@ -416,23 +435,33 @@ public void displayHUD() {
 	else
 		shapeRenderer.translate(2*100+40+230, (680-40), 0.f);
 	shapeRenderer.rect(0f, 0f, 100, 15f);
+	}
 	shapeRenderer.end();
 	
 	// Print TEXT
 	healthText.begin();
 	font.draw(healthText, "HEALTH" , 40.0f, 670);
+	
+	if(hasShell) {
 	if(health > 100)
 		font.draw(healthText, "SHELL" , 2*health+10+40, 670);
 	else
 		font.draw(healthText, "SHELL" , 2*100+10+40, 670);
+	}
+	
+	if(hasSpit) {
 	if(health > 100)
 		font.draw(healthText, "SPIT" , 2*health+40+120, 670);
 	else
 		font.draw(healthText, "SPIT" , 2*100+40+120, 670);
+	}
+	
+	if(hasShout) {
 	if(health > 100)
 		font.draw(healthText, "SHOCKWAVE" , 2*health+40+230, 670);
 	else
 		font.draw(healthText, "SHOCKWAVE" , 2*100+40+230, 670);
+	}
 	healthText.end();
 	
 	// draw Alabaster Icon
@@ -670,6 +699,8 @@ public void move(MyInputProcessor input)
 	    	if(shoutCharge > 0) 
 	    	{
 	    		shoutTime = System.nanoTime();
+	    		drawShout = true;
+	    		shoutBeginTime = System.nanoTime();
 		    	shout = true;
 		    	shoutBody.setActive(true);
 		        shoutSound.play();
@@ -773,6 +804,7 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 	batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
 	batch.begin();
 	
+	float delta = Gdx.graphics.getDeltaTime();
 		if(!shell){
 				sprite.setPosition(
 						PIXELS_PER_METER * entity.getPosition().x
@@ -809,12 +841,14 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 				}			   
 		}
 			if(shout){
+				
 				if(facingRight){
 					shoutSprite.setPosition(
 							PIXELS_PER_METER * entity.getPosition().x+64f
 									- shoutSprite.getWidth() / 2,
 							PIXELS_PER_METER * entity.getPosition().y+10f
-									- shoutSprite.getHeight() / 2);				
+									- shoutSprite.getHeight() / 2);
+					shoutSprite.setColor(1.0f, 1.0f, 1.0f, 0.0f);
 					shoutSprite.draw(batch);
 				}
 				else{	  		
@@ -823,8 +857,40 @@ public void batchRender(TiledMapHelper tiledMapHelper) {
 									- shoutSprite.getWidth() /2,
 							PIXELS_PER_METER * entity.getPosition().y+10f
 									- shoutSprite.getHeight() / 2);
+			    	shoutSprite.setColor(1.0f, 1.0f, 1.0f, 0.0f);
 			    	 shoutSprite.draw(batch);
-					}			 
+					}	
+			}
+
+			// particle shout
+			fpsCounter += delta;
+			if (fpsCounter > 3 )
+				fpsCounter = 0;
+			
+			
+			if(drawShout) {
+				if(facingRight) {
+					particleEffect.setPosition(PIXELS_PER_METER * entity.getPosition().x+82f- shoutSprite.getWidth() / 2,
+							PIXELS_PER_METER * entity.getPosition().y);
+					particleEffect.start();
+					particleEffect.draw(batch, delta);
+				}
+				else {
+					particleEffect.setPosition(
+							PIXELS_PER_METER * entity.getPosition().x-32f
+									- shoutSprite.getWidth() /2,
+							PIXELS_PER_METER * entity.getPosition().y);
+					particleEffect.start();
+					particleEffect.draw(batch, delta);
+				}
+				
+				shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
+			}
+			
+			if(shoutElapsedTime > 0.6) {
+				drawShout = false;
+				shoutBeginTime = 0;
+				shoutElapsedTime = 0;
 			}
 			for(Spit b: spits)
 			{

@@ -21,7 +21,7 @@ boolean dropperHit;
 boolean spitEnem = false;
 boolean shoutEnem = false;
 static boolean insideEnemy = false;
-
+boolean storm = false;
 
 @Override
 public void beginContact(Contact contact) {
@@ -33,11 +33,13 @@ public void beginContact(Contact contact) {
 		//--tornado
 		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SANDSTORM")
 		{
+			storm = true;
 			enemyDmg =true;
 			isHit = true;
 		}
 		if(a.getBody().getUserData()=="SANDSTORM" && b.getBody().getUserData()=="PLAYER")
 		{
+			storm = true;
 			enemyDmg =true;
 			isHit = true;
 		}
