@@ -21,6 +21,7 @@ public class Menu {
 	public SpriteBatch sb;
 	public static Music music;
 	public boolean soundOn = true, pop = false;
+	public float fade = 1.0f;
 	//creates a menu
 	public Menu(OrthographicCamera cam){
 		
@@ -67,7 +68,7 @@ public class Menu {
 		music.setLooping(true);
 		music.play();
 		popup = new Sprite(htp);
-		popup.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		popup.setPosition(0,0);
 	}
 	
 	public void initializeButtons(){
@@ -99,14 +100,12 @@ public class Menu {
 	public void addBackground(){		
 		icon = new Sprite(start);
 		icon.setPosition(0, 0);
-		sb = new SpriteBatch();	
-		//icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		sb = new SpriteBatch();
 	}	
 	
 	public void changeBackground(Texture t){
 		icon = new Sprite(t);
 		icon.setPosition(0, 0);
-		//icon.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}
 	
 	public void display(){
@@ -327,8 +326,7 @@ public class Menu {
 						changeBackground(c10);
 					else if(AmpDom.state == 19)
 						changeBackground(c11);
-					else
-						changeBackground(c1);
+					
 					
 				}
 			
@@ -338,9 +336,15 @@ public class Menu {
 	public void draw(){
 		sb.begin();	
 		
+		
 		if(AmpDom.state % 2 == 0 && AmpDom.state >= 0){
-			icon.draw(sb, 0.0f);
+			fade -= 0.05;
+			if(fade <= 0)
+				fade = 0;
+		
+			icon.draw(sb, fade);
 		}else{
+			fade = 1.0f;
 			icon.draw(sb, 1.0f);
 		}
 		//draw popup for help
