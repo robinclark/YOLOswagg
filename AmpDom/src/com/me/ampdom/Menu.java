@@ -20,7 +20,7 @@ public class Menu {
 	public Sprite icon, popup;
 	public SpriteBatch sb;
 	public static Music music;
-	public boolean soundOn = true, pop = false;
+	public boolean soundOn = true, pop = false, homeIsPressed = false;
 	public float fade = 1.0f;
 	//creates a menu
 	public Menu(OrthographicCamera cam){
@@ -234,8 +234,10 @@ public class Menu {
 					
 					if(b.name.equals("home")){
 						b.draw();
-						if(b.clicked())
+						if(b.clicked()){
+							homeIsPressed = true;
 							AmpDom.state = -4;
+						}
 					}
 					
 				}else if((AmpDom.state%2 == 1 && AmpDom.state > 0) || AmpDom.state == -1){//all cut scenes
@@ -253,10 +255,12 @@ public class Menu {
 						}
 					}
 					
-					if(b.name.equals("home")){
+					if(b.name.equals("home")){						
 						b.draw();
-						if(b.clicked())
+						if(b.clicked()){
+							homeIsPressed = true;
 							AmpDom.state = -4;
+						}
 					}
 					
 					if(b.name.equals("sound")){						
