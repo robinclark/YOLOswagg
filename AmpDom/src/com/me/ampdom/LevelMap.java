@@ -437,6 +437,7 @@ static protected float spawnY;
 			break;
 			//lvl 3
 		case 6:
+			Alabaster.powerLegs=true;
 			spawnX = 1.07f;
 			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
@@ -456,8 +457,9 @@ static protected float spawnY;
 			loadStuff(100*64);
 			
 			break;
-			//lvl 3.3
+			//lvl o
 		case 8:
+			Alabaster.powerLegs=true;
 			spawnX = 1.07f;
 			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/mountain.mp3", FileType.Internal));
@@ -480,6 +482,8 @@ static protected float spawnY;
 			break;
 			//lvl 4
 		case 10:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
 			spawnX = 1.11f;
 			spawnY = 2.58f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
@@ -503,6 +507,8 @@ static protected float spawnY;
 			break;
 			//4.4
 		case 12:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
 			spawnX = 1.13f;
 			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/desert.mp3", FileType.Internal));
@@ -526,6 +532,9 @@ static protected float spawnY;
 			break;
 			//5
 		case 14:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
 			spawnX = 1.16f;
 			spawnY = 6.84f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
@@ -548,6 +557,9 @@ static protected float spawnY;
 			break;
 			//5.2
 		case 16:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
 			spawnX = 1.0f;
 			spawnY = 5.780f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/jungle.mp3", FileType.Internal));
@@ -570,6 +582,10 @@ static protected float spawnY;
 			break;
 			//6
 		case 18:
+			Alabaster.powerLegs=true;
+			Alabaster.hasShell =true;
+			Alabaster.hasSpit=true;
+			Alabaster.hasShout =true;
 			spawnX = 1.0f;
 			spawnY = 1.51f;
 			bgMusic = Gdx.audio.newMusic(Gdx.files.getFileHandle("data/sounds/castle.mp3", FileType.Internal));

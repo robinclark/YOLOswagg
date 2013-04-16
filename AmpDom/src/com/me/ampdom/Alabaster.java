@@ -38,13 +38,13 @@ public class Alabaster extends Character {
 	boolean doubleJump;
 	boolean shell = false;
 	boolean shout = false;
-	boolean tongueAct=false;
-	boolean powerLegs=false;
+    boolean tongueAct=false;
+	static boolean powerLegs=false;
 	boolean spit = false;
 	boolean tongueOut = false;
-	boolean hasShell = false;
-	boolean hasSpit = false;
-	boolean hasShout = false;
+	static boolean hasShell = false;
+	static boolean hasSpit = false;
+	static boolean hasShout = false;
 	
 	//boolean shoutOut = false;
 	//boolean doubleJump;
@@ -118,78 +118,78 @@ public class Alabaster extends Character {
 	Animation animate;
 	Texture motionText;
 	TextureRegion motionSheet;
-	
+	static int abilityState;
 	final float spitVel = 10.0f;
 	
 	long now, last, shoutTime;
 	
 	public Alabaster(World world, float x, float y, int level) {
 		super(world, x, y);	
-		
+		abilityState = level;
 		/*enable power based on level*/
-		switch(level)
-		{			
-			case 0://dungeon
-				powerLegs  = false;
-				hasShell = false;
-				hasSpit = false;
-				hasShout = false;				
-				break;			
-			case 2://forest
-				powerLegs  = false;
-				hasShell = false;
-				hasSpit = false;
-				hasShout = false;
-				break;			
-			case 4://forest
-				powerLegs  = false;
-				hasShell = false;
-				hasSpit = false;
-				hasShout = false;
-				break;
-			case 6://mountain
-				powerLegs  = true;
-				hasShell = false;
-				hasSpit = false;
-				hasShout = false;
-				break;
-			case 8://mountain
-				powerLegs  = true;
-				hasShell = false;
-				hasSpit = false;
-				hasShout = false;
-				break;
-			case 10://desert
-				powerLegs  = true;
-				hasShell = true;
-				hasSpit = false;
-				hasShout = false;
-				break;
-			case 12://desert
-				powerLegs  = true;
-				hasShell = true;
-				hasSpit = false;
-				hasShout = false;
-				break;
-			case 14://jungle
-				powerLegs  = true;
-				hasShell = true;
-				hasSpit = true;
-				hasShout = false;
-				break;	
-			case 16://jungle
-				powerLegs  = true;
-				hasShell = true;
-				hasSpit = true;
-				hasShout = false;
-				break;
-			case 18://castle
-				powerLegs  = true;
-				hasShell = true;
-				hasSpit = true;
-				hasShout = true;
-				break;
-		}
+//		switch(abilityState)
+//		{			
+//			case -1://dungeon
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;				
+//				break;			
+//			case 1://forest
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;			
+//			case 3://forest
+//				powerLegs  = false;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 5://mountain
+//				powerLegs  = true;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 7://mountain
+//				powerLegs  = true;
+//				hasShell = false;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 9://desert
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 11://desert
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = false;
+//				hasShout = false;
+//				break;
+//			case 13://jungle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = false;
+//				break;	
+//			case 15://jungle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = false;
+//				break;
+//			case 17://castle
+//				powerLegs  = true;
+//				hasShell = true;
+//				hasSpit = true;
+//				hasShout = true;
+//				break;
+//		}
 		
 		/*setup physics n sounds*/		
 		//--alabaster

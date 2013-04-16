@@ -38,7 +38,7 @@ public class AmpDom implements ApplicationListener {
 	//menu 
 	private Menu m;
 	private OrthographicCamera camera;
-	public static int state = 18;
+	public static int state = -5;
 	Sprite shellSprite;
 	Texture shellText;
 	static SpriteBatch batch;
@@ -147,7 +147,7 @@ public class AmpDom implements ApplicationListener {
 	
 	@Override
 	public void render() {		
-		
+		System.out.println(Alabaster.abilityState);
 		//clear buffer to run faster
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 //	System.out.println(insideCheck);
@@ -259,7 +259,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.getHealth()<=0){
 				frog.die();
 				world.destroyBody(frog.entity);
-				frog = new Alabaster(world, 1.0f, 8.0f, state);
+				frog = new Alabaster(world, 1.0f, 8.0f, level.currentLevel);
 				frog.shell = false;
 				frog.shout = false;
 				EnemyContact.enemyDmg=false;
