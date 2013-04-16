@@ -20,6 +20,10 @@ public class Sandstorm extends SpecialBody{
 		{
 			body.setLinearVelocity(velocity, 0.0f);
 		}
+		if(this.x < (x))
+		{
+			body.setActive(false);
+		}
 	}
 
 }

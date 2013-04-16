@@ -2208,8 +2208,8 @@
   </data>
  </layer>
  <objectgroup name="ram" width="22" height="100">
-  <object x="1142" y="4707" width="54" height="74"/>
-  <object x="361" y="4310" width="50" height="80"/>
+  <object x="1110" y="4695" width="54" height="74"/>
+  <object x="361" y="4286" width="50" height="80"/>
   <object x="276" y="2891" width="60" height="82"/>
   <object x="1308" y="2626" width="62" height="68"/>
  </objectgroup>
@@ -2221,6 +2221,17 @@
   <object x="538" y="1367" width="66" height="70"/>
   <object x="434" y="875" width="86" height="62"/>
   <object x="973" y="320" width="70" height="76"/>
+  <object x="252" y="6052" width="56" height="72"/>
+  <object x="892" y="5092" width="68" height="88"/>
+  <object x="296" y="5072" width="36" height="24"/>
+  <object x="64" y="4812" width="12" height="36"/>
+  <object x="640" y="3328" width="64" height="96"/>
+  <object x="1108" y="3288" width="88" height="84"/>
+  <object x="1220" y="3572" width="28" height="52"/>
+  <object x="764" y="3632" width="52" height="80"/>
+  <object x="288" y="2468" width="48" height="48"/>
+  <object x="540" y="2608" width="68" height="72"/>
+  <object x="2116" y="3016"/>
  </objectgroup>
  <objectgroup name="snake" width="22" height="100">
   <object x="699" y="5866" width="62" height="58"/>
@@ -2253,40 +2264,16 @@
   <object x="894" y="3203" width="58" height="821"/>
   <object x="1070" y="3267" width="61" height="767"/>
   <object x="1267" y="3358" width="58" height="670"/>
-  <object x="230" y="6009" width="36" height="24"/>
   <object x="800" y="3391" width="58" height="636"/>
   <object x="982" y="3573" width="64" height="458"/>
   <object x="1161" y="3691" width="70" height="339"/>
+  <object x="796" y="3076" width="60" height="944"/>
+  <object x="964" y="3084" width="48" height="936"/>
+  <object x="1132" y="3100" width="44" height="920"/>
+  <object x="1232" y="3088" width="36" height="936"/>
  </objectgroup>
  <objectgroup name="flyjar" width="22" height="100">
   <object x="935" y="1638" width="48" height="39"/>
- </objectgroup>
- <objectgroup name="leaf" width="22" height="100">
-  <object x="1379" y="4036"/>
-  <object x="1376" y="3979"/>
-  <object x="1370" y="3915"/>
-  <object x="1370" y="3842"/>
-  <object x="1370" y="3770"/>
-  <object x="1373" y="3700"/>
-  <object x="1376" y="3624"/>
-  <object x="1376" y="3564"/>
-  <object x="1376" y="3503"/>
-  <object x="1382" y="3421"/>
-  <object x="1382" y="3379"/>
-  <object x="1376" y="3327"/>
-  <object x="1373" y="3285"/>
-  <object x="1367" y="3239"/>
-  <object x="1364" y="3170"/>
-  <object x="1348" y="3130"/>
-  <object x="1333" y="3061" width="3"/>
-  <object x="1333" y="3064"/>
-  <object x="1306" y="3018"/>
-  <object x="1242" y="2985"/>
-  <object x="1206" y="2961"/>
-  <object x="1161" y="2939"/>
-  <object x="1130" y="2921"/>
-  <object x="1106" y="2909"/>
-  <object x="1073" y="2885"/>
-  <object x="1045" y="2870"/>
+  <object x="1352" y="3076" width="28" height="944"/>
  </objectgroup>
 </map>

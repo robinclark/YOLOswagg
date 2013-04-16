@@ -22,6 +22,7 @@ boolean spitEnem = false;
 boolean shoutEnem = false;
 static boolean insideEnemy = false;
 
+
 @Override
 public void beginContact(Contact contact) {
 		final Fixture a=contact.getFixtureA();
@@ -29,10 +30,28 @@ public void beginContact(Contact contact) {
 		
 		/*special bodies*/
 		/**********************************************************/
+		//--tornado
+		if(a.getBody().getUserData()=="PLAYER" && b.getBody().getUserData()=="SANDSTORM")
+		{
+			enemyDmg =true;
+			isHit = true;
+		}
+		if(a.getBody().getUserData()=="SANDSTORM" && b.getBody().getUserData()=="PLAYER")
+		{
+			enemyDmg =true;
+			isHit = true;
+		}
+		
 		//--moving platform contact
 		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="MOVING_PLATFORM")
 			   grounded=true;
 		if(a.getBody().getUserData()=="MOVING_PLATFORM" && b.getBody().getUserData()=="FOOT")
+			   grounded=true;
+		
+		//--waterlog
+		if(a.getBody().getUserData()=="FOOT" && b.getBody().getUserData()=="WATER_LOG")
+			   grounded=true;
+		if(a.getBody().getUserData()=="WATER_LOG" && b.getBody().getUserData()=="FOOT")
 			   grounded=true;
 		
 		//--stationary platform

@@ -11,7 +11,7 @@ public class WaterLog extends SpecialBody{
 		super(world, path, x, y, range, width, height);
 		//body.setType(BodyDef.BodyType.DynamicBody);
 		body.setUserData("WATER_LOG");
-		body.setLinearVelocity(new Vector2(0.0f, -2.0f));
+		body.setLinearVelocity(new Vector2(0.0f, -0.5f));
 		initHeight = y;
 	}
 	

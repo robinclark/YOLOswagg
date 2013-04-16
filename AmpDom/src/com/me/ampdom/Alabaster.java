@@ -510,8 +510,8 @@ public void move(MyInputProcessor input)
 	//System.out.println(count);
 	foot.setTransform(entity.getPosition().x,entity.getPosition().y-.36f,0);
 	foot.applyForceToCenter(0,10.0f);
-	tongueBody.setActive(false);
-	shoutBody.setActive(false);
+	//tongueBody.setActive(false);
+	//shoutBody.setActive(false);
 	boolean moveLeft = false;
 	boolean moveRight = false;	
 	shell = false;
