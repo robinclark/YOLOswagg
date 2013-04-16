@@ -284,7 +284,7 @@ public class AmpDom implements ApplicationListener {
 			if(frog.shout) {
 				
 				if(frog.shoutCharge-20 >= 0) {
-					frog.shoutCharge -= 20;
+					frog.shoutCharge -= 100;
 					System.out.println("SHOUT HEALTH: " + frog.shoutCharge);
 
 					// initiate timer
@@ -297,7 +297,7 @@ public class AmpDom implements ApplicationListener {
 			if(!frog.shout) {
 					shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
 
-					if(shoutElapsedTime > 8 && frog.shoutCharge <100) {
+					if(shoutElapsedTime > 8 && frog.shoutCharge < 100) {
 						frog.shoutCharge += 100;
 						shoutBeginTime = System.nanoTime();
 						//shoutElapsedTime = (System.nanoTime() - shoutBeginTime)/1000000000.0f;
@@ -370,11 +370,13 @@ public class AmpDom implements ApplicationListener {
 				{
 					 if(detect.spitEnem)
 					 {
+						f.isKilled = true;
 				      	f.die();
 					    detect.spitEnem = false;
 	          	     }
 					 
 					 if(detect.attackEnem){
+						 f.isKilled = true;
 						 f.die();
 						 detect.attackEnem=false;
 					 }
@@ -407,9 +409,11 @@ public class AmpDom implements ApplicationListener {
 					if(detect.spitEnem)
 					{
 						detect.spitEnem = false;
+						e.isKilled = true;
 						e.die();
 					}
 					if(detect.attackEnem){
+						e.isKilled = true;
 						e.die();
 						detect.attackEnem=false;
 					}
